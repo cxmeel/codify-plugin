@@ -217,8 +217,6 @@ local function TextInput(props: TextInputProps, hooks)
 						props.onFocusLost(rbx)
 					end
 				end,
-
-				[Roact.Change.Text] = props.onChanged,
 			}, {
 				maxHeight = if props.maxHeight
 					then e("UISizeConstraint", {
