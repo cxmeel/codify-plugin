@@ -52,18 +52,18 @@ This is necessary to the Save to Device feature only. The plugin will *temporari
 
 # Screenshots
 
-![GIF Demoing Plugin][image/demo-gif]
+[![GIF Demoing Plugin][image/demo-gif]][image/demo-gif]
 
 <table>
 <tr>
 <td>
 
-  ![Screenshot of Home Tab][image/screenshot-home]
+  [![Screenshot of Home Tab][image/screenshot-home]][image/screenshot-home]
 
 </td>
 <td>
 
-  ![Screenshot of Settings Tab][image/screenshot-settings]
+  [![Screenshot of Settings Tab][image/screenshot-settings]][image/screenshot-settings]
 
 </td>
 </tr>
