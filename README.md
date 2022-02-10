@@ -42,6 +42,7 @@ Below is a list of URLs used by Roactify *(all requests are unauthenticated)*:
 
 - https://s3.amazonaws.com/setup.roblox.com/versionQTStudio
 - https://s3.amazonaws.com/setup.roblox.com/{{version-hash}}-API-Dump.json
+- https://api.github.com/repos/csqrl/roactify-plugin/contributors?anon=1
 
 ## Script Injection
 This is a completely optional permission and will not degrade functionality if disabled. You will only be prompted for this permission when selecting the **Save to Device** button.
