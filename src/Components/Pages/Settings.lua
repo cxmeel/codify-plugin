@@ -14,9 +14,33 @@ local Button = require(script.Parent.Parent.Button)
 
 local e = Roact.createElement
 
+local Contributors = Hooks.new(Roact)(function(_, hooks)
+	local contributors, setContributors = hooks.useState({})
+
+	hooks.useEffect(function()
+		Config.FetchContributors()
+			:andThen(function(data)
+				setContributors(data)
+			end)
+			:catch(function(...)
+				if Config.IsDev then
+					warn(...)
+				end
+			end)
+	end, {})
+
+	return if #contributors > 0
+		then e(Layout.Forms.Section, {
+			heading = "Contributors",
+			hint = table.concat(contributors, ", "),
+			formItem = true,
+			order = 30,
+		})
+		else nil
+end)
+
 local function Page(_, hooks)
 	local _, styles = StudioTheme.useTheme(hooks)
-
 	local state = Store.useStore(hooks)
 
 	return e(RoactRouter.Route, {
@@ -163,6 +187,24 @@ local function Page(_, hooks)
 					formItem = true,
 					order = 10,
 				}),
+
+				originalAuthor = if Config.OriginalAuthor
+					then e(Layout.Forms.Section, {
+						heading = "Original Author",
+						hint = Config.OriginalAuthor.Username,
+						formItem = true,
+						order = 20,
+					})
+					else nil,
+
+				author = e(Layout.Forms.Section, {
+					heading = if Config.OriginalAuthor then "Fork Author" else "Author",
+					hint = Config.Author.Username,
+					formItem = true,
+					order = 25,
+				}),
+
+				contributors = e(Contributors),
 			}),
 		}),
 	})
