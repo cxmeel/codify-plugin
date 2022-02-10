@@ -112,8 +112,8 @@ local function Alert(props: AlertProps, hooks)
 					label = e(Text, {
 						text = props.label,
 						textColour = theme:GetColor(variant.text),
-						autoSize = Enum.AutomaticSize.XY,
-						size = UDim2.new(),
+						autoSize = Enum.AutomaticSize.Y,
+						size = UDim2.fromScale(1, 0),
 					}),
 				}),
 			}),
