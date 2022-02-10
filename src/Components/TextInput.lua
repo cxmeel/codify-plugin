@@ -3,6 +3,7 @@ local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 local Hooks = require(Packages.Hooks)
 local StudioTheme = require(Packages.StudioTheme)
+local Highlighter = require(Packages.Highlighter)
 
 local e = Roact.createElement
 
@@ -168,6 +169,25 @@ local function TextInput(props: TextInputProps, hooks)
 				MultiLine = props.multiline,
 				PlaceholderText = props.placeholder,
 				PlaceholderColor3 = colours.placeholder,
+
+				[Roact.Change.TextBounds] = function(rbx: TextBox)
+					if props.syntaxHighlight then
+						Highlighter.Highlight(rbx)
+					end
+				end,
+				[Roact.Change.AbsoluteSize] = function(rbx: TextBox)
+					if props.syntaxHighlight then
+						Highlighter.Highlight(rbx)
+					end
+				end,
+				[Roact.Change.Text] = function(rbx: TextBox, ...)
+					if props.onChanged then
+						task.spawn(props.onChanged, rbx, ...)
+					end
+					if props.syntaxHighlight then
+						Highlighter.Highlight(rbx)
+					end
+				end,
 
 				[Roact.Ref] = inputRef.value,
 				[Roact.Event.Focused] = function(rbx: TextBox)
