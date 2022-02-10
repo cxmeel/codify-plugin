@@ -163,6 +163,18 @@ local function Page(_, hooks)
 					formItem = true,
 					order = 10,
 				}),
+				author = e(Layout.Forms.Section, {
+					heading = "Author",
+					hint = Config.Author,
+					formItem = true,
+					order = 11,
+				}),
+				contributors = e(Layout.Forms.Section, {
+					heading = "Contributors",
+					hint = table.concat(Config.Contributors, ", "),
+					formItem = true,
+					order = 12,
+				}),
 			}),
 		}),
 	})
