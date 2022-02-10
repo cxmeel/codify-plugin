@@ -52,7 +52,7 @@ This is necessary to the Save to Device feature only. The plugin will *temporari
 
 # Screenshots
 
-[![Demo][image/demo-gif]][plugin/toolbox]
+![GIF Demoing Plugin][image/demo-gif]
 
 <table>
 <tr>
