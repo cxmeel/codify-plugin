@@ -22,6 +22,10 @@ jobs:
         shell: bash
         run: foreman list
 
+      - name: Install Dependencies
+        shell: bash
+        run: wally install
+
       - name: Upload Release to Roblox
         shell: bash
         run: |
