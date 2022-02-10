@@ -132,24 +132,24 @@ local function Page(_, hooks)
 					}),
 				}),
 
-				-- syntaxHighlight = e(Layout.Forms.Section, {
-				-- 	heading = "Syntax Highlighting",
-				-- 	hint = "Enables syntax highlighting for code snippets. Turn this off to save some performance.",
-				-- 	formItem = true,
-				-- 	order = 60,
-				-- }, {
-				-- 	option = e(Button, {
-				-- 		label = if state.Settings.SyntaxHighlight then "Enabled" else "Disabled",
-				-- 		icon = if state.Settings.SyntaxHighlight then "Tick" else "Cross",
-				-- 		alignX = Enum.HorizontalAlignment.Left,
-				-- 		size = UDim2.fromScale(1, 0),
-				-- 		autoSize = Enum.AutomaticSize.Y,
+				syntaxHighlight = e(Layout.Forms.Section, {
+					heading = "Syntax Highlighting",
+					hint = "Enables syntax highlighting for code snippets. Turn this off to save some performance.",
+					formItem = true,
+					order = 60,
+				}, {
+					option = e(Button, {
+						label = if state.Settings.SyntaxHighlight then "Enabled" else "Disabled",
+						icon = if state.Settings.SyntaxHighlight then "Tick" else "Cross",
+						alignX = Enum.HorizontalAlignment.Left,
+						size = UDim2.fromScale(1, 0),
+						autoSize = Enum.AutomaticSize.Y,
 
-				-- 		onActivated = function()
-				-- 			Store:SetState({ Settings = { SyntaxHighlight = not state.Settings.SyntaxHighlight } })
-				-- 		end,
-				-- 	}),
-				-- }),
+						onActivated = function()
+							Store:SetState({ Settings = { SyntaxHighlight = not state.Settings.SyntaxHighlight } })
+						end,
+					}),
+				}),
 			}),
 
 			aboutSection = e(Layout.Forms.Section, {
