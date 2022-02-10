@@ -24,6 +24,7 @@ export type TextInputProps = {
 	placeholder: string?,
 	maxHeight: number?,
 	selectAllOnFocus: boolean?,
+	syntaxHighlight: boolean?,
 
 	onChanged: ((TextBox) -> ())?,
 	onSubmit: ((TextBox) -> ())?,

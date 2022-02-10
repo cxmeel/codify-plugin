@@ -35,28 +35,28 @@ do -- Settings persistence --
 end
 
 do -- Watch syntax colors --
-	Highlighter.UpdateColors({
-		background = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptBackground),
-		iden = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptText),
-		keyword = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptKeyword),
-		builtin = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptBuiltInFunction),
-		string = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptString),
-		number = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptNumber),
-		comment = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptComment),
-		operator = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptOperator),
-	})
-	settings().Studio.ThemeChanged:Connect(function()
+	local Studio = settings():GetService("Studio") :: Studio
+	local studioTheme = Studio.Theme :: StudioTheme
+
+	local function UpdateHighlighterScheme()
 		Highlighter.UpdateColors({
-			background = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptBackground),
-			iden = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptText),
-			keyword = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptKeyword),
-			builtin = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptBuiltInFunction),
-			string = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptString),
-			number = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptNumber),
-			comment = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptComment),
-			operator = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptOperator),
+			background = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptBackground),
+			iden = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptText),
+			keyword = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptKeyword),
+			builtin = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptBuiltInFunction),
+			string = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptString),
+			number = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptNumber),
+			comment = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptComment),
+			operator = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptOperator),
 		})
+	end
+
+	Studio.ThemeChanged:Connect(function()
+		studioTheme = Studio.Theme :: StudioTheme
+		UpdateHighlighterScheme()
 	end)
+
+	UpdateHighlighterScheme()
 end
 
 do -- Watch selection --
