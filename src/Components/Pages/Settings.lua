@@ -4,6 +4,7 @@ local Roact = require(Packages.Roact)
 local Hooks = require(Packages.Hooks)
 local StudioTheme = require(Packages.StudioTheme)
 local RoactRouter = require(Packages.RoactRouter)
+local Llama = require(Packages.Llama)
 
 local Store = require(script.Parent.Parent.Parent.Store)
 local Config = require(script.Parent.Parent.Parent.Config)
@@ -11,6 +12,8 @@ local Config = require(script.Parent.Parent.Parent.Config)
 local TextInput = require(script.Parent.Parent.TextInput)
 local Layout = require(script.Parent.Parent.Layout)
 local Button = require(script.Parent.Parent.Button)
+
+local Dropdown = require(script.Parent.Parent.Dropdown)
 
 local e = Roact.createElement
 
@@ -86,15 +89,25 @@ local function Page(_, hooks)
 					formItem = true,
 					order = 20,
 				}, {
-					selection = e(Button, {
+					selection = e(Dropdown, {
 						label = Store.Enum.Color3Format[state.Settings.Color3Format][1],
 						hint = Store.Enum.Color3Format[state.Settings.Color3Format][2],
-						alignX = Enum.HorizontalAlignment.Left,
-						size = UDim2.fromScale(1, 0),
-						autoSize = Enum.AutomaticSize.Y,
+						value = state.Settings.Color3Format,
 
-						onActivated = function()
-							Store.IncrementEnum("Color3Format")
+						options = hooks.useMemo(function()
+							return Llama.Dictionary.values(
+								Llama.Dictionary.map(Store.Enum.Color3Format, function(item, key)
+									return {
+										label = item[1],
+										hint = item[2],
+										value = key,
+									}
+								end)
+							)
+						end, {}),
+
+						onChanged = function(value)
+							Store:SetState({ Settings = { Color3Format = value } })
 						end,
 					}),
 				}),
@@ -105,15 +118,25 @@ local function Page(_, hooks)
 					formItem = true,
 					order = 30,
 				}, {
-					selection = e(Button, {
+					selection = e(Dropdown, {
 						label = Store.Enum.UDim2Format[state.Settings.UDim2Format][1],
 						hint = Store.Enum.UDim2Format[state.Settings.UDim2Format][2],
-						alignX = Enum.HorizontalAlignment.Left,
-						size = UDim2.fromScale(1, 0),
-						autoSize = Enum.AutomaticSize.Y,
+						value = state.Settings.UDim2Format,
 
-						onActivated = function()
-							Store.IncrementEnum("UDim2Format")
+						options = hooks.useMemo(function()
+							return Llama.Dictionary.values(
+								Llama.Dictionary.map(Store.Enum.UDim2Format, function(item, key)
+									return {
+										label = item[1],
+										hint = item[2],
+										value = key,
+									}
+								end)
+							)
+						end, {}),
+
+						onChanged = function(value)
+							Store:SetState({ Settings = { UDim2Format = value } })
 						end,
 					}),
 				}),
@@ -124,34 +147,54 @@ local function Page(_, hooks)
 					formItem = true,
 					order = 40,
 				}, {
-					selection = e(Button, {
+					selection = e(Dropdown, {
 						label = Store.Enum.EnumFormat[state.Settings.EnumFormat][1],
 						hint = Store.Enum.EnumFormat[state.Settings.EnumFormat][2],
-						alignX = Enum.HorizontalAlignment.Left,
-						size = UDim2.fromScale(1, 0),
-						autoSize = Enum.AutomaticSize.Y,
+						value = state.Settings.EnumFormat,
 
-						onActivated = function()
-							Store.IncrementEnum("EnumFormat")
+						options = hooks.useMemo(function()
+							return Llama.Dictionary.values(
+								Llama.Dictionary.map(Store.Enum.EnumFormat, function(item, key)
+									return {
+										label = item[1],
+										hint = item[2],
+										value = key,
+									}
+								end)
+							)
+						end, {}),
+
+						onChanged = function(value)
+							Store:SetState({ Settings = { EnumFormat = value } })
 						end,
 					}),
 				}),
 
-				namingShceme = e(Layout.Forms.Section, {
+				namingScheme = e(Layout.Forms.Section, {
 					heading = "Naming Scheme",
 					hint = "Determines how child names are generated.",
 					formItem = true,
 					order = 50,
 				}, {
-					selection = e(Button, {
+					selection = e(Dropdown, {
 						label = Store.Enum.NamingScheme[state.Settings.NamingScheme][1],
 						hint = Store.Enum.NamingScheme[state.Settings.NamingScheme][2],
-						alignX = Enum.HorizontalAlignment.Left,
-						size = UDim2.fromScale(1, 0),
-						autoSize = Enum.AutomaticSize.Y,
+						value = state.Settings.NamingScheme,
 
-						onActivated = function()
-							Store.IncrementEnum("NamingScheme")
+						options = hooks.useMemo(function()
+							return Llama.Dictionary.values(
+								Llama.Dictionary.map(Store.Enum.NamingScheme, function(item, key)
+									return {
+										label = item[1],
+										hint = item[2],
+										value = key,
+									}
+								end)
+							)
+						end, {}),
+
+						onChanged = function(value)
+							Store:SetState({ Settings = { NamingScheme = value } })
 						end,
 					}),
 				}),
