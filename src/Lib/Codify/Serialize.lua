@@ -2,6 +2,24 @@ local rep = string.rep
 local fmt = string.format
 local clamp = math.clamp
 
+type CodifyOptions = {
+	Framework: string?, -- "Roact" | "Fusion"
+	CreateMethod: string?,
+	Color3Format: string?, -- "HEX" | "RGB"| "HSV" | "FULL"
+	UDim2Format: string?, -- "FULL" | "SMART"
+	EnumFormat: string?, -- "FULL" | "NUMBER" | "STRING"
+	NamingScheme: string?, -- "ALL" | "NONE" | "CHANGED"
+	TabCharacter: string?,
+	Indent: number?,
+}
+
+type CodifyInstanceOptions = CodifyOptions & {
+	PropIndent: number,
+	LevelIdentifiers: {
+		[string]: number,
+	}?,
+}
+
 local function FormatNumber(value: number): string
 	return fmt("%.3g", value)
 end
