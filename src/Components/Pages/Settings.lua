@@ -163,25 +163,24 @@ local function Page(_, hooks)
 					formItem = true,
 					order = 10,
 				}),
-				originalAuthor = if Config.Author ~= "csqrl" then
-					e(Layout.Forms.Section, {
-						heading = "Original Author",
-						hint = "csqrl",
-						formItem = true,
-						order = 20,
-					}) else nil,
+				originalAuthor = if Config.Author ~= "csqrl" then e(Layout.Forms.Section, {
+					heading = "Original Author",
+					hint = "csqrl",
+					formItem = true,
+					order = 20,
+				}) else nil,
 				author = e(Layout.Forms.Section, {
 					heading = Config.Author == "csqrl" and "Author" or "Fork Author",
 					hint = Config.Author,
 					formItem = true,
 					order = 25,
 				}),
-				contributors = e(Layout.Forms.Section, {
+				contributors = if #Config.Contributors>0 then e(Layout.Forms.Section, {
 					heading = "Contributors",
 					hint = table.concat(Config.Contributors, ", "),
 					formItem = true,
 					order = 30,
-				}),
+				}) else nil,
 			}),
 		}),
 	})
