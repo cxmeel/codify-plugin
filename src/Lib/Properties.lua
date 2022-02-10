@@ -1,7 +1,7 @@
-local HttpService = game:GetService("HttpService")
-
 local Promise = require(script.Parent.Parent.Packages.Promise)
 local Llama = require(script.Parent.Parent.Packages.Llama)
+
+local HttpPromise = require(script.Parent.HttpPromise)
 
 local Properties = {
 	Cache = {
@@ -10,44 +10,12 @@ local Properties = {
 	},
 }
 
-local function RequestPromise(...)
-	local requestOptions = { ... }
-
-	return Promise.new(function(resolve, reject)
-		local ok, response = pcall(HttpService.RequestAsync, HttpService, unpack(requestOptions))
-
-		if not ok then
-			reject(response)
-		end
-
-		if not response.Success then
-			reject(response.Body)
-		end
-
-		resolve(response.Body)
-	end)
-end
-
-local function RequestJsonPromise(...)
-	return RequestPromise(...):andThen(function(body)
-		return Promise.new(function(resolve, reject)
-			local ok, json = pcall(HttpService.JSONDecode, HttpService, body)
-
-			if not ok then
-				reject(json)
-			end
-
-			resolve(json)
-		end)
-	end)
-end
-
 function Properties.FetchLatestVersion()
 	if Properties.Cache.LatestVersionGUID then
 		return Promise.resolve(Properties.Cache.LatestVersionGUID)
 	end
 
-	return RequestPromise({
+	return HttpPromise.RequestPromise({
 		Url = "https://s3.amazonaws.com/setup.roblox.com/versionQTStudio",
 		Method = "GET",
 	}):andThen(function(version)
@@ -61,7 +29,7 @@ function Properties.FetchAPIDump(version: string)
 		return Promise.resolve(Properties.Cache.APIDump[version])
 	end
 
-	return RequestJsonPromise({
+	return HttpPromise.RequestJsonPromise({
 		Url = "https://s3.amazonaws.com/setup.roblox.com/" .. version .. "-API-Dump.json",
 		Method = "GET",
 	}):andThen(function(data)
