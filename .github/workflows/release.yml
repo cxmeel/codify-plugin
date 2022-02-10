@@ -24,7 +24,7 @@ jobs:
       - name: Get Release Details
         shell: bash
         run: |
-          echo "PROJECT_VERSION=`(grep "version = " wally.toml | sed -e 's/version = //g' -e 's/"//g')`" >> $GITHUB_ENV
+          echo "PROJECT_VERSION=`grep -Po '(?<=version = ")([^"]+)' wally.toml`" >> $GITHUB_ENV
 
       - name: Install Dependencies
         shell: bash
