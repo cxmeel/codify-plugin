@@ -2,6 +2,7 @@ local ServerStorage = game:GetService("ServerStorage")
 local Selection = game:GetService("Selection")
 
 local Roact = require(script.Packages.Roact)
+local Highlighter = require(script.Packages.Highlighter)
 local Roactify = require(script.Lib.Roactify)
 
 local Store = require(script.Store)
@@ -30,6 +31,31 @@ do -- Settings persistence --
 	Store:GetChangedSignal("Settings"):Connect(function()
 		local settings = Store:Get("Settings")
 		plugin:SetSetting(SettingsKey, settings)
+	end)
+end
+
+do -- Watch syntax colors --
+	Highlighter.UpdateColors({
+		background = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptBackground),
+		iden = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptText),
+		keyword = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptKeyword),
+		builtin = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptBuiltInFunction),
+		string = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptString),
+		number = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptNumber),
+		comment = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptComment),
+		operator = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptOperator),
+	})
+	settings().Studio.ThemeChanged:Connect(function()
+		Highlighter.UpdateColors({
+			background = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptBackground),
+			iden = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptText),
+			keyword = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptKeyword),
+			builtin = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptBuiltInFunction),
+			string = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptString),
+			number = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptNumber),
+			comment = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptComment),
+			operator = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.ScriptOperator),
+		})
 	end)
 end
 
