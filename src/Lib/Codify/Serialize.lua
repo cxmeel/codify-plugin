@@ -1,38 +1,6 @@
-local Llama = require(script.Parent.Parent.Packages.Llama)
-
-local Properties = require(script.Parent.Properties)
-local Script = require(script.Script)
-
 local rep = string.rep
 local fmt = string.format
 local clamp = math.clamp
-
-export type RoactifyOptions = {
-	CreateMethod: string?,
-	Color3Format: string?, -- "HEX" | "RGB"| "HSV" | "FULL"
-	UDim2Format: string?, -- "FULL" | "SMART"
-	EnumFormat: string?, -- "FULL" | "NUMBER" | "STRING"
-	NamingScheme: string?, -- "ALL" | "NONE" | "CHANGED"
-	TabCharacter: string?,
-	Indent: number?,
-}
-
-type RoactifyInstanceOptions = RoactifyOptions & {
-	PropIndent: number,
-	LevelIdentifiers: {
-		[string]: number,
-	}?,
-}
-
-local DEFAULT_OPTIONS: RoactifyOptions = {
-	CreateMethod = "Roact.createElement",
-	Color3Format = "FULL",
-	UDim2Format = "FULL",
-	EnumFormat = "FULL",
-	NamingScheme = "ALL",
-	TabCharacter = "  ",
-	Indent = 0,
-}
 
 local function FormatNumber(value: number): string
 	return fmt("%.3g", value)
@@ -136,7 +104,7 @@ FORMAT_MAP = {
 	},
 }
 
-local function SerialiseColorSequence(sequence: ColorSequence, options: RoactifyInstanceOptions)
+local function SerialiseColorSequence(sequence: ColorSequence, options: CodifyInstanceOptions)
 	local result = {}
 
 	local baseIndent = rep(options.TabCharacter, options.Indent)
@@ -157,7 +125,7 @@ local function SerialiseColorSequence(sequence: ColorSequence, options: Roactify
 	return fmt("ColorSequence.new({\n%s,\n%s})", resultString, baseIndent)
 end
 
-local function SerialiseNumberSequence(sequence: NumberSequence, options: RoactifyInstanceOptions)
+local function SerialiseNumberSequence(sequence: NumberSequence, options: CodifyInstanceOptions)
 	local result = {}
 
 	local baseIndent = rep(options.TabCharacter, options.Indent)
@@ -188,7 +156,7 @@ local function SerialiseNumberSequence(sequence: NumberSequence, options: Roacti
 	return fmt("NumberSequence.new({\n%s,\n%s})", resultString, baseIndent)
 end
 
-local function SerialiseProperty(instance: Instance, property: string, options: RoactifyInstanceOptions)
+local function SerialiseProperty(instance: Instance, property: string, options: CodifyInstanceOptions)
 	local value = instance[property] :: any
 	local valueTypeOf = typeof(value)
 	local valueType = type(value)
@@ -214,82 +182,6 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 	return tostring(value)
 end
 
-local function RoactifyInstance(instance: Instance, options: RoactifyInstanceOptions)
-	local snippet = Script.new()
-
-	local changedProps = select(2, Properties.GetChangedProperties(instance):await())
-	local children = instance:GetChildren()
-
-	local function tab()
-		return rep(options.TabCharacter, options.Indent)
-	end
-
-	snippet:CreateLine():Push(options.CreateMethod, '("', instance.ClassName, '"')
-
-	if options.Indent > 0 then
-		local nameChanged = table.find(changedProps, "Name")
-		local name = instance.Name
-
-		if options.NamingScheme == "ALL" or (options.NamingScheme == "CHANGED" and nameChanged) then
-			name = name:sub(1, 1):lower() .. name:sub(2)
-		elseif options.NamingScheme == "NONE" or (options.NamingScheme == "CHANGED" and not nameChanged) then
-			name = nil
-		end
-
-		if name ~= nil then
-			if options.LevelIdentifiers[name] ~= nil then
-				options.LevelIdentifiers[name] += 1
-				name ..= tostring(options.LevelIdentifiers[name])
-			else
-				options.LevelIdentifiers[name] = 0
-			end
-
-			snippet:Line():Insert(1, name, " = ")
-		end
-	end
-
-	if #changedProps > 0 then
-		snippet:Line():Push(", {")
-		options.Indent += 1
-
-		for _, prop in ipairs(changedProps) do
-			if prop == "Name" then
-				continue
-			end
-
-			options.PropIndent = #prop + 3
-
-			local value = SerialiseProperty(instance, prop, options)
-			snippet:CreateLine():Push(tab(), prop, " = ", value, ",")
-		end
-
-		options.Indent -= 1
-		snippet:CreateLine():Push(tab(), "}")
-	end
-
-	if #children > 0 then
-		snippet:Line():Push(", {")
-		options.Indent += 1
-
-		for _, child in ipairs(children) do
-			snippet:CreateLine():Push(tab(), RoactifyInstance(child, options), ",")
-		end
-
-		options.Indent -= 1
-		snippet:CreateLine():Push(tab(), "}")
-	end
-
-	snippet:Line():Push(")")
-
-	return snippet:Concat()
-end
-
-local function Roactify(rootInstance: Instance, options: RoactifyOptions?)
-	local config = Llama.Dictionary.merge(DEFAULT_OPTIONS, options or {}, {
-		LevelIdentifiers = {},
-	}) :: RoactifyInstanceOptions
-
-	return "return " .. RoactifyInstance(rootInstance, config)
-end
-
-return Roactify
+return {
+	SerialiseProperty = SerialiseProperty,
+}

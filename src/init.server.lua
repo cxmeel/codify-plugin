@@ -3,7 +3,7 @@ local Selection = game:GetService("Selection")
 
 local Roact = require(script.Packages.Roact)
 local Highlighter = require(script.Packages.Highlighter)
-local Roactify = require(script.Lib.Roactify)
+local Codify = require(script.Lib.Codify)
 
 local Store = require(script.Store)
 local AppComponent = require(script.Components.App)
@@ -137,7 +137,8 @@ do -- Respond to actions --
 
 		local createMethod = state.Settings.CreateMethod
 
-		local ok, snippet = pcall(Roactify, rootTarget, {
+		local ok, snippet = pcall(Codify, rootTarget, {
+			Framework = state.Settings.Framework,
 			CreateMethod = if not createMethod or #createMethod == 0 then nil else createMethod,
 			Color3Format = state.Settings.Color3Format,
 			UDim2Format = state.Settings.UDim2Format,
@@ -200,7 +201,7 @@ do -- Mount app --
 			plugin = plugin,
 		}),
 		nil,
-		"Roactify"
+		"Codify"
 	)
 
 	plugin.Unloading:Connect(function()

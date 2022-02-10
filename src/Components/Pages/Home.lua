@@ -61,7 +61,7 @@ local function Page(_, hooks)
 			padding = e(Layout.Padding),
 
 			heading = e(Layout.Forms.Section, {
-				heading = "Roact Snippet",
+				heading = state.Settings.Framework .. " Snippet",
 				hint = "Output formatting can be configured via the Settings tab.",
 				order = 10,
 			}),

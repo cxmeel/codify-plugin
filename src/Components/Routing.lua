@@ -21,7 +21,7 @@ local function Routing(_, hooks)
 		router = e(RoactRouter.Router, {}, {
 			navigationTabs = e(Navigation.Container, nil, {
 				home = e(Navigation.Tab, {
-					label = "Roactify",
+					label = "Codify",
 					icon = "Brand",
 					order = 10,
 					location = "/",

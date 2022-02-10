@@ -5,6 +5,7 @@ local Llama = require(Packages.Llama)
 
 local Store = BasicState.new({
 	Settings = {
+		Framework = "Roact",
 		CreateMethod = nil,
 		Color3Format = "RGB",
 		UDim2Format = "SMART",
