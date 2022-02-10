@@ -1,17 +1,17 @@
 [package]
 name = "csqrl/roactify-plugin"
 description = "Level up your colour game with Roactify"
-version = "1.0.0" # Don't forget to update Config.lua too!
+version = "1.1.0" # Don't forget to update Config/Config.lua too!
 license = "MIT"
 authors = ["csqrl (https://csqrl.dev)"]
 registry = "https://github.com/upliftgames/wally-index"
 realm = "shared"
 
 [dependencies]
+Highlighter = "boatbomber/highlighter@^0.4.5"
 BasicState = "csqrl/basicstate@^0.2.6"
 StudioPlugin = "csqrl/studio-plugin@^1.0.1"
 StudioTheme = "csqrl/studio-theme@^1.0.2"
-Highlighter = "boatbomber/highlighter@^0.4.5"
 Promise = "evaera/promise@^3.2.1"
 Llama = "freddylist/llama@1.1.1"
 Hooks = "kampfkarren/roact-hooks@^0.3.0"
