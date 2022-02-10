@@ -5,19 +5,23 @@ local Promise = require(script.Parent.Packages.Promise)
 local HttpPromise = require(script.Parent.Lib.HttpPromise)
 
 local Plugin = script:FindFirstAncestorOfClass("Plugin")
-local CurrentPluginId = Plugin.Name:match("%d+$")
 local httpCache = {}
+
+local CurrentPluginId = Plugin.Name:match("%d+$")
+CurrentPluginId = if CurrentPluginId then tonumber(CurrentPluginId) else nil
 
 local Config = require(script.Config)
 
 function Config.FetchContributors()
 	if httpCache.Contributors then
 		return Promise.resolve(httpCache.Contributors)
+	elseif httpCache.__contributorsPromise then
+		return httpCache.__contributorsPromise
 	end
 
 	local repoAuthor = string.match(Config.Author.Repo, "^[^/]+")
 
-	return HttpPromise.RequestJsonPromise({
+	local contributorsPromise = HttpPromise.RequestJsonPromise({
 		Url = "https://api.github.com/repos/" .. Config.Author.Repo .. "/contributors?anon=1",
 		Method = "GET",
 	}):andThen(function(data)
@@ -37,6 +41,10 @@ function Config.FetchContributors()
 
 		return contributors
 	end)
+
+	httpCache.__contributorsPromise = contributorsPromise
+
+	return contributorsPromise
 end
 
 Config.Author.Username = Players:GetNameFromUserIdAsync(Config.Author.UserId)

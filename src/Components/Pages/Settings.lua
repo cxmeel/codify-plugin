@@ -14,10 +14,7 @@ local Button = require(script.Parent.Parent.Button)
 
 local e = Roact.createElement
 
-local function Page(_, hooks)
-	local _, styles = StudioTheme.useTheme(hooks)
-	local state = Store.useStore(hooks)
-
+local Contributors = Hooks.new(Roact)(function(_, hooks)
 	local contributors, setContributors = hooks.useState({})
 
 	hooks.useEffect(function()
@@ -31,6 +28,20 @@ local function Page(_, hooks)
 				end
 			end)
 	end, {})
+
+	return if #contributors > 0
+		then e(Layout.Forms.Section, {
+			heading = "Contributors",
+			hint = table.concat(contributors, ", "),
+			formItem = true,
+			order = 30,
+		})
+		else nil
+end)
+
+local function Page(_, hooks)
+	local _, styles = StudioTheme.useTheme(hooks)
+	local state = Store.useStore(hooks)
 
 	return e(RoactRouter.Route, {
 		path = "/settings",
@@ -193,14 +204,7 @@ local function Page(_, hooks)
 					order = 25,
 				}),
 
-				contributors = if #contributors > 0
-					then e(Layout.Forms.Section, {
-						heading = "Contributors",
-						hint = table.concat(contributors, ", "),
-						formItem = true,
-						order = 30,
-					})
-					else nil,
+				contributors = e(Contributors),
 			}),
 		}),
 	})
