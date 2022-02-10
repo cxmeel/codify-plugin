@@ -144,8 +144,8 @@ local function Page(_, hooks)
 					readonly = true,
 					disabled = state.Snippet == nil,
 					wrapped = false,
-					maxHeight = 500,
 					selectAllOnFocus = true,
+					syntaxHighlight = state.Settings.SyntaxHighlight,
 
 					onFocus = function()
 						setShowCopy(true)
