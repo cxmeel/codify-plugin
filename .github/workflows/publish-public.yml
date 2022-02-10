@@ -1,0 +1,32 @@
+name: Publish Public
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  publish-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Toolchain
+        uses: Roblox/setup-toolchain@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Report Tool Versions
+        shell: bash
+        run: foreman list
+
+      - name: Upload Release to Roblox
+        shell: bash
+        run: |
+          find ./src -name "*.spec.lua" -type f -delete
+          rojo upload default.project.json --asset_id $ASSET_ID --cookie "$ROBLOSECURITY"
+        env:
+          ROBLOSECURITY: ${{ secrets.ROBLOSECURITY }}
+          ASSET_ID: 4749111907

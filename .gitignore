@@ -1,0 +1,8 @@
+*.rbx*
+
+.env
+.env.*
+roblox.toml
+
+*packages/
+node_modules/

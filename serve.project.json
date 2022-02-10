@@ -1,0 +1,14 @@
+{
+  "name": "RoactifyPluginServe",
+  "tree": {
+    "$className": "DataModel",
+    "$ignoreUnknownInstances": true,
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "$ignoreUnknownInstances": true,
+      "RoactifyPlugin": {
+        "$path": "default.project.json"
+      }
+    }
+  }
+}

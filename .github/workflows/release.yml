@@ -1,0 +1,50 @@
+name: Create GitHub Release
+on:
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Toolchain
+        uses: Roblox/setup-toolchain@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Report Tool Versions
+        shell: bash
+        run: foreman list
+
+      - name: Get Release Details
+        shell: bash
+        run: |
+          echo "PROJECT_VERSION=`(grep "version = " wally.toml | sed -e 's/version = //g' -e 's/"//g')`" >> $GITHUB_ENV
+
+      - name: Install Dependencies
+        shell: bash
+        run: wally install
+
+      - name: Build Project
+        shell: bash
+        run: |
+          rojo build default.project.json -o release.rbxm
+          rojo build default.project.json -o release.rbxmx
+
+      - name: Upload Release to GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ env.PROJECT_VERSION }}
+          tag_name: ${{ env.PROJECT_VERSION }}
+          fail_on_unmatched_files: true
+          files: |
+            release.rbxm
+            release.rbxmx
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
