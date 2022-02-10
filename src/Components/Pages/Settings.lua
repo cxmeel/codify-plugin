@@ -16,8 +16,21 @@ local e = Roact.createElement
 
 local function Page(_, hooks)
 	local _, styles = StudioTheme.useTheme(hooks)
-
 	local state = Store.useStore(hooks)
+
+	local contributors, setContributors = hooks.useState({})
+
+	hooks.useEffect(function()
+		Config.FetchContributors()
+			:andThen(function(data)
+				setContributors(data)
+			end)
+			:catch(function(...)
+				if Config.IsDev then
+					warn(...)
+				end
+			end)
+	end, {})
 
 	return e(RoactRouter.Route, {
 		path = "/settings",
@@ -163,24 +176,31 @@ local function Page(_, hooks)
 					formItem = true,
 					order = 10,
 				}),
-				originalAuthor = if Config.Author ~= "csqrl" then e(Layout.Forms.Section, {
-					heading = "Original Author",
-					hint = "csqrl",
-					formItem = true,
-					order = 20,
-				}) else nil,
+
+				originalAuthor = if Config.OriginalAuthor
+					then e(Layout.Forms.Section, {
+						heading = "Original Author",
+						hint = Config.OriginalAuthor.Username,
+						formItem = true,
+						order = 20,
+					})
+					else nil,
+
 				author = e(Layout.Forms.Section, {
-					heading = Config.Author == "csqrl" and "Author" or "Fork Author",
-					hint = Config.Author,
+					heading = if Config.OriginalAuthor then "Fork Author" else "Author",
+					hint = Config.Author.Username,
 					formItem = true,
 					order = 25,
 				}),
-				contributors = if #Config.Contributors>0 then e(Layout.Forms.Section, {
-					heading = "Contributors",
-					hint = table.concat(Config.Contributors, ", "),
-					formItem = true,
-					order = 30,
-				}) else nil,
+
+				contributors = if #contributors > 0
+					then e(Layout.Forms.Section, {
+						heading = "Contributors",
+						hint = table.concat(contributors, ", "),
+						formItem = true,
+						order = 30,
+					})
+					else nil,
 			}),
 		}),
 	})
