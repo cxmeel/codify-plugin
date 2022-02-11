@@ -38,6 +38,7 @@ local function TextInput(props: TextInputProps, hooks)
 	local hover, setHover = hooks.useState(false)
 	local press, setPress = hooks.useState(false)
 	local focus, setFocus = hooks.useState(false)
+	local height, setHeight = hooks.useState(400)
 
 	local inputRef = hooks.useValue(Roact.createRef())
 
@@ -104,11 +105,10 @@ local function TextInput(props: TextInputProps, hooks)
 	return e("ImageButton", {
 		Active = not props.disabled,
 		AutoButtonColor = false,
-		AutomaticSize = props.autoSize,
 		BackgroundColor3 = colours.border,
 		Position = props.position,
 		LayoutOrder = props.order,
-		Size = props.size,
+		Size = UDim2.new(1, 0, 0, height + 2 + styles.spacing*2),
 		ZIndex = props.zindex,
 		Image = "",
 
@@ -136,9 +136,8 @@ local function TextInput(props: TextInputProps, hooks)
 		}),
 
 		content = e("Frame", {
-			AutomaticSize = props.autoSize,
 			BackgroundColor3 = colours.background,
-			Size = UDim2.fromScale(1, 0),
+			Size = UDim2.new(1, 0, 0, height + styles.spacing*2 + 2),
 		}, {
 			corners = e("UICorner", {
 				CornerRadius = UDim.new(0, styles.borderRadius - 1),
@@ -153,9 +152,8 @@ local function TextInput(props: TextInputProps, hooks)
 
 			input = e("TextBox", {
 				Active = not props.disabled,
-				AutomaticSize = props.autoSize,
 				BackgroundTransparency = 1,
-				Size = UDim2.fromScale(1, 0),
+				Size = UDim2.new(1, 0, 0, height+2),
 				Font = props.font or styles.font.default,
 				Text = props.text,
 				TextSize = props.textSize or styles.fontSize,
@@ -172,6 +170,8 @@ local function TextInput(props: TextInputProps, hooks)
 				PlaceholderColor3 = colours.placeholder,
 
 				[Roact.Change.TextBounds] = function(rbx: TextBox)
+					setHeight(rbx.TextBounds.Y)
+
 					if props.syntaxHighlight then
 						Highlighter.Highlight(rbx)
 					end
