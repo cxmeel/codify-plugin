@@ -69,6 +69,7 @@ local function Page(_, hooks)
 					options = hooks.useMemo(function()
 						return Llama.Dictionary.values(Llama.Dictionary.map(Store.Enum.Framework, function(item, key)
 							return {
+								icon = key,
 								label = item[1],
 								hint = item[2],
 								value = key,

@@ -36,6 +36,7 @@ local function Dropdown(props: DropdownProps, hooks)
 	local optionButtons = hooks.useMemo(function()
 		return Llama.List.map(props.options, function(option: DropdownOption, index: number)
 			return e(OptionButton, {
+				icon = option.icon,
 				label = option.label or tostring(option.value),
 				hint = option.hint,
 				disabled = option.disabled,

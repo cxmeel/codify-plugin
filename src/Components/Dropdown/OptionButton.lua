@@ -6,6 +6,7 @@ local StudioTheme = require(Packages.StudioTheme)
 
 local Layout = require(script.Parent.Parent.Layout)
 local Text = require(script.Parent.Parent.Text)
+local Icon = require(script.Parent.Parent.Icon)
 
 local e = Roact.createElement
 
@@ -90,17 +91,26 @@ local function OptionButton(props: OptionButtonProps, hooks)
 			alignY = Enum.VerticalAlignment.Center,
 		}),
 
+		icon = if props.icon
+				then e(Icon, {
+					icon = props.icon,
+					order = if props.iconPosition == "end" then 40 else 10,
+					colour = colours.foreground,
+					size = 10,
+				})
+				else nil,
+
 		label = e(Text, {
 			text = props.label,
 			textColour = colours.foreground,
-			order = 10,
+			order = 20,
 		}),
 
 		hint = if props.hint
 			then e(Text, {
 				text = props.hint,
 				textColour = colours.hint,
-				order = 20,
+				order = 30,
 			})
 			else nil,
 	})
