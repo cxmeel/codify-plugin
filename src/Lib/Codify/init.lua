@@ -1,7 +1,7 @@
 local Llama = require(script.Parent.Parent.Packages.Llama)
 local Generators = require(script.Generators)
 export type CodifyOptions = {
-	Framework: string?, -- "Roact" | "Fusion"
+	Framework: string?, -- "Roact" | "Fusion" | "Regular"
 	CreateMethod: string?,
 	Color3Format: string?, -- "HEX" | "RGB"| "HSV" | "FULL"
 	UDim2Format: string?, -- "FULL" | "SMART"
