@@ -9,6 +9,7 @@ local RoactRouter = require(Packages.RoactRouter)
 local Llama = require(Packages.Llama)
 
 local Store = require(script.Parent.Parent.Parent.Store)
+local Frameworks = require(script.Parent.Parent.Parent.Lib.Codify.Frameworks)
 
 local Text = require(script.Parent.Parent.Text)
 local Icon = require(script.Parent.Parent.Icon)
@@ -28,14 +29,6 @@ local function Page(_, hooks)
 	local showCopy, setShowCopy = hooks.useState(false)
 
 	local state = Store.useStore(hooks)
-
-	local createMethod = hooks.useMemo(function()
-		if state.Settings.CreateMethod and #state.Settings.CreateMethod > 0 then
-			return state.Settings.CreateMethod
-		end
-
-		return "Roact.createElement"
-	end, { state })
 
 	local activeSelection = hooks.useMemo(function()
 		local name = "Nothing selected"
@@ -151,24 +144,7 @@ local function Page(_, hooks)
 
 				snippetText = e(TextInput, {
 					order = 20,
-					placeholder = table.concat({
-						"return " .. createMethod .. '("Lorem", {',
-						'  ipsum = "dolor"',
-						'  sit = "amet"',
-						'  consectetur = "adipiscing"',
-						'  elit = "sed"',
-						'  do = "eiusmod"',
-						'  tempor = "incididunt"',
-						'  ut = "labore"',
-						'  et = "dolore"',
-						'  magna = "aliqua"',
-						'  ut = "enim"',
-						'  ad = "minim"',
-						'  veniam = "quis"',
-						'  nostrud = "exercitation"',
-						'  ullamco = "laboris"',
-						"})",
-					}, "\n"),
+					placeholder = (Frameworks[state.Settings.Framework] or {}).Sample,
 					text = if state.Snippet then state.Snippet.Snippet else nil,
 					font = styles.font.mono,
 					textSize = styles.fontSize + 2,

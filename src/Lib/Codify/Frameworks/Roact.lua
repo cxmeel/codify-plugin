@@ -72,4 +72,16 @@ local function RoactifyInstance(instance: Instance, options)
 	return snippet:Concat()
 end
 
-return RoactifyInstance
+return {
+	Generator = RoactifyInstance,
+	Sample = table.concat({
+		'return Roact.createElement("Lorem", {',
+		'  ipsum = "dolor"',
+		'  sit = "amet"',
+		'  consectetur = "adipiscing"',
+		'  elit = "sed"',
+		'  do = "eiusmod"',
+		'  tempor = "incididunt"',
+		"})",
+	}, "\n"),
+}

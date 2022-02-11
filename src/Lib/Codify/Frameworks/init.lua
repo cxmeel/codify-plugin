@@ -1,9 +1,9 @@
-local Handlers = {}
+local Frameworks = {}
 
 for _, child in ipairs(script:GetChildren()) do
 	if child:IsA("ModuleScript") then
-		Handlers[child.Name] = require(child)
+		Frameworks[child.Name] = require(child)
 	end
 end
 
-return Handlers
+return Frameworks

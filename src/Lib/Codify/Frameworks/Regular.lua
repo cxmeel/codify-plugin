@@ -53,4 +53,15 @@ local function RegularifyInstance(instance: Instance, options)
 	return snippet:Concat()
 end
 
-return RegularifyInstance
+return {
+	Generator = RegularifyInstance,
+	Sample = table.concat({
+		'local lorem = Instance.new("Lorem")',
+		'lorem.ipsum = "dolor"',
+		'lorem.sit = "amet"',
+		'lorem.consectetur = "adipiscing"',
+		'lorem.elit = "sed"',
+		'lorem.do = "eiusmod"',
+		'lorem.tempor = "incididunt"',
+	}, "\n"),
+}

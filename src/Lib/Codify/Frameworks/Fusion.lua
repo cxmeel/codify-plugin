@@ -68,4 +68,16 @@ local function FusionifyInstance(instance: Instance, options)
 	return snippet:Concat()
 end
 
-return FusionifyInstance
+return {
+	Generator = FusionifyInstance,
+	Sample = table.concat({
+		'return New "Lorem" {',
+		'  ipsum = "dolor"',
+		'  sit = "amet"',
+		'  consectetur = "adipiscing"',
+		'  elit = "sed"',
+		'  do = "eiusmod"',
+		'  tempor = "incididunt"',
+		"}",
+	}, "\n"),
+}

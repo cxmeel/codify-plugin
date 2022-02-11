@@ -1,5 +1,5 @@
 local Llama = require(script.Parent.Parent.Packages.Llama)
-local Generators = require(script.Generators)
+local Frameworks = require(script.Frameworks)
 export type CodifyOptions = {
 	Framework: string?, -- "Roact" | "Fusion" | "Regular"
 	CreateMethod: string?,
@@ -29,7 +29,7 @@ local DEFAULT_OPTIONS: CodifyOptions = {
 }
 
 local function CodifyInstance(instance: Instance, options: CodifyInstanceOptions)
-	local generator = Generators[options.Framework or "Roact"] or Generators["Roact"]
+	local generator = (Frameworks[options.Framework or "Roact"] or Frameworks.Roact).Generator
 	local success, response = pcall(generator, instance, options)
 
 	if success then
