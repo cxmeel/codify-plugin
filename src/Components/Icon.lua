@@ -47,7 +47,7 @@ local function Icon(props: IconProps, hooks)
 		Size = size,
 		ZIndex = props.zindex,
 		Image = if icon then icon.assetId else props.icon,
-		ImageColor3 = props.colour or theme:GetColor(Enum.StudioStyleGuideColor.MainText),
+		ImageColor3 = if icon and icon.colour then icon.colour elseif props.colour then props.colour else theme:GetColor(Enum.StudioStyleGuideColor.MainText),
 		ImageRectOffset = if icon then Vector2.new(icon.x, icon.y) else props.imageOffset,
 		ImageRectSize = if icon then Vector2.new(icon.w, icon.h) else props.imageSize,
 		ImageTransparency = props.transparency,
