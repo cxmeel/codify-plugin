@@ -13,6 +13,7 @@ local e = Roact.createElement
 
 export type CheckboxProps = {
 	disabled: boolean?,
+	emphasised: boolean?,
 	order: number?,
 	label: string?,
 	hint: string?,
@@ -87,17 +88,20 @@ local function Checkbox(props: CheckboxProps, hooks)
 			AnchorPoint = Vector2.new(1, 0),
 			AutomaticSize = Enum.AutomaticSize.Y,
 			BackgroundTransparency = 1,
-			Size = UDim2.new(1, -28 - styles.spacing, 0, 0),
+			Size = UDim2.new(1, -28 - styles.spacing, 0, 30),
 			Position = UDim2.fromScale(1, 0),
 		}, {
 			layout = e(Layout.ListLayout, {
 				direction = Enum.FillDirection.Vertical,
+				alignY = Enum.VerticalAlignment.Center,
 				gap = styles.spacing / 2,
 			}),
 
 			label = e(Text, {
 				text = props.label,
-				textColour = theme:GetColor(Enum.StudioStyleGuideColor.BrightText, modifier),
+				textColour = if props.emphasised
+					then theme:GetColor(Enum.StudioStyleGuideColor.BrightText, modifier)
+					else theme:GetColor(Enum.StudioStyleGuideColor.MainText, modifier),
 				order = 10,
 			}),
 

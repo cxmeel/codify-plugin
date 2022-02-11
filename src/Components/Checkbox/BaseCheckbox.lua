@@ -10,6 +10,7 @@ local Icon = require(script.Parent.Parent.Icon)
 local e = Roact.createElement
 
 export type BaseCheckboxProps = {
+	anchor: Vector2?,
 	disabled: boolean?,
 	pressed: boolean?,
 	hovered: boolean?,
@@ -34,6 +35,7 @@ local function BaseCheckbox(props: BaseCheckboxProps, hooks)
 	end, { props.disabled, props.checked, props.pressed, props.hovered })
 
 	return e("Frame", {
+		AnchorPoint = props.anchor,
 		BackgroundColor3 = theme:GetColor(Enum.StudioStyleGuideColor.CheckedFieldBorder, modifier),
 		Position = props.position,
 		LayoutOrder = props.order,

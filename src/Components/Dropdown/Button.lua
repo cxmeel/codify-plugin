@@ -32,9 +32,9 @@ local function DropdownButton(props: DropdownButtonProps, hooks)
 
 	local colours = hooks.useMemo(function()
 		local colours = {
-			border = { Enum.StudioStyleGuideColor.ButtonBorder, nil },
-			background = { Enum.StudioStyleGuideColor.Button, nil },
-			foreground = { Enum.StudioStyleGuideColor.ButtonText, nil },
+			border = { Enum.StudioStyleGuideColor.InputFieldBorder, nil },
+			background = { Enum.StudioStyleGuideColor.InputFieldBackground, nil },
+			foreground = { Enum.StudioStyleGuideColor.MainText, nil },
 			hint = { Enum.StudioStyleGuideColor.DimmedText, nil },
 		}
 
