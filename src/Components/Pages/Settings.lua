@@ -10,8 +10,8 @@ local Store = require(script.Parent.Parent.Parent.Store)
 local Config = require(script.Parent.Parent.Parent.Config)
 
 local TextInput = require(script.Parent.Parent.TextInput)
+local Checkbox = require(script.Parent.Parent.Checkbox)
 local Layout = require(script.Parent.Parent.Layout)
-local Button = require(script.Parent.Parent.Button)
 
 local Dropdown = require(script.Parent.Parent.Dropdown)
 
@@ -199,23 +199,16 @@ local function Page(_, hooks)
 					}),
 				}),
 
-				syntaxHighlight = e(Layout.Forms.Section, {
-					heading = "Syntax Highlighting",
+				syntaxHighlight = e(Checkbox, {
+					label = "Syntax Highlighting",
 					hint = "Enables syntax highlighting for code snippets. Turn this off to save some performance.",
-					formItem = true,
 					order = 60,
-				}, {
-					option = e(Button, {
-						label = if state.Settings.SyntaxHighlight then "Enabled" else "Disabled",
-						icon = if state.Settings.SyntaxHighlight then "Tick" else "Cross",
-						alignX = Enum.HorizontalAlignment.Left,
-						size = UDim2.fromScale(1, 0),
-						autoSize = Enum.AutomaticSize.Y,
 
-						onActivated = function()
-							Store:SetState({ Settings = { SyntaxHighlight = not state.Settings.SyntaxHighlight } })
-						end,
-					}),
+					value = state.Settings.SyntaxHighlight,
+
+					onChanged = function(value: boolean)
+						Store:SetState({ Settings = { SyntaxHighlight = value } })
+					end,
 				}),
 			}),
 
