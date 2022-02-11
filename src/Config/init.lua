@@ -8,7 +8,7 @@ local Plugin = script:FindFirstAncestorOfClass("Plugin")
 local httpCache = {}
 
 local CurrentPluginId = Plugin.Name:match("%d+$")
-CurrentPluginId = if CurrentPluginId then tonumber(CurrentPluginId) else nil
+CurrentPluginId = CurrentPluginId and tonumber(CurrentPluginId)
 
 local Config = require(script.Config)
 

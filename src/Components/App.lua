@@ -54,7 +54,7 @@ local function App(props: AppProps, hooks)
 					},
 				},
 			}, {
-				routing = if widgetVisible then e(Routing) else nil,
+				routing = widgetVisible and e(Routing),
 			}),
 		}),
 	})

@@ -27,7 +27,7 @@ local function FormSection(props: FormSectionProps, hooks)
 	}, {
 		layout = e(ListLayout, {
 			direction = Enum.FillDirection.Vertical,
-			gap = if props.formItem then styles.spacing * 0.5 else nil,
+			gap = props.formItem and styles.spacing * 0.5,
 		}),
 
 		divider = if props.divider
@@ -40,7 +40,7 @@ local function FormSection(props: FormSectionProps, hooks)
 			then e(Text, {
 				text = props.heading,
 				textColour = theme:GetColor(Enum.StudioStyleGuideColor.BrightText),
-				font = if props.formItem then nil else styles.font.semibold,
+				font = not props.formItem and styles.font.semibold,
 				order = 10,
 			})
 			else nil,

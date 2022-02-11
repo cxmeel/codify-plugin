@@ -65,7 +65,7 @@ local function Page(_, hooks)
 					icon = if state.Settings.Framework == "Fusion"
 						then "Fusion" .. theme.Name
 						else state.Settings.Framework,
-					iconColour = if state.Settings.Framework == "Fusion" then Color3.new(1, 1, 1) else nil,
+					iconColour = state.Settings.Framework == "Fusion" and Color3.new(1, 1, 1),
 					label = Store.Enum.Framework[state.Settings.Framework][1],
 					hint = Store.Enum.Framework[state.Settings.Framework][2],
 					value = state.Settings.Framework,
@@ -74,7 +74,7 @@ local function Page(_, hooks)
 						return Llama.Dictionary.values(Llama.Dictionary.map(Store.Enum.Framework, function(item, key)
 							return {
 								icon = if key == "Fusion" then key .. theme.Name else key,
-								iconColour = if key == "Fusion" then Color3.new(1, 1, 1) else nil,
+								iconColour = key == "Fusion" and Color3.new(1, 1, 1),
 								label = item[1],
 								hint = item[2],
 								value = key,
@@ -149,7 +149,7 @@ local function Page(_, hooks)
 				snippetText = e(TextInput, {
 					order = 20,
 					placeholder = (Frameworks[state.Settings.Framework] or {}).Sample,
-					text = if state.Snippet then state.Snippet.Snippet else nil,
+					text = state.Snippet and state.Snippet.Snippet,
 					font = styles.font.mono,
 					textSize = styles.fontSize + 2,
 					readonly = true,
