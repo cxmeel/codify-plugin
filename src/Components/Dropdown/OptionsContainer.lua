@@ -26,12 +26,12 @@ local function OptionsContainer(props: OptionsContainerProps, hooks)
 	end, { optionsSize })
 
 	local containerDisplay = hooks.useMemo(function()
-		local targetPosition = props.buttonPosition + Vector2.new(0, props.buttonSize.Y + styles.spacing)
+		local targetPosition = props.buttonPosition + Vector2.new(0, props.buttonSize.Y + (styles.spacing / 2))
 		local targetSize = UDim2.fromOffset(logicalContainerSize.X, logicalContainerSize.Y + 2 + styles.spacing)
 		local targetAnchor = Vector2.new()
 
 		if (targetPosition + logicalContainerSize).Y >= widget.AbsoluteSize.Y then
-			targetPosition = props.buttonPosition - Vector2.new(0, styles.spacing)
+			targetPosition = props.buttonPosition - Vector2.new(0, styles.spacing / 2)
 			targetAnchor = Vector2.new(0, 1)
 
 			if targetPosition.Y - targetSize.Y.Offset < 0 then
