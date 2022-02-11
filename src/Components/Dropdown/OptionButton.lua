@@ -96,7 +96,7 @@ local function OptionButton(props: OptionButtonProps, hooks)
 					icon = props.icon,
 					order = if props.iconPosition == "end" then 40 else 10,
 					colour = colours.foreground,
-					size = 10,
+					size = 16,
 				})
 				else nil,
 
