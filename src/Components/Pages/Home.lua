@@ -62,7 +62,10 @@ local function Page(_, hooks)
 				order = 10,
 			}, {
 				selection = e(Dropdown, {
-					icon = state.Settings.Framework,
+					icon = if state.Settings.Framework == "Fusion"
+						then "Fusion" .. theme.Name
+						else state.Settings.Framework,
+					iconColour = if state.Settings.Framework == "Fusion" then Color3.new(1, 1, 1) else nil,
 					label = Store.Enum.Framework[state.Settings.Framework][1],
 					hint = Store.Enum.Framework[state.Settings.Framework][2],
 					value = state.Settings.Framework,
@@ -70,13 +73,14 @@ local function Page(_, hooks)
 					options = hooks.useMemo(function()
 						return Llama.Dictionary.values(Llama.Dictionary.map(Store.Enum.Framework, function(item, key)
 							return {
-								icon = key,
+								icon = if key == "Fusion" then key .. theme.Name else key,
+								iconColour = if key == "Fusion" then Color3.new(1, 1, 1) else nil,
 								label = item[1],
 								hint = item[2],
 								value = key,
 							}
 						end))
-					end, {}),
+					end, { theme }),
 
 					onChanged = function(value)
 						Store:SetState({ Settings = { Framework = value } })

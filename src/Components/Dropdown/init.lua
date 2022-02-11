@@ -16,6 +16,9 @@ type DropdownOption = {
 	hint: string?,
 	disabled: boolean?,
 	value: any,
+	icon: string?,
+	iconPosition: string?,
+	iconColour: Color3?,
 }
 
 export type DropdownProps = {
@@ -25,6 +28,9 @@ export type DropdownProps = {
 	value: any?,
 	options: { DropdownOption }?,
 	onChanged: ((value: any) -> ())?,
+	icon: string?,
+	iconPosition: string?,
+	iconColour: Color3?,
 }
 
 local function Dropdown(props: DropdownProps, hooks)
@@ -37,6 +43,8 @@ local function Dropdown(props: DropdownProps, hooks)
 		return Llama.List.map(props.options, function(option: DropdownOption, index: number)
 			return e(OptionButton, {
 				icon = option.icon,
+				iconColour = option.iconColour,
+				iconPosition = option.iconPosition,
 				label = option.label or tostring(option.value),
 				hint = option.hint,
 				disabled = option.disabled,
@@ -55,6 +63,8 @@ local function Dropdown(props: DropdownProps, hooks)
 		button = e(DropdownButton, {
 			disabled = props.disabled,
 			icon = props.icon,
+			iconPosition = props.iconPosition,
+			iconColour = props.iconColour,
 			label = props.label,
 			hint = props.hint,
 			active = showDropdown,

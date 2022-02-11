@@ -14,6 +14,9 @@ export type OptionButtonProps = {
 	label: string?,
 	hint: string?,
 	order: number?,
+	icon: string?,
+	iconPosition: string?,
+	iconColour: Color3?,
 	disabled: boolean?,
 	selected: boolean?,
 	onActivated: ((rbx: ImageButton) -> ())?,
@@ -92,13 +95,13 @@ local function OptionButton(props: OptionButtonProps, hooks)
 		}),
 
 		icon = if props.icon
-				then e(Icon, {
-					icon = props.icon,
-					order = if props.iconPosition == "end" then 40 else 10,
-					colour = colours.foreground,
-					size = 16,
-				})
-				else nil,
+			then e(Icon, {
+				icon = props.icon,
+				order = if props.iconPosition == "end" then 40 else 10,
+				colour = if props.iconColour then props.iconColour else colours.foreground,
+				size = 16,
+			})
+			else nil,
 
 		label = e(Text, {
 			text = props.label,

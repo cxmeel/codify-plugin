@@ -27,7 +27,7 @@ local function OptionsContainer(props: OptionsContainerProps, hooks)
 
 	local containerDisplay = hooks.useMemo(function()
 		local targetPosition = props.buttonPosition + Vector2.new(0, props.buttonSize.Y + styles.spacing)
-		local targetSize = UDim2.fromOffset(logicalContainerSize.X, logicalContainerSize.Y + 2 + (styles.spacing * 2))
+		local targetSize = UDim2.fromOffset(logicalContainerSize.X, logicalContainerSize.Y + 2 + styles.spacing)
 		local targetAnchor = Vector2.new()
 
 		if (targetPosition + logicalContainerSize).Y >= widget.AbsoluteSize.Y then
@@ -68,7 +68,7 @@ local function OptionsContainer(props: OptionsContainerProps, hooks)
 			ClipsDescendants = true,
 			Size = UDim2.fromScale(1, 1),
 		}, {
-			padding = e(Layout.Padding),
+			padding = e(Layout.Padding, { styles.spacing * 0.5 }),
 
 			corners = e(Layout.Corner, {
 				radius = styles.borderRadius - 1,

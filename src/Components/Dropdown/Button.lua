@@ -16,6 +16,9 @@ export type DropdownButtonProps = {
 	disabled: boolean?,
 	active: boolean?,
 	order: number?,
+	icon: string?,
+	iconPosition: string?,
+	iconColour: Color3?,
 	onActivated: ((rbx: ImageButton) -> ())?,
 	onPositionChanged: ((rbx: ImageButton) -> ())?,
 	onSizeChanged: ((rbx: ImageButton) -> ())?,
@@ -136,13 +139,13 @@ local function DropdownButton(props: DropdownButtonProps, hooks)
 				}),
 
 				icon = if props.icon
-				then e(Icon, {
-					icon = props.icon,
-					order = if props.iconPosition == "end" then 40 else 10,
-					colour = colours.foreground,
-					size = 16,
-				})
-				else nil,
+					then e(Icon, {
+						icon = props.icon,
+						order = if props.iconPosition == "end" then 40 else 10,
+						colour = if props.iconColour then props.iconColour else colours.foreground,
+						size = 16,
+					})
+					else nil,
 
 				label = e(Text, {
 					text = props.label,
