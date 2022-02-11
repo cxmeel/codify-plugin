@@ -6,6 +6,7 @@ local Roact = require(Packages.Roact)
 local Hooks = require(Packages.Hooks)
 local StudioTheme = require(Packages.StudioTheme)
 local RoactRouter = require(Packages.RoactRouter)
+local Llama = require(Packages.Llama)
 
 local Store = require(script.Parent.Parent.Parent.Store)
 
@@ -15,6 +16,7 @@ local Layout = require(script.Parent.Parent.Layout)
 local TextInput = require(script.Parent.Parent.TextInput)
 local Button = require(script.Parent.Parent.Button)
 local Alert = require(script.Parent.Parent.Alert)
+local Dropdown = require(script.Parent.Parent.Dropdown)
 
 local isWindows = game:GetService("GuiService").IsWindows
 local e = Roact.createElement
@@ -60,10 +62,39 @@ local function Page(_, hooks)
 		}, {
 			padding = e(Layout.Padding),
 
-			heading = e(Layout.Forms.Section, {
-				heading = state.Settings.Framework .. " Snippet",
-				hint = "Output formatting can be configured via the Settings tab.",
+			framework = e(Layout.Forms.Section, {
+				heading = "Snippet Framework",
+				hint = "Choose which framework the snippet is designed for.",
+				formItem = true,
 				order = 10,
+			}, {
+				selection = e(Dropdown, {
+					label = Store.Enum.Framework[state.Settings.Framework][1],
+					hint = Store.Enum.Framework[state.Settings.Framework][2],
+					value = state.Settings.Framework,
+
+					options = hooks.useMemo(function()
+						return Llama.Dictionary.values(
+							Llama.Dictionary.map(Store.Enum.Framework, function(item, key)
+								return {
+									label = item[1],
+									hint = item[2],
+									value = key,
+								}
+							end)
+						)
+					end, {}),
+
+					onChanged = function(value)
+						Store:SetState({ Settings = { Framework = value } })
+					end,
+				}),
+			}),
+
+			settingsHint = e(Text, {
+				text = "Output formatting can be configured in the Settings tab.",
+				textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+				order = 15,
 			}),
 
 			activeSelection = e(Layout.Frame, {
