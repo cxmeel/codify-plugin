@@ -6,39 +6,44 @@
 
 [devhub/managing-plugins]: https://developer.roblox.com/en-us/articles/Intro-to-Plugins#finding-and-managing-plugins
 
+[roact/repo]: https://github.com/roblox/roact
+[fusion/repo]: https://github.com/elttob/fusion
+
 <!-- Images -->
 [image/cover]: assets/Cover.png
 [image/demo-gif]: assets/Demo.gif
-[image/screenshot-home]: assets/ScreenshotHome.png
-[image/screenshot-settings]: assets/ScreenshotSettings.png
+[image/plugin-screenshots]: assets/PluginScreenshots.png
 
 <div align="center">
 
 [![Cover][image/cover]][plugin/toolbox]
 
-✨ Stop writing render code and start designing your Roact components visually!
+✨ Stop writing render code and start designing your components visually!
 
-[📦 Source Code][repo/homepage] | [⏩ Install Roactify][plugin/toolbox]
+[📦 Source Code][repo/homepage] | [⏩ Install Codify *(formerly Roactify)*][plugin/toolbox]
 
 </div>
 
+Codify is a collaborative project between @boatbomber and @csqrl, which converts your pre-existing GUI objects into code.
+
+Whether you work with vanilla Instances, or use a framework like [Roact][roact/repo] or [Fusion][fusion/repo], Codify has you covered!
 # Installation
 ## Plugin Marketplace
 
-The simplest way to install Roactify is to install it from the plugin marketplace. This gives you access to the latest version of the plugin, and easy updates via the [Plugin Management][devhub/managing-plugins] window.
+The simplest way to install Codify is to install it from the plugin marketplace. This gives you access to the latest version of the plugin, and easy updates via the [Plugin Management][devhub/managing-plugins] window.
 
-- [Install Roactify &rarr;][plugin/toolbox]
+- [Install Codify &rarr;][plugin/toolbox]
 
 ## Manual Installation
 
-Roactify is an open-source plugin. New releases are automatically published to both the Roblox plugin marketplace and GitHub releases. If you'd rather install the plugin manually, download the latest binary (`.rbxm` or `.rbxmx`) from the [releases page][repo/releases], and drop it into your Studio plugins directory.
+Codify is an open-source plugin. New releases are automatically published to both the Roblox plugin marketplace and GitHub releases. If you'd rather install the plugin manually, download the latest binary (`.rbxm` or `.rbxmx`) from the [releases page][repo/releases], and drop it into your Studio plugins directory.
 
 # Overview of Permissions
 
 ## HTTP Requests
-Roactify uses HTTP requests to fetch the latest information about Roblox Instances. This is **required** to enable core plugin functionality, as this is not possible without access to API dumps.
+Codify uses HTTP requests to fetch the latest information about Roblox Instances. This is **required** to enable core plugin functionality, as this is not possible without access to API dumps.
 
-Below is a list of URLs used by Roactify *(all requests are unauthenticated)*:
+Below is a list of URLs used by Codify *(all requests are unauthenticated)*:
 
 - https://s3.amazonaws.com/setup.roblox.com/versionQTStudio
 - https://s3.amazonaws.com/setup.roblox.com/{{version-hash}}-API-Dump.json
@@ -53,22 +58,9 @@ This is necessary to the Save to Device feature only. The plugin will *temporari
 
 # Screenshots
 
-[![GIF Demoing Plugin][image/demo-gif]][image/demo-gif]
+![GIF Demoing Plugin][image/demo-gif]
 
-<table>
-<tr>
-<td>
-
-  [![Screenshot of Home Tab][image/screenshot-home]][image/screenshot-home]
-
-</td>
-<td>
-
-  [![Screenshot of Settings Tab][image/screenshot-settings]][image/screenshot-settings]
-
-</td>
-</tr>
-</table>
+![Screenshot of the Plugin][image/plugin-screenshots]
 
 ## Disclaimer
-The code Roactify produces is not 100% perfect. You should consider that the snippets produced are not optimal, but that shouldn't put you off using it!
+The code Codify produces is not 100% perfect. You should consider that the snippets produced are not optimal, but that shouldn't put you off using it!
