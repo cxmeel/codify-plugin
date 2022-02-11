@@ -59,7 +59,11 @@ local function FusionifyInstance(instance: Instance, options)
 	end
 
 	options.Indent -= 1
-	snippet:CreateLine():Push(tab(), "}")
+	if #changedProps == 0 and #children == 0 then
+		snippet:Line():Push(" }")
+	else
+		snippet:CreateLine():Push(tab(), "}")
+	end
 
 	return snippet:Concat()
 end
