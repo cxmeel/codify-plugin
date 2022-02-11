@@ -5,6 +5,8 @@ local Hooks = require(Packages.Hooks)
 local StudioTheme = require(Packages.StudioTheme)
 local Highlighter = require(Packages.Highlighter)
 
+local Layout = require(script.Parent.Layout)
+
 local e = Roact.createElement
 
 export type TextInputProps = {
@@ -124,36 +126,23 @@ local function TextInput(props: TextInputProps, hooks)
 			end
 		end,
 	}, {
-		corners = e("UICorner", {
-			CornerRadius = UDim.new(0, styles.borderRadius),
-		}),
-
-		padding = e("UIPadding", {
-			PaddingBottom = UDim.new(0, 1),
-			PaddingLeft = UDim.new(0, 1),
-			PaddingRight = UDim.new(0, 1),
-			PaddingTop = UDim.new(0, 1),
-		}),
+		corners = e(Layout.Corner),
+		padding = e(Layout.Padding, { 1 }),
 
 		content = e("Frame", {
 			BackgroundColor3 = colours.background,
-			Size = UDim2.new(1, 0, 0, height + styles.spacing * 2 + 2),
+			Size = UDim2.new(1, 0, 0, height + styles.spacing * 2),
 		}, {
-			corners = e("UICorner", {
-				CornerRadius = UDim.new(0, styles.borderRadius - 1),
-			}),
+			padding = e(Layout.Padding),
 
-			padding = e("UIPadding", {
-				PaddingBottom = UDim.new(0, styles.spacing),
-				PaddingLeft = UDim.new(0, styles.spacing),
-				PaddingRight = UDim.new(0, styles.spacing),
-				PaddingTop = UDim.new(0, styles.spacing),
+			corners = e(Layout.Corner, {
+				radius = styles.borderRadius - 1,
 			}),
 
 			input = e("TextBox", {
 				Active = not props.disabled,
 				BackgroundTransparency = 1,
-				Size = UDim2.new(1, 0, 0, height + 2),
+				Size = UDim2.new(1, 0, 0, height),
 				Font = props.font or styles.font.default,
 				Text = props.text,
 				TextSize = props.textSize or styles.fontSize,
@@ -169,28 +158,31 @@ local function TextInput(props: TextInputProps, hooks)
 				PlaceholderText = props.placeholder,
 				PlaceholderColor3 = colours.placeholder,
 
+				[Roact.Ref] = inputRef.value,
 				[Roact.Change.TextBounds] = function(rbx: TextBox)
-					setHeight(rbx.TextBounds.Y)
+					setHeight(rbx.TextBounds.Y + 2)
 
 					if props.syntaxHighlight then
 						Highlighter.Highlight(rbx)
 					end
 				end,
+
 				[Roact.Change.AbsoluteSize] = function(rbx: TextBox)
 					if props.syntaxHighlight then
 						Highlighter.Highlight(rbx)
 					end
 				end,
+
 				[Roact.Change.Text] = function(rbx: TextBox, ...)
 					if props.onChanged then
 						task.spawn(props.onChanged, rbx, ...)
 					end
+
 					if props.syntaxHighlight then
 						Highlighter.Highlight(rbx)
 					end
 				end,
 
-				[Roact.Ref] = inputRef.value,
 				[Roact.Event.Focused] = function(rbx: TextBox)
 					setFocus(true)
 
