@@ -138,14 +138,12 @@ local function DropdownButton(props: DropdownButtonProps, hooks)
 					alignY = Enum.VerticalAlignment.Center,
 				}),
 
-				icon = if props.icon
-					then e(Icon, {
-						icon = props.icon,
-						order = if props.iconPosition == "end" then 40 else 10,
-						colour = if props.iconColour then props.iconColour else colours.foreground,
-						size = 16,
-					})
-					else nil,
+				icon = props.icon and e(Icon, {
+					icon = props.icon,
+					order = if props.iconPosition == "end" then 40 else 10,
+					colour = if props.iconColour then props.iconColour else colours.foreground,
+					size = 16,
+				}),
 
 				label = e(Text, {
 					text = props.label,
