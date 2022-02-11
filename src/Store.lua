@@ -5,7 +5,7 @@ local Llama = require(Packages.Llama)
 
 local Store = BasicState.new({
 	Settings = {
-		Framework = "Roact",
+		Framework = "Regular",
 		CreateMethod = nil,
 		Color3Format = "RGB",
 		UDim2Format = "SMART",
@@ -22,6 +22,11 @@ local Store = BasicState.new({
 })
 
 Store.Enum = {
+	Framework = {
+		Regular = { "Regular", "Instance.new('Frame')" },
+		Roact = { "Roact", "Roact.createElement('Frame', {})" },
+		Fusion = { "Fusion", "New 'Frame' {}" },
+	},
 	Color3Format = {
 		HEX = { "Hex", "Color3.fromHex" },
 		RGB = { "RGB", "Color3.fromRGB" },
@@ -29,7 +34,7 @@ Store.Enum = {
 		FULL = { "Full", "Color3.new" },
 	},
 	UDim2Format = {
-		SMART = { "Smart" },
+		SMART = { "Smart", "" },
 		FULL = { "Full", "UDim2.new" },
 	},
 	EnumFormat = {
