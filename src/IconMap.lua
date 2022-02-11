@@ -64,6 +64,7 @@ return {
 	},
 	FusionDark = {
 		assetId = "rbxassetid://8790650933",
+		colour = Color3.fromRGB(255,255,255),
 		w = 16,
 		h = 16,
 		x = 4,
@@ -71,6 +72,7 @@ return {
 	},
 	FusionLight = {
 		assetId = "rbxassetid://8790650933",
+		colour = Color3.fromRGB(255,255,255),
 		w = 16,
 		h = 16,
 		x = 24,
