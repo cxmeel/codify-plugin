@@ -45,7 +45,7 @@ local function Codify(rootInstance: Instance, options: CodifyOptions?)
 		LevelIdentifiers = {},
 	}) :: CodifyInstanceOptions
 
-	return "return " .. CodifyInstance(rootInstance, config)
+	return (options.Framework ~= "Regular" and "return " or "") .. CodifyInstance(rootInstance, config)
 end
 
 return Codify
