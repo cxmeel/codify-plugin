@@ -23,9 +23,9 @@ local Store = BasicState.new({
 
 Store.Enum = {
 	Framework = {
-		Regular = { "Regular", "Instance.new('Frame')" },
-		Roact = { "Roact", "Roact.createElement('Frame', {})" },
-		Fusion = { "Fusion", "New 'Frame' {}" },
+		Regular = { "Regular", 'Instance.new("Frame")' },
+		Roact = { "Roact", 'Roact.createElement("Frame", {})' },
+		Fusion = { "Fusion", 'New "Frame" {}' },
 	},
 	Color3Format = {
 		HEX = { "Hex", "Color3.fromHex" },
