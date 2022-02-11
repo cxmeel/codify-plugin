@@ -67,15 +67,13 @@ local function Page(_, hooks)
 					value = state.Settings.Framework,
 
 					options = hooks.useMemo(function()
-						return Llama.Dictionary.values(
-							Llama.Dictionary.map(Store.Enum.Framework, function(item, key)
-								return {
-									label = item[1],
-									hint = item[2],
-									value = key,
-								}
-							end)
-						)
+						return Llama.Dictionary.values(Llama.Dictionary.map(Store.Enum.Framework, function(item, key)
+							return {
+								label = item[1],
+								hint = item[2],
+								value = key,
+							}
+						end))
 					end, {}),
 
 					onChanged = function(value)

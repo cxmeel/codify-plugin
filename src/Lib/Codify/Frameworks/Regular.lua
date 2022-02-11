@@ -8,7 +8,7 @@ local function RegularifyInstance(instance: Instance, options)
 	local changedProps = select(2, Properties.GetChangedProperties(instance):await())
 	local children = instance:GetChildren()
 
-	local var = string.lower(string.sub(instance.Name, 1,1)) .. string.sub(instance.Name, 2)
+	local var = string.lower(string.sub(instance.Name, 1, 1)) .. string.sub(instance.Name, 2)
 	if options.LevelIdentifiers[var] ~= nil then
 		options.LevelIdentifiers[var] += 1
 		var ..= tostring(options.LevelIdentifiers[var])
@@ -16,11 +16,11 @@ local function RegularifyInstance(instance: Instance, options)
 		options.LevelIdentifiers[var] = 0
 	end
 
-	snippet:CreateLine():Push('local '..var..' = Instance.new("', instance.ClassName, '")')
+	snippet:CreateLine():Push("local " .. var .. ' = Instance.new("', instance.ClassName, '")')
 
 	local nameChanged = table.find(changedProps, "Name")
 	if options.NamingScheme == "ALL" or (options.NamingScheme == "CHANGED" and nameChanged) then
-		snippet:CreateLine():Push(var,".Name = ", string.format("%q", var))
+		snippet:CreateLine():Push(var, ".Name = ", string.format("%q", var))
 	end
 
 	if #changedProps > 0 then
@@ -41,7 +41,7 @@ local function RegularifyInstance(instance: Instance, options)
 			snippet:CreateLine()
 			snippet:CreateLine():Push(RegularifyInstance(child, options))
 
-			local childVar = string.lower(string.sub(child.Name, 1,1)) .. string.sub(child.Name, 2)
+			local childVar = string.lower(string.sub(child.Name, 1, 1)) .. string.sub(child.Name, 2)
 			if options.LevelIdentifiers[childVar] > 0 then
 				childVar ..= tostring(options.LevelIdentifiers[childVar])
 			end

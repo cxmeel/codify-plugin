@@ -108,7 +108,7 @@ local function TextInput(props: TextInputProps, hooks)
 		BackgroundColor3 = colours.border,
 		Position = props.position,
 		LayoutOrder = props.order,
-		Size = UDim2.new(1, 0, 0, height + 2 + styles.spacing*2),
+		Size = UDim2.new(1, 0, 0, height + 2 + styles.spacing * 2),
 		ZIndex = props.zindex,
 		Image = "",
 
@@ -137,7 +137,7 @@ local function TextInput(props: TextInputProps, hooks)
 
 		content = e("Frame", {
 			BackgroundColor3 = colours.background,
-			Size = UDim2.new(1, 0, 0, height + styles.spacing*2 + 2),
+			Size = UDim2.new(1, 0, 0, height + styles.spacing * 2 + 2),
 		}, {
 			corners = e("UICorner", {
 				CornerRadius = UDim.new(0, styles.borderRadius - 1),
@@ -153,7 +153,7 @@ local function TextInput(props: TextInputProps, hooks)
 			input = e("TextBox", {
 				Active = not props.disabled,
 				BackgroundTransparency = 1,
-				Size = UDim2.new(1, 0, 0, height+2),
+				Size = UDim2.new(1, 0, 0, height + 2),
 				Font = props.font or styles.font.default,
 				Text = props.text,
 				TextSize = props.textSize or styles.fontSize,
