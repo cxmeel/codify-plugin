@@ -42,9 +42,28 @@ local Contributors = Hooks.new(Roact)(function(_, hooks)
 		else nil
 end)
 
+local function GetDropdownOptionsForSettingsEnum(enum)
+	return Llama.Dictionary.values(Llama.Dictionary.map(enum, function(item, key)
+		return {
+			label = item[1],
+			hint = item[2],
+			value = key,
+		}
+	end))
+end
+
 local function Page(_, hooks)
 	local _, styles = StudioTheme.useTheme(hooks)
 	local state = Store.useStore(hooks)
+
+	local SETTINGS_ENUMS = hooks.useMemo(function()
+		return {
+			Color3Format = GetDropdownOptionsForSettingsEnum(Store.Enum.Color3Format),
+			UDim2Format = GetDropdownOptionsForSettingsEnum(Store.Enum.UDim2Format),
+			EnumFormat = GetDropdownOptionsForSettingsEnum(Store.Enum.EnumFormat),
+			NamingScheme = GetDropdownOptionsForSettingsEnum(Store.Enum.NamingScheme),
+		}
+	end, {})
 
 	return e(RoactRouter.Route, {
 		path = "/settings",
@@ -92,19 +111,9 @@ local function Page(_, hooks)
 					selection = e(Dropdown, {
 						label = Store.Enum.Color3Format[state.Settings.Color3Format][1],
 						hint = Store.Enum.Color3Format[state.Settings.Color3Format][2],
-						value = state.Settings.Color3Format,
 
-						options = hooks.useMemo(function()
-							return Llama.Dictionary.values(
-								Llama.Dictionary.map(Store.Enum.Color3Format, function(item, key)
-									return {
-										label = item[1],
-										hint = item[2],
-										value = key,
-									}
-								end)
-							)
-						end, {}),
+						value = state.Settings.Color3Format,
+						options = SETTINGS_ENUMS.Color3Format,
 
 						onChanged = function(value)
 							Store:SetState({ Settings = { Color3Format = value } })
@@ -121,19 +130,9 @@ local function Page(_, hooks)
 					selection = e(Dropdown, {
 						label = Store.Enum.UDim2Format[state.Settings.UDim2Format][1],
 						hint = Store.Enum.UDim2Format[state.Settings.UDim2Format][2],
-						value = state.Settings.UDim2Format,
 
-						options = hooks.useMemo(function()
-							return Llama.Dictionary.values(
-								Llama.Dictionary.map(Store.Enum.UDim2Format, function(item, key)
-									return {
-										label = item[1],
-										hint = item[2],
-										value = key,
-									}
-								end)
-							)
-						end, {}),
+						value = state.Settings.UDim2Format,
+						options = SETTINGS_ENUMS.UDim2Format,
 
 						onChanged = function(value)
 							Store:SetState({ Settings = { UDim2Format = value } })
@@ -150,19 +149,9 @@ local function Page(_, hooks)
 					selection = e(Dropdown, {
 						label = Store.Enum.EnumFormat[state.Settings.EnumFormat][1],
 						hint = Store.Enum.EnumFormat[state.Settings.EnumFormat][2],
-						value = state.Settings.EnumFormat,
 
-						options = hooks.useMemo(function()
-							return Llama.Dictionary.values(
-								Llama.Dictionary.map(Store.Enum.EnumFormat, function(item, key)
-									return {
-										label = item[1],
-										hint = item[2],
-										value = key,
-									}
-								end)
-							)
-						end, {}),
+						value = state.Settings.EnumFormat,
+						options = SETTINGS_ENUMS.EnumFormat,
 
 						onChanged = function(value)
 							Store:SetState({ Settings = { EnumFormat = value } })
@@ -179,19 +168,9 @@ local function Page(_, hooks)
 					selection = e(Dropdown, {
 						label = Store.Enum.NamingScheme[state.Settings.NamingScheme][1],
 						hint = Store.Enum.NamingScheme[state.Settings.NamingScheme][2],
-						value = state.Settings.NamingScheme,
 
-						options = hooks.useMemo(function()
-							return Llama.Dictionary.values(
-								Llama.Dictionary.map(Store.Enum.NamingScheme, function(item, key)
-									return {
-										label = item[1],
-										hint = item[2],
-										value = key,
-									}
-								end)
-							)
-						end, {}),
+						value = state.Settings.NamingScheme,
+						options = SETTINGS_ENUMS.NamingScheme,
 
 						onChanged = function(value)
 							Store:SetState({ Settings = { NamingScheme = value } })

@@ -19,10 +19,10 @@ local Button = require(script.Parent.Parent.Button)
 local Alert = require(script.Parent.Parent.Alert)
 local Dropdown = require(script.Parent.Parent.Dropdown)
 
-local isWindows = game:GetService("GuiService").IsWindows
 local e = Roact.createElement
 
-local copyText = if isWindows then "CTRL+C to Copy" else "Command+C to Copy"
+local IS_WINDOWS = game:GetService("GuiService").IsWindows
+local COPY_TEXT = if IS_WINDOWS then "CTRL+C to Copy" else "Command+C to Copy"
 
 local function Page(_, hooks)
 	local theme, styles = StudioTheme.useTheme(hooks)
@@ -45,6 +45,17 @@ local function Page(_, hooks)
 		}
 	end, { state })
 
+	local frameworkOptions = hooks.useMemo(function()
+		return Llama.Dictionary.values(Llama.Dictionary.map(Store.Enum.Framework, function(item, key)
+			return {
+				icon = if key == "Fusion" then key .. theme.Name else key,
+				label = item[1],
+				hint = item[2],
+				value = key,
+			}
+		end))
+	end, { theme })
+
 	return e(RoactRouter.Route, {
 		path = "/",
 		exact = true,
@@ -65,22 +76,10 @@ local function Page(_, hooks)
 					icon = if state.Settings.Framework == "Fusion"
 						then "Fusion" .. theme.Name
 						else state.Settings.Framework,
-					iconColour = state.Settings.Framework == "Fusion" and Color3.new(1, 1, 1),
 					label = Store.Enum.Framework[state.Settings.Framework][1],
 					hint = Store.Enum.Framework[state.Settings.Framework][2],
 					value = state.Settings.Framework,
-
-					options = hooks.useMemo(function()
-						return Llama.Dictionary.values(Llama.Dictionary.map(Store.Enum.Framework, function(item, key)
-							return {
-								icon = if key == "Fusion" then key .. theme.Name else key,
-								iconColour = key == "Fusion" and Color3.new(1, 1, 1),
-								label = item[1],
-								hint = item[2],
-								value = key,
-							}
-						end))
-					end, { theme }),
+					options = frameworkOptions,
 
 					onChanged = function(value)
 						Store:SetState({ Settings = { Framework = value } })
@@ -169,7 +168,7 @@ local function Page(_, hooks)
 
 				copyText = if showCopy
 					then e(Text, {
-						text = copyText,
+						text = COPY_TEXT,
 						textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
 						textSize = styles.fontSize - 2,
 						font = styles.font.semibold,
