@@ -199,16 +199,22 @@ local function Page(_, hooks)
 					}),
 				}),
 
-				syntaxHighlight = e(Checkbox, {
-					label = "Syntax Highlighting",
+				syntaxHighlight = e(Layout.Forms.Section, {
+					heading = "Syntax Highlighting",
 					hint = "Enables syntax highlighting for code snippets. Turn this off to save some performance.",
+					formItem = true,
 					order = 60,
+				}, {
+					option = e(Checkbox, {
+						label = "Highlight Code Snippets",
+						order = 60,
 
-					value = state.Settings.SyntaxHighlight,
+						value = state.Settings.SyntaxHighlight,
 
-					onChanged = function(value: boolean)
-						Store:SetState({ Settings = { SyntaxHighlight = value } })
-					end,
+						onChanged = function(value: boolean)
+							Store:SetState({ Settings = { SyntaxHighlight = value } })
+						end,
+					}),
 				}),
 			}),
 
