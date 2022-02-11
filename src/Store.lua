@@ -77,7 +77,9 @@ function Store.useStore(hooks)
 		end)
 
 		return function()
-			connection:Disconnect()
+			if connection.Connected then
+				connection:Disconnect()
+			end
 		end
 	end, {})
 
