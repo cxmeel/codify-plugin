@@ -34,7 +34,7 @@ local function Checkbox(props: CheckboxProps, hooks)
 		elseif hover then
 			return Enum.StudioStyleGuideModifier.Hover
 		end
-	end, { props.disabled, props.value, hover, press })
+	end, { props.disabled, hover, press })
 
 	local onActivated = hooks.useCallback(function()
 		if props.onChanged then
