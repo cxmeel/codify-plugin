@@ -2,6 +2,15 @@ local Serialize = require(script.Parent.Parent.Serialize)
 local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
 
+local function getSafeVarName(instance: Instance): string
+	local name = instance.Name
+	local first = string.find(name, "^%a")
+	local prefix = string.lower(string.sub(name, first, first))
+	local suffix = string.sub(name, first+1)
+	local var = string.gsub(prefix .. suffix, "[^%w]", "_")
+	return var
+end
+
 local function RoactifyInstance(instance: Instance, options)
 	local snippet = Script.new()
 
@@ -16,15 +25,9 @@ local function RoactifyInstance(instance: Instance, options)
 
 	if options.Indent > 0 then
 		local nameChanged = table.find(changedProps, "Name")
-		local name = instance.Name
 
 		if options.NamingScheme == "ALL" or (options.NamingScheme == "CHANGED" and nameChanged) then
-			name = name:sub(1, 1):lower() .. name:sub(2)
-		elseif options.NamingScheme == "NONE" or (options.NamingScheme == "CHANGED" and not nameChanged) then
-			name = nil
-		end
-
-		if name ~= nil then
+			local name = getSafeVarName(instance)
 			if options.LevelIdentifiers[name] ~= nil then
 				options.LevelIdentifiers[name] += 1
 				name ..= tostring(options.LevelIdentifiers[name])

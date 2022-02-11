@@ -2,13 +2,22 @@ local Serialize = require(script.Parent.Parent.Serialize)
 local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
 
+local function getSafeVarName(instance: Instance): string
+	local name = instance.Name
+	local first = string.find(name, "^%a")
+	local prefix = string.lower(string.sub(name, first, first))
+	local suffix = string.sub(name, first+1)
+	local var = string.gsub(prefix .. suffix, "[^%w]", "_")
+	return var
+end
+
 local function RegularifyInstance(instance: Instance, options)
 	local snippet = Script.new()
 
 	local changedProps = select(2, Properties.GetChangedProperties(instance):await())
 	local children = instance:GetChildren()
 
-	local var = string.lower(string.sub(instance.Name, 1, 1)) .. string.sub(instance.Name, 2)
+	local var = getSafeVarName(instance)
 	if options.LevelIdentifiers[var] ~= nil then
 		options.LevelIdentifiers[var] += 1
 		var ..= tostring(options.LevelIdentifiers[var])
@@ -41,7 +50,7 @@ local function RegularifyInstance(instance: Instance, options)
 			snippet:CreateLine()
 			snippet:CreateLine():Push(RegularifyInstance(child, options))
 
-			local childVar = string.lower(string.sub(child.Name, 1, 1)) .. string.sub(child.Name, 2)
+			local childVar = getSafeVarName(child)
 			if options.LevelIdentifiers[childVar] > 0 then
 				childVar ..= tostring(options.LevelIdentifiers[childVar])
 			end
