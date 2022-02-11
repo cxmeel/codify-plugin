@@ -62,6 +62,7 @@ local function Page(_, hooks)
 				order = 10,
 			}, {
 				selection = e(Dropdown, {
+					icon = state.Settings.Framework,
 					label = Store.Enum.Framework[state.Settings.Framework][1],
 					hint = Store.Enum.Framework[state.Settings.Framework][2],
 					value = state.Settings.Framework,

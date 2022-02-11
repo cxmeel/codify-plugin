@@ -54,6 +54,7 @@ local function Dropdown(props: DropdownProps, hooks)
 	return Roact.createFragment({
 		button = e(DropdownButton, {
 			disabled = props.disabled,
+			icon = props.icon,
 			label = props.label,
 			hint = props.hint,
 			active = showDropdown,
