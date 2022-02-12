@@ -9,6 +9,7 @@ local Store = BasicState.new({
 		CreateMethod = nil,
 		Color3Format = "RGB",
 		UDim2Format = "SMART",
+		NumberRangeFormat = "SMART",
 		EnumFormat = "FULL",
 		NamingScheme = "ALL",
 		SyntaxHighlight = true,
@@ -36,6 +37,10 @@ Store.Enum = {
 	UDim2Format = {
 		SMART = { "Smart", "" },
 		FULL = { "Full", "UDim2.new" },
+	},
+	NumberRangeFormat = {
+		SMART = { "Smart", "NumberRange.new(n)" },
+		FULL = { "Full", "NumberRange.new(min, max)" },
 	},
 	EnumFormat = {
 		FULL = { "Full", "Enum.ScaleType.Fit" },

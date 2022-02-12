@@ -60,6 +60,7 @@ local function Page(_, hooks)
 		return {
 			Color3Format = GetDropdownOptionsForSettingsEnum(Store.Enum.Color3Format),
 			UDim2Format = GetDropdownOptionsForSettingsEnum(Store.Enum.UDim2Format),
+			NumberRangeFormat = GetDropdownOptionsForSettingsEnum(Store.Enum.NumberRangeFormat),
 			EnumFormat = GetDropdownOptionsForSettingsEnum(Store.Enum.EnumFormat),
 			NamingScheme = GetDropdownOptionsForSettingsEnum(Store.Enum.NamingScheme),
 		}
@@ -140,11 +141,30 @@ local function Page(_, hooks)
 					}),
 				}),
 
+				numberRangeFormat = e(Layout.Forms.Section, {
+					heading = "NumberRange Format",
+					hint = "Configure how NumberRange values are displayed in code snippets.",
+					formItem = true,
+					order = 40,
+				}, {
+					selection = e(Dropdown, {
+						label = Store.Enum.NumberRangeFormat[state.Settings.NumberRangeFormat][1],
+						hint = Store.Enum.NumberRangeFormat[state.Settings.NumberRangeFormat][2],
+
+						value = state.Settings.NumberRangeFormat,
+						options = SETTINGS_ENUMS.NumberRangeFormat,
+
+						onChanged = function(value)
+							Store:SetState({ Settings = { NumberRangeFormat = value } })
+						end,
+					}),
+				}),
+
 				enumFormat = e(Layout.Forms.Section, {
 					heading = "Enum Format",
 					hint = "Configure how Enum values are displayed in code snippets.",
 					formItem = true,
-					order = 40,
+					order = 50,
 				}, {
 					selection = e(Dropdown, {
 						label = Store.Enum.EnumFormat[state.Settings.EnumFormat][1],
@@ -163,7 +183,7 @@ local function Page(_, hooks)
 					heading = "Naming Scheme",
 					hint = "Determines how child names are generated.",
 					formItem = true,
-					order = 50,
+					order = 60,
 				}, {
 					selection = e(Dropdown, {
 						label = Store.Enum.NamingScheme[state.Settings.NamingScheme][1],
@@ -182,7 +202,7 @@ local function Page(_, hooks)
 					heading = "Syntax Highlighting",
 					hint = "Enables syntax highlighting for code snippets. Turn this off to save some performance.",
 					formItem = true,
-					order = 60,
+					order = 70,
 				}, {
 					option = e(Checkbox, {
 						label = "Highlight Code Snippets",

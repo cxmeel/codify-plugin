@@ -109,6 +109,20 @@ FORMAT_MAP = {
 		end,
 	},
 
+	NumberRangeFormat = {
+		FULL = function(value: NumberRange)
+			return fmt("NumberRange.new(%s, %s)", FormatNumber(value.Min),FormatNumber(value.Max))
+		end,
+
+		SMART = function(value: NumberRange)
+			if value.Max == value.Min then
+				return fmt("NumberRange.new(%s)", FormatNumber(value.Min))
+			end
+
+			return fmt("NumberRange.new(%s, %s)", FormatNumber(value.Min),FormatNumber(value.Max))
+		end,
+	},
+
 	EnumFormat = {
 		FULL = tostring,
 
@@ -183,6 +197,8 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 		return FORMAT_MAP.Color3Format[options.Color3Format](value)
 	elseif valueTypeOf == "UDim2" then
 		return FORMAT_MAP.UDim2Format[options.UDim2Format](value)
+	elseif valueTypeOf == "NumberRange" then
+		return FORMAT_MAP.NumberRangeFormat[options.NumberRangeFormat](value)
 	elseif valueTypeOf == "EnumItem" then
 		return FORMAT_MAP.EnumFormat[options.EnumFormat](value)
 	elseif valueTypeOf == "ColorSequence" then

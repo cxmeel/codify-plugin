@@ -142,6 +142,7 @@ do -- Respond to actions --
 			CreateMethod = if not createMethod or #createMethod == 0 then nil else createMethod,
 			Color3Format = state.Settings.Color3Format,
 			UDim2Format = state.Settings.UDim2Format,
+			NumberRangeFormat = state.Settings.NumberRangeFormat,
 			EnumFormat = state.Settings.EnumFormat,
 			NamingScheme = state.Settings.NamingScheme,
 		})
