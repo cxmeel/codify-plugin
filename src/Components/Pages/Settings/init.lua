@@ -1,14 +1,10 @@
 local Plugin = script.Parent.Parent.Parent
 
 local StudioTheme = require(Plugin.Packages.StudioTheme)
-local RoduxHooks = require(Plugin.Packages.RoduxHooks)
 local Roact = require(Plugin.Packages.Roact)
 local Hooks = require(Plugin.Packages.Hooks)
 local Llama = require(Plugin.Packages.Llama)
 
-local Config2 = require(Plugin.Data.Config)
-local Config = require(Plugin.Config)
-local Thunks = require(Plugin.Thunks)
 local Store = require(Plugin.Store)
 
 local TextInput = require(Plugin.Components.TextInput)
@@ -16,6 +12,8 @@ local Checkbox = require(Plugin.Components.Checkbox)
 local Layout = require(Plugin.Components.Layout)
 local FrameworkSelect = require(Plugin.Components.FrameworkSelect)
 local Dropdown = require(Plugin.Components.Dropdown)
+
+local About = require(script.About)
 
 local e = Roact.createElement
 
@@ -41,15 +39,6 @@ local function Page(_, hooks)
 			EnumFormat = GetDropdownOptionsForSettingsEnum(Store.Enum.EnumFormat),
 			NamingScheme = GetDropdownOptionsForSettingsEnum(Store.Enum.NamingScheme),
 		}
-	end, {})
-
-	local dispatch = RoduxHooks.useDispatch(hooks)
-	local contributors = RoduxHooks.useSelector(hooks, function(state)
-		return state.contributors
-	end)
-
-	hooks.useEffect(function()
-		dispatch(Thunks.FetchContributors(Config2.repo))
 	end, {})
 
 	return e(Layout.ScrollColumn, {
@@ -204,40 +193,8 @@ local function Page(_, hooks)
 			}),
 		}),
 
-		aboutSection = e(Layout.Forms.Section, {
-			heading = "About",
-			divider = true,
+		aboutSection = e(About, {
 			order = 30,
-		}, {
-			version = e(Layout.Forms.Section, {
-				heading = "Version",
-				hint = Config.Version .. " (" .. Config.VersionTag .. ")",
-				formItem = true,
-				order = 10,
-			}),
-
-			originalAuthor = if Config.OriginalAuthor
-				then e(Layout.Forms.Section, {
-					heading = "Original Author",
-					hint = Config.OriginalAuthor.Username,
-					formItem = true,
-					order = 20,
-				})
-				else nil,
-
-			author = e(Layout.Forms.Section, {
-				heading = if Config.OriginalAuthor then "Fork Author" else "Author",
-				hint = Config.Author.Username,
-				formItem = true,
-				order = 25,
-			}),
-
-			contributors = #contributors > 0 and e(Layout.Forms.Section, {
-				heading = "Contributors",
-				hint = table.concat(contributors, ", "),
-				formItem = true,
-				order = 30,
-			}),
 		}),
 	})
 end
