@@ -5,7 +5,6 @@ local Packages = script.Parent.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 local Hooks = require(Packages.Hooks)
 local StudioTheme = require(Packages.StudioTheme)
-local RoactRouter = require(Packages.RoactRouter)
 
 local Store = require(script.Parent.Parent.Parent.Store)
 local Frameworks = require(script.Parent.Parent.Parent.Lib.Codify.Frameworks)
@@ -44,120 +43,115 @@ local function Page(_, hooks)
 		}
 	end, { state })
 
-	return e(RoactRouter.Route, {
-		path = "/",
-		exact = true,
+	return e(Layout.ScrollColumn, {
+		paddingTop = styles.spacing,
+		paddingBottom = styles.spacing,
 	}, {
-		content = e(Layout.ScrollColumn, {
-			paddingTop = styles.spacing,
-			paddingBottom = styles.spacing,
-		}, {
-			padding = e(Layout.Padding),
+		padding = e(Layout.Padding),
 
-			framework = e(FrameworkSelect, {
+		framework = e(FrameworkSelect, {
+			order = 10,
+		}),
+
+		settingsHint = e(Text, {
+			text = "Output formatting can be configured in the Settings tab.",
+			textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+			order = 15,
+		}),
+
+		activeSelection = e(Layout.Frame, {
+			order = 20,
+		}, {
+			padding = e(Layout.Padding, { 0, 16, 0, 0 }),
+			layout = e(Layout.ListLayout),
+
+			icon = e(Icon, {
+				icon = activeSelection.icon.Image,
+				imageOffset = activeSelection.icon.ImageRectOffset,
+				imageSize = activeSelection.icon.ImageRectSize,
+				colour = Color3.new(1, 1, 1),
+				size = 16,
 				order = 10,
 			}),
 
-			settingsHint = e(Text, {
-				text = "Output formatting can be configured in the Settings tab.",
-				textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
-				order = 15,
-			}),
-
-			activeSelection = e(Layout.Frame, {
+			label = e(Text, {
+				text = activeSelection.name,
+				font = styles.font.mono,
+				textSize = styles.fontSize + 2,
 				order = 20,
-			}, {
-				padding = e(Layout.Padding, { 0, 16, 0, 0 }),
-				layout = e(Layout.ListLayout),
+			}),
+		}),
 
-				icon = e(Icon, {
-					icon = activeSelection.icon.Image,
-					imageOffset = activeSelection.icon.ImageRectOffset,
-					imageSize = activeSelection.icon.ImageRectSize,
-					colour = Color3.new(1, 1, 1),
-					size = 16,
-					order = 10,
-				}),
+		largeInstance = if state.LargeInstance
+			then e(Alert, {
+				label = "This Instance appears to have a lot of children! Can it be broken into smaller components?",
+				variant = Enum.MessageType.MessageWarning,
+				order = 30,
+			})
+			else nil,
 
-				label = e(Text, {
-					text = activeSelection.name,
-					font = styles.font.mono,
-					textSize = styles.fontSize + 2,
-					order = 20,
-				}),
+		generateButton = e(Button, {
+			order = 40,
+			label = "Generate Snippet",
+			primary = not state.LargeInstance,
+			size = UDim2.fromScale(1, 0),
+			autoSize = Enum.AutomaticSize.Y,
+			disabled = state.RootTarget == nil or state.SnippetProcessing,
+
+			onActivated = function()
+				Store.Actions.GenerateSnippet:Fire()
+			end,
+		}),
+
+		snippet = e(Layout.Frame, {
+			order = 50,
+		}, {
+			layout = e(Layout.ListLayout, {
+				direction = Enum.FillDirection.Vertical,
+				alignX = Enum.HorizontalAlignment.Right,
 			}),
 
-			largeInstance = if state.LargeInstance
-				then e(Alert, {
-					label = "This Instance appears to have a lot of children! Can it be broken into smaller components?",
-					variant = Enum.MessageType.MessageWarning,
+			snippetText = e(TextInput, {
+				order = 20,
+				placeholder = (Frameworks[state.Settings.Framework] or {}).Sample,
+				text = state.Snippet and state.Snippet.Snippet,
+				font = styles.font.mono,
+				textSize = styles.fontSize + 2,
+				readonly = true,
+				disabled = state.Snippet == nil,
+				wrapped = false,
+				selectAllOnFocus = true,
+				syntaxHighlight = state.Settings.SyntaxHighlight,
+
+				onFocus = function()
+					setShowCopy(true)
+				end,
+
+				onFocusLost = function()
+					setShowCopy(false)
+				end,
+			}),
+
+			copyText = if showCopy
+				then e(Text, {
+					text = COPY_TEXT,
+					textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+					textSize = styles.fontSize - 2,
+					font = styles.font.semibold,
 					order = 30,
 				})
 				else nil,
 
-			generateButton = e(Button, {
+			downloadButton = e(Button, {
+				primary = true,
+				disabled = state.Snippet == nil,
 				order = 40,
-				label = "Generate Snippet",
-				primary = not state.LargeInstance,
-				size = UDim2.fromScale(1, 0),
-				autoSize = Enum.AutomaticSize.Y,
-				disabled = state.RootTarget == nil or state.SnippetProcessing,
+				label = "Save to Device",
+				icon = "Download",
 
 				onActivated = function()
-					Store.Actions.GenerateSnippet:Fire()
+					Store.Actions.SaveSnippet:Fire()
 				end,
-			}),
-
-			snippet = e(Layout.Frame, {
-				order = 50,
-			}, {
-				layout = e(Layout.ListLayout, {
-					direction = Enum.FillDirection.Vertical,
-					alignX = Enum.HorizontalAlignment.Right,
-				}),
-
-				snippetText = e(TextInput, {
-					order = 20,
-					placeholder = (Frameworks[state.Settings.Framework] or {}).Sample,
-					text = state.Snippet and state.Snippet.Snippet,
-					font = styles.font.mono,
-					textSize = styles.fontSize + 2,
-					readonly = true,
-					disabled = state.Snippet == nil,
-					wrapped = false,
-					selectAllOnFocus = true,
-					syntaxHighlight = state.Settings.SyntaxHighlight,
-
-					onFocus = function()
-						setShowCopy(true)
-					end,
-
-					onFocusLost = function()
-						setShowCopy(false)
-					end,
-				}),
-
-				copyText = if showCopy
-					then e(Text, {
-						text = COPY_TEXT,
-						textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
-						textSize = styles.fontSize - 2,
-						font = styles.font.semibold,
-						order = 30,
-					})
-					else nil,
-
-				downloadButton = e(Button, {
-					primary = true,
-					disabled = state.Snippet == nil,
-					order = 40,
-					label = "Save to Device",
-					icon = "Download",
-
-					onActivated = function()
-						Store.Actions.SaveSnippet:Fire()
-					end,
-				}),
 			}),
 		}),
 	})

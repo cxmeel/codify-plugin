@@ -1,12 +1,20 @@
 local ServerStorage = game:GetService("ServerStorage")
 local Selection = game:GetService("Selection")
 
-local Roact = require(script.Packages.Roact)
 local Highlighter = require(script.Packages.Highlighter)
+local Roact = require(script.Packages.Roact)
 local Codify = require(script.Lib.Codify)
 
 local Store = require(script.Store)
 local AppComponent = require(script.Components.App)
+
+local RoduxHooks = require(script.Packages.RoduxHooks)
+local Rodux = require(script.Packages.Rodux)
+local Reducer = require(script.Reducer)
+
+local store = Rodux.Store.new(Reducer, nil, {
+	Rodux.thunkMiddleware,
+})
 
 do -- Enable debug mode --
 	local PluginDebugService = game:GetService("PluginDebugService")
@@ -197,13 +205,15 @@ do -- Create PluginAction --
 end
 
 do -- Mount app --
-	local handle = Roact.mount(
-		Roact.createElement(AppComponent, {
+	local rootComponent = Roact.createElement(RoduxHooks.Provider, {
+		store = store,
+	}, {
+		app = Roact.createElement(AppComponent, {
 			plugin = plugin,
 		}),
-		nil,
-		"Codify"
-	)
+	})
+
+	local handle = Roact.mount(rootComponent, nil, "Codify")
 
 	plugin.Unloading:Connect(function()
 		Roact.unmount(handle)

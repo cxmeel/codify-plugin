@@ -17,10 +17,10 @@ Promise = "evaera/promise@^3.2.1"
 Llama = "freddylist/llama@1.1.1"
 Hooks = "kampfkarren/roact-hooks@^0.3.0"
 RoactRouter = "reselim/roact-router@^1.0.3"
+Enum = "raphtalia/enum@^1.0.0"
 Roact = "roblox/roact@^1.4.2"
-# Rodux = "roblox/rodux@^3.0.0"
-# EnumList = "sleitnick/enum-list@^2.0.0"
-# RoduxHooks = "solarihorizon/rodux-hooks@^0.2.0"
+Rodux = "roblox/rodux@^3.0.0"
+RoduxHooks = "solarhorizon/rodux-hooks@^0.2.1"
 
 # [dev-dependencies]
 # TestEZ = "roblox/testez@^0.4.1"
