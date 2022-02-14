@@ -1,41 +1,16 @@
-local Promise = require(script.Parent.Parent.Packages.Promise)
-local Llama = require(script.Parent.Parent.Packages.Llama)
+local Plugin = script.Parent.Parent
 
-local HttpPromise = require(script.Parent.HttpPromise)
+local Llama = require(Plugin.Packages.Llama)
+local HttpPromise = require(Plugin.Lib.HttpPromise)
 
-local Properties = {
-	Cache = {
-		LatestVersionGUID = nil,
-		APIDump = {},
-	},
-}
+local Properties = {}
 
 function Properties.FetchLatestVersion()
-	if Properties.Cache.LatestVersionGUID then
-		return Promise.resolve(Properties.Cache.LatestVersionGUID)
-	end
-
-	return HttpPromise.RequestPromise({
-		Url = "https://s3.amazonaws.com/setup.roblox.com/versionQTStudio",
-		Method = "GET",
-	}):andThen(function(version)
-		Properties.Cache.LatestVersionGUID = version
-		return version
-	end)
+	return HttpPromise.RequestAsync("https://s3.amazonaws.com/setup.roblox.com/versionQTStudio")
 end
 
 function Properties.FetchAPIDump(version: string)
-	if Properties.Cache.APIDump[version] then
-		return Promise.resolve(Properties.Cache.APIDump[version])
-	end
-
-	return HttpPromise.RequestJsonPromise({
-		Url = "https://s3.amazonaws.com/setup.roblox.com/" .. version .. "-API-Dump.json",
-		Method = "GET",
-	}):andThen(function(data)
-		Properties.Cache.APIDump[version] = data
-		return data
-	end)
+	return HttpPromise.RequestJsonAsync("https://s3.amazonaws.com/setup.roblox.com/" .. version .. "-API-Dump.json")
 end
 
 local function FindClassEntry(dump, class: string)

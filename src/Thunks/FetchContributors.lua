@@ -1,6 +1,6 @@
 local Plugin = script.Parent.Parent
 
-local HttpPromise = require(Plugin.Lib.HttpPromise2)
+local HttpPromise = require(Plugin.Lib.HttpPromise)
 local Llama = require(Plugin.Packages.Llama)
 local Actions = require(Plugin.Actions)
 
