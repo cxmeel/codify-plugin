@@ -1,9 +1,9 @@
-local Contributors = require(script.Contributors)
+local Attribution = require(script.Attribution)
 
 return function(state, action)
 	state = state or {}
 
 	return {
-		contributors = Contributors(state.contributors, action),
+		attribution = Attribution(state.attribution, action),
 	}
 end
