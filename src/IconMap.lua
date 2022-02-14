@@ -62,21 +62,23 @@ return {
 		x = 44,
 		y = 44,
 	},
-	FusionDark = {
-		assetId = "rbxassetid://8790650933",
-		colour = Color3.fromRGB(255,255,255),
-		w = 16,
-		h = 16,
-		x = 4,
-		y = 64,
-	},
-	FusionLight = {
-		assetId = "rbxassetid://8790650933",
-		colour = Color3.fromRGB(255,255,255),
-		w = 16,
-		h = 16,
-		x = 24,
-		y = 64,
+	Fusion = {
+		Dark = {
+			assetId = "rbxassetid://8790650933",
+			colour = Color3.fromRGB(255, 255, 255),
+			w = 16,
+			h = 16,
+			x = 4,
+			y = 64,
+		},
+		Light = {
+			assetId = "rbxassetid://8790650933",
+			colour = Color3.fromRGB(255, 255, 255),
+			w = 16,
+			h = 16,
+			x = 24,
+			y = 64,
+		},
 	},
 	Roact = {
 		assetId = "rbxassetid://8790650933",
@@ -87,7 +89,7 @@ return {
 	},
 	Regular = {
 		assetId = "rbxassetid://8790650933",
-		colour = Color3.fromRGB(0,162,255),
+		colour = Color3.fromRGB(0, 162, 255),
 		w = 16,
 		h = 16,
 		x = 4,

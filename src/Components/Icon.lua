@@ -28,8 +28,14 @@ local function Icon(props: IconProps, hooks)
 	local theme, styles = StudioTheme.useTheme(hooks)
 
 	local icon = hooks.useMemo(function()
-		return IconMap[props.icon]
-	end, { props.icon })
+		local icon = IconMap[props.icon]
+
+		if icon and icon[theme.Name] then
+			return icon[theme.Name]
+		end
+
+		return icon
+	end, { props.icon, theme })
 
 	local size = hooks.useMemo(function()
 		return if typeof(props.size) == "UDim2"
@@ -47,7 +53,10 @@ local function Icon(props: IconProps, hooks)
 		Size = size,
 		ZIndex = props.zindex,
 		Image = if icon then icon.assetId else props.icon,
-		ImageColor3 = if icon and icon.colour then icon.colour elseif props.colour then props.colour else theme:GetColor(Enum.StudioStyleGuideColor.MainText),
+		ImageColor3 = if icon and icon.colour
+			then icon.colour
+			elseif props.colour then props.colour
+			else theme:GetColor(Enum.StudioStyleGuideColor.MainText),
 		ImageRectOffset = if icon then Vector2.new(icon.x, icon.y) else props.imageOffset,
 		ImageRectSize = if icon then Vector2.new(icon.w, icon.h) else props.imageSize,
 		ImageTransparency = props.transparency,
