@@ -12,7 +12,7 @@ local Config = require(script.Parent.Parent.Parent.Config)
 local TextInput = require(script.Parent.Parent.TextInput)
 local Checkbox = require(script.Parent.Parent.Checkbox)
 local Layout = require(script.Parent.Parent.Layout)
-
+local FrameworkSelect = require(script.Parent.Parent.FrameworkSelect)
 local Dropdown = require(script.Parent.Parent.Dropdown)
 
 local e = Roact.createElement
@@ -76,10 +76,15 @@ local function Page(_, hooks)
 		}, {
 			padding = e(Layout.Padding),
 
+			framework = e(FrameworkSelect, {
+				order = 10,
+			}),
+
 			snippetSection = e(Layout.Forms.Section, {
 				heading = "Snippets",
 				hint = "Customise the formatting of your generated code snippets. You will need to regenerate your snippets to reflect changes.",
-				order = 10,
+				divider = true,
+				order = 20,
 			}, {
 				createMethod = e(Layout.Forms.Section, {
 					heading = "Create Method",
@@ -220,7 +225,7 @@ local function Page(_, hooks)
 			aboutSection = e(Layout.Forms.Section, {
 				heading = "About",
 				divider = true,
-				order = 20,
+				order = 30,
 			}, {
 				version = e(Layout.Forms.Section, {
 					heading = "Version",
