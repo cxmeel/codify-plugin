@@ -3,12 +3,13 @@ local fmt = string.format
 local clamp = math.clamp
 
 type CodifyOptions = {
-	Framework: string?, -- "Roact" | "Fusion"
+	Framework: string?,
 	CreateMethod: string?,
-	Color3Format: string?, -- "HEX" | "RGB"| "HSV" | "FULL"
-	UDim2Format: string?, -- "FULL" | "SMART"
-	EnumFormat: string?, -- "FULL" | "NUMBER" | "STRING"
-	NamingScheme: string?, -- "ALL" | "NONE" | "CHANGED"
+	Color3Format: string?,
+	UDim2Format: string?,
+	EnumFormat: string?,
+	NamingScheme: string?,
+	NumberRangeFormat: string?,
 	TabCharacter: string?,
 	Indent: number?,
 }
@@ -44,7 +45,7 @@ FORMAT_MAP = {
 		end,
 
 		HEX = function(value: Color3)
-			local hex = value:ToHex()
+			local hex: string = (value :: any):ToHex()
 			return fmt('Color3.fromHex("#%s")', hex:upper())
 		end,
 
@@ -111,7 +112,7 @@ FORMAT_MAP = {
 
 	NumberRangeFormat = {
 		FULL = function(value: NumberRange)
-			return fmt("NumberRange.new(%s, %s)", FormatNumber(value.Min),FormatNumber(value.Max))
+			return fmt("NumberRange.new(%s, %s)", FormatNumber(value.Min), FormatNumber(value.Max))
 		end,
 
 		SMART = function(value: NumberRange)
@@ -119,7 +120,7 @@ FORMAT_MAP = {
 				return fmt("NumberRange.new(%s)", FormatNumber(value.Min))
 			end
 
-			return fmt("NumberRange.new(%s, %s)", FormatNumber(value.Min),FormatNumber(value.Max))
+			return fmt("NumberRange.new(%s, %s)", FormatNumber(value.Min), FormatNumber(value.Max))
 		end,
 	},
 
