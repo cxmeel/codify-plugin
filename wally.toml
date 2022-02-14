@@ -1,9 +1,10 @@
 [package]
-name = "csqrl/roactify-plugin"
-description = "Level up your colour game with Roactify"
-version = "1.1.0" # Don't forget to update Config/Config.lua too!
+name = "csqrl/codify-plugin"
+description = "Design UI in Studio; convert it to code!"
+version = "2.0.0" # Config/Config.lua
 license = "MIT"
-authors = ["csqrl (https://csqrl.dev)"]
+authors = ["csqrl (https://csqrl.dev)", "boatbomber (https://www.boatbomber.com/)"]
+contributors = ["chriscerie"]
 registry = "https://github.com/upliftgames/wally-index"
 realm = "shared"
 
@@ -17,6 +18,9 @@ Llama = "freddylist/llama@1.1.1"
 Hooks = "kampfkarren/roact-hooks@^0.3.0"
 RoactRouter = "reselim/roact-router@^1.0.3"
 Roact = "roblox/roact@^1.4.2"
+# Rodux = "roblox/rodux@^3.0.0"
+# EnumList = "sleitnick/enum-list@^2.0.0"
+# RoduxHooks = "solarihorizon/rodux-hooks@^0.2.0"
 
-[dev-dependencies]
-TestEZ = "roblox/testez@^0.4.1"
+# [dev-dependencies]
+# TestEZ = "roblox/testez@^0.4.1"
