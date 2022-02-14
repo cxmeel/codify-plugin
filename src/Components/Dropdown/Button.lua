@@ -148,6 +148,7 @@ local function DropdownButton(props: DropdownButtonProps, hooks)
 				label = e(Text, {
 					text = props.label,
 					textColour = colours.foreground,
+					wrapped = false,
 					order = 20,
 				}),
 
@@ -155,6 +156,7 @@ local function DropdownButton(props: DropdownButtonProps, hooks)
 					then e(Text, {
 						text = props.hint,
 						textColour = colours.hint,
+						wrapped = false,
 						order = 30,
 					})
 					else nil,

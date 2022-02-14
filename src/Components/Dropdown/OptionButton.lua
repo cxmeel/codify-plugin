@@ -104,6 +104,7 @@ local function OptionButton(props: OptionButtonProps, hooks)
 		label = e(Text, {
 			text = props.label,
 			textColour = colours.foreground,
+			wrapped = false,
 			order = 20,
 		}),
 
@@ -111,6 +112,7 @@ local function OptionButton(props: OptionButtonProps, hooks)
 			then e(Text, {
 				text = props.hint,
 				textColour = colours.hint,
+				wrapped = false,
 				order = 30,
 			})
 			else nil,
