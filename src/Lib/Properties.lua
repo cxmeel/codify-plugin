@@ -6,11 +6,15 @@ local HttpPromise = require(Plugin.Lib.HttpPromise)
 local Properties = {}
 
 function Properties.FetchLatestVersion()
-	return HttpPromise.RequestAsync("https://s3.amazonaws.com/setup.roblox.com/versionQTStudio")
+	return HttpPromise.RequestAsync("https://s3.amazonaws.com/setup.roblox.com/versionQTStudio", {
+		cache = -1,
+	})
 end
 
 function Properties.FetchAPIDump(version: string)
-	return HttpPromise.RequestJsonAsync("https://s3.amazonaws.com/setup.roblox.com/" .. version .. "-API-Dump.json")
+	return HttpPromise.RequestJsonAsync("https://s3.amazonaws.com/setup.roblox.com/" .. version .. "-API-Dump.json", {
+		cache = -1,
+	})
 end
 
 local function FindClassEntry(dump, class: string)

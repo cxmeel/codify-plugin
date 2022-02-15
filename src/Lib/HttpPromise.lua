@@ -13,7 +13,7 @@ export type RequestAsyncOptions = {
 	retries: number?,
 	retryDelay: number?,
 	resolve2xxOnly: boolean?,
-	cache: boolean?,
+	cache: boolean | number?,
 }
 
 type URL = {
@@ -35,6 +35,8 @@ type ICacheDictionary = {
 
 local APPROVED_DOMAINS: { [string]: boolean } = {}
 local CACHED_DATA: ICacheDictionary = {}
+
+local SENSIBLE_DEFAULT_CACHE = 300
 
 local DEFAULT_OPTIONS: RequestAsyncOptions = {
 	method = "GET",
@@ -171,11 +173,15 @@ local function RequestAsync(url: string, options: RequestAsyncOptions?)
 
 				local cacheHeader = GetHeaderContent(response.Headers, "cache-control")
 
-				if config.cache and cacheHeader ~= nil then
+				if config.cache or (config.cache and cacheHeader ~= nil) then
 					local cachePolicy = ParseResponseHeaderCSV(cacheHeader)
+					local shouldCache = config.cache or not (cachePolicy["no-cache"] and cachePolicy["no-store"])
 
-					if not (cachePolicy["no-cache"] and cachePolicy["no-store"]) then
-						local maxAge = cachePolicy["max-age"]
+					if shouldCache then
+						local maxAge = if type(config.cache) == "number"
+							then if config.cache < 0 then math.huge else config.cache
+							elseif cachePolicy["max-age"] then cachePolicy["max-age"]
+							else SENSIBLE_DEFAULT_CACHE
 
 						if maxAge then
 							local expires = os.time() + maxAge
