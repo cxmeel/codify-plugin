@@ -1,12 +1,13 @@
 local Llama = require(script.Parent.Parent.Packages.Llama)
 local Frameworks = require(script.Frameworks)
 export type CodifyOptions = {
-	Framework: string?, -- "Roact" | "Fusion" | "Regular"
+	Framework: string?,
 	CreateMethod: string?,
-	Color3Format: string?, -- "HEX" | "RGB"| "HSV" | "FULL"
-	UDim2Format: string?, -- "FULL" | "SMART"
-	EnumFormat: string?, -- "FULL" | "NUMBER" | "STRING"
-	NamingScheme: string?, -- "ALL" | "NONE" | "CHANGED"
+	Color3Format: string?,
+	UDim2Format: string?,
+	EnumFormat: string?,
+	NamingScheme: string?,
+	NumberRangeFormat: string?,
 	TabCharacter: string?,
 	Indent: number?,
 }

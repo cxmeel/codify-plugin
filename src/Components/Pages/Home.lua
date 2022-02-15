@@ -1,21 +1,24 @@
 local StudioService = game:GetService("StudioService")
 
-local Packages = script.Parent.Parent.Parent.Packages
+local Plugin = script.Parent.Parent.Parent
 
-local Roact = require(Packages.Roact)
-local Hooks = require(Packages.Hooks)
-local StudioTheme = require(Packages.StudioTheme)
+local StudioPlugin = require(Plugin.Packages.StudioPlugin)
+local StudioTheme = require(Plugin.Packages.StudioTheme)
+local RoduxHooks = require(Plugin.Packages.RoduxHooks)
+local Roact = require(Plugin.Packages.Roact)
+local Hooks = require(Plugin.Packages.Hooks)
 
-local Store = require(script.Parent.Parent.Parent.Store)
-local Frameworks = require(script.Parent.Parent.Parent.Lib.Codify.Frameworks)
+local Frameworks = require(Plugin.Lib.Codify.Frameworks)
+local Thunks = require(Plugin.Thunks)
+local Store = require(Plugin.Store)
 
-local Text = require(script.Parent.Parent.Text)
-local Icon = require(script.Parent.Parent.Icon)
-local Layout = require(script.Parent.Parent.Layout)
-local TextInput = require(script.Parent.Parent.TextInput)
-local Button = require(script.Parent.Parent.Button)
-local Alert = require(script.Parent.Parent.Alert)
-local FrameworkSelect = require(script.Parent.Parent.FrameworkSelect)
+local FrameworkSelect = require(Plugin.Components.FrameworkSelect)
+local TextInput = require(Plugin.Components.TextInput)
+local Button = require(Plugin.Components.Button)
+local Layout = require(Plugin.Components.Layout)
+local Alert = require(Plugin.Components.Alert)
+local Text = require(Plugin.Components.Text)
+local Icon = require(Plugin.Components.Icon)
 
 local e = Roact.createElement
 
@@ -28,20 +31,31 @@ local function Page(_, hooks)
 
 	local state = Store.useStore(hooks)
 
+	local dispatch = RoduxHooks.useDispatch(hooks)
+	local plugin = StudioPlugin.usePlugin(hooks)
+
+	local targetInstance = RoduxHooks.useSelector(hooks, function(state)
+		return state.targetInstance
+	end)
+
+	local snippet = RoduxHooks.useSelector(hooks, function(state)
+		return state.snippet
+	end)
+
 	local activeSelection = hooks.useMemo(function()
 		local name = "Nothing selected"
 		local icon = StudioService:GetClassIcon("Instance")
 
-		if state.RootTarget then
-			name = state.RootTarget.Name
-			icon = StudioService:GetClassIcon(state.RootTarget.ClassName)
+		if targetInstance.instance then
+			name = targetInstance.instance.Name
+			icon = StudioService:GetClassIcon(targetInstance.instance.ClassName)
 		end
 
 		return {
 			name = name,
 			icon = icon,
 		}
-	end, { state })
+	end, { targetInstance })
 
 	return e(Layout.ScrollColumn, {
 		paddingTop = styles.spacing,
@@ -82,13 +96,11 @@ local function Page(_, hooks)
 			}),
 		}),
 
-		largeInstance = if state.LargeInstance
-			then e(Alert, {
-				label = "This Instance appears to have a lot of children! Can it be broken into smaller components?",
-				variant = Enum.MessageType.MessageWarning,
-				order = 30,
-			})
-			else nil,
+		largeInstance = targetInstance.large and e(Alert, {
+			label = "This Instance appears to have a lot of children! Can it be broken into smaller components?",
+			variant = Enum.MessageType.MessageWarning,
+			order = 30,
+		}),
 
 		generateButton = e(Button, {
 			order = 40,
@@ -96,10 +108,10 @@ local function Page(_, hooks)
 			primary = not state.LargeInstance,
 			size = UDim2.fromScale(1, 0),
 			autoSize = Enum.AutomaticSize.Y,
-			disabled = state.RootTarget == nil or state.SnippetProcessing,
+			disabled = targetInstance.instance == nil or snippet.processing,
 
 			onActivated = function()
-				Store.Actions.GenerateSnippet:Fire()
+				dispatch(Thunks.GenerateSnippet())
 			end,
 		}),
 
@@ -114,11 +126,11 @@ local function Page(_, hooks)
 			snippetText = e(TextInput, {
 				order = 20,
 				placeholder = (Frameworks[state.Settings.Framework] or {}).Sample,
-				text = state.Snippet and state.Snippet.Snippet,
+				text = snippet.content,
 				font = styles.font.mono,
 				textSize = styles.fontSize + 2,
 				readonly = true,
-				disabled = state.Snippet == nil,
+				disabled = snippet.content == nil,
 				wrapped = false,
 				selectAllOnFocus = true,
 				syntaxHighlight = state.Settings.SyntaxHighlight,
@@ -132,25 +144,23 @@ local function Page(_, hooks)
 				end,
 			}),
 
-			copyText = if showCopy
-				then e(Text, {
-					text = COPY_TEXT,
-					textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
-					textSize = styles.fontSize - 2,
-					font = styles.font.semibold,
-					order = 30,
-				})
-				else nil,
+			copyText = showCopy and e(Text, {
+				text = COPY_TEXT,
+				textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+				textSize = styles.fontSize - 2,
+				font = styles.font.semibold,
+				order = 30,
+			}),
 
 			downloadButton = e(Button, {
 				primary = true,
-				disabled = state.Snippet == nil,
+				disabled = snippet.content == nil,
 				order = 40,
 				label = "Save to Device",
 				icon = "Download",
 
 				onActivated = function()
-					Store.Actions.SaveSnippet:Fire()
+					dispatch(Thunks.ExportSnippetToDevice(plugin))
 				end,
 			}),
 		}),

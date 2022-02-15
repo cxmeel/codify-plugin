@@ -1,9 +1,7 @@
-local ServerStorage = game:GetService("ServerStorage")
 local Selection = game:GetService("Selection")
 
 local Highlighter = require(script.Packages.Highlighter)
 local Roact = require(script.Packages.Roact)
-local Codify = require(script.Lib.Codify)
 
 local Store = require(script.Store)
 local AppComponent = require(script.Components.App)
@@ -11,6 +9,8 @@ local AppComponent = require(script.Components.App)
 local RoduxHooks = require(script.Packages.RoduxHooks)
 local Rodux = require(script.Packages.Rodux)
 local Reducer = require(script.Reducer)
+local Actions = require(script.Actions)
+local Thunks = require(script.Thunks)
 
 local store = Rodux.Store.new(Reducer, nil, {
 	Rodux.thunkMiddleware,
@@ -88,105 +88,28 @@ do -- Watch selection --
 		return ok and selection
 	end
 
-	local function IsLargeInstance(instance: Instance?)
-		if not instance then
-			return false
-		end
-
-		local size = #instance:GetDescendants()
-		return size >= 20
-	end
-
 	do -- Check current selection --
 		local selection = GetCurrentSelection()
-		local isLarge = IsLargeInstance(selection)
-
-		Store:SetState({
-			RootTarget = selection or Store.None,
-			LargeInstance = isLarge,
-		})
+		store:dispatch(Actions.SetTargetInstance(selection))
 	end
 
 	Selection.SelectionChanged:Connect(function()
 		local selection = GetCurrentSelection()
-		local isLarge = IsLargeInstance(selection)
-
-		Store:SetState({
-			RootTarget = selection or Store.None,
-			LargeInstance = isLarge,
-		})
-	end)
-end
-
-do -- Respond to actions --
-	Store.Actions.GenerateSnippet.Event:Connect(function()
-		local rootTarget: Instance? = Store:Get("RootTarget")
-
-		if rootTarget == nil then
-			return
-		end
-
-		local state = Store:GetState()
-		Store:SetState({ SnippetProcessing = true })
-
-		local createMethod = state.Settings.CreateMethod
-
-		local ok, snippet = pcall(Codify, rootTarget, {
-			Framework = state.Settings.Framework,
-			CreateMethod = if not createMethod or #createMethod == 0 then nil else createMethod,
-			Color3Format = state.Settings.Color3Format,
-			UDim2Format = state.Settings.UDim2Format,
-			NumberRangeFormat = state.Settings.NumberRangeFormat,
-			EnumFormat = state.Settings.EnumFormat,
-			NamingScheme = state.Settings.NamingScheme,
-		})
-
-		if ok then
-			Store:Set("Snippet", {
-				TargetName = rootTarget.Name,
-				Snippet = snippet,
-			})
-		else
-			error(snippet, 2)
-		end
-
-		Store:SetState({ SnippetProcessing = false })
-	end)
-
-	Store.Actions.SaveSnippet.Event:Connect(function()
-		local snippet = Store:Get("Snippet")
-
-		if snippet == nil then
-			return
-		end
-
-		local sourceCode = Instance.new("ModuleScript")
-		sourceCode.Name = snippet.TargetName
-		sourceCode.Source = snippet.Snippet
-		sourceCode.Archivable = false
-		sourceCode.Parent = ServerStorage
-
-		local currentSelection = Selection:Get()
-
-		Selection:Set({ sourceCode })
-		plugin:PromptSaveSelection(snippet.TargetName)
-
-		Selection:Set(currentSelection)
-		sourceCode:Destroy()
+		store:dispatch(Actions.SetTargetInstance(selection))
 	end)
 end
 
 do -- Create PluginAction --
 	local action = plugin:CreatePluginAction(
-		"generateSnippet",
-		"Generate Roact Snippet",
-		"Generate a Roact snippet for the current selection",
+		"codifyGenerateSnippet",
+		"Codify (Generate)",
+		"Generate a snippet in Codify for the current selection",
 		"rbxassetid://8730522354",
 		true
 	)
 
 	action.Triggered:Connect(function()
-		Store.Actions.GenerateSnippet:Fire()
+		store:dispatch(Thunks.GenerateSnippet())
 	end)
 end
 

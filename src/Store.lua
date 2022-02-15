@@ -1,7 +1,6 @@
 local Packages = script.Parent.Packages
 
 local BasicState = require(Packages.BasicState)
-local Llama = require(Packages.Llama)
 
 local Store = BasicState.new({
 	Settings = {
@@ -54,25 +53,6 @@ Store.Enum = {
 	},
 }
 
-function Store.IncrementEnum(enum: string)
-	local state = Store:GetState()
-	local currentFormat = state.Settings[enum]
-
-	local enumKeys = Llama.Dictionary.keys(Store.Enum[enum])
-	local currentIndex = table.find(enumKeys, currentFormat)
-	local newIndex = currentIndex + 1
-
-	if newIndex > #enumKeys then
-		newIndex = 1
-	end
-
-	Store:SetState({
-		Settings = {
-			[enum] = enumKeys[newIndex],
-		},
-	})
-end
-
 function Store.useStore(hooks)
 	local state, setState = hooks.useState(Store:GetState())
 
@@ -91,9 +71,9 @@ function Store.useStore(hooks)
 	return state
 end
 
-Store.Actions = {
-	GenerateSnippet = Instance.new("BindableEvent"),
-	SaveSnippet = Instance.new("BindableEvent"),
-}
+-- Store.Actions = {
+-- 	GenerateSnippet = Instance.new("BindableEvent"),
+-- 	SaveSnippet = Instance.new("BindableEvent"),
+-- }
 
 return Store
