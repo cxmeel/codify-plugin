@@ -62,7 +62,7 @@ return {
 		x = 44,
 		y = 44,
 	},
-	Fusion = {
+	FrameworkFusion = {
 		Dark = {
 			assetId = "rbxassetid://8790650933",
 			colour = Color3.fromRGB(255, 255, 255),
@@ -80,14 +80,14 @@ return {
 			y = 64,
 		},
 	},
-	Roact = {
+	FrameworkRoact = {
 		assetId = "rbxassetid://8790650933",
 		w = 16,
 		h = 16,
 		x = 44,
 		y = 64,
 	},
-	Regular = {
+	FrameworkRegular = {
 		assetId = "rbxassetid://8790650933",
 		colour = Color3.fromRGB(0, 162, 255),
 		w = 16,

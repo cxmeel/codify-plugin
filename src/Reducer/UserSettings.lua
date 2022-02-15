@@ -1,0 +1,42 @@
+local Plugin = script.Parent.Parent
+
+local Llama = require(Plugin.Packages.Llama)
+local String = require(Plugin.Lib.String)
+local Enums = require(Plugin.Data.Enums)
+
+local DEFAULT_SETTINGS = {
+	syntaxHighlighting = true,
+	color3Format = Enums.Color3Format.RGB,
+	enumFormat = Enums.EnumFormat.Full,
+	framework = Enums.Framework.Regular,
+	namingScheme = Enums.NamingScheme.All,
+	numberRangeFormat = Enums.NumberRangeFormat.Smart,
+	udim2Format = Enums.UDim2Format.Smart,
+}
+
+return function(state, action)
+	state = state or Llama.Dictionary.copy(DEFAULT_SETTINGS)
+
+	if action.type == "SET_SETTING" then
+		assert(type(action.payload) == "table", "SET_SETTING `payload` must be a table")
+		assert(type(action.payload.key) == "string", "SET_SETTING `payload.key` must be a string")
+
+		if type(action.payload.value) == "string" then
+			local newValue = String.Trim(action.payload.value)
+
+			if #newValue == 0 then
+				newValue = DEFAULT_SETTINGS[action.payload.key] or Llama.None
+			end
+
+			action.payload.value = newValue
+		elseif action.payload.value == nil then
+			action.payload.value = Llama.None
+		end
+
+		return Llama.Dictionary.merge(state, {
+			[action.payload.key] = action.payload.value,
+		})
+	end
+
+	return state
+end

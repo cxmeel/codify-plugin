@@ -13,6 +13,7 @@ local function getSafeVarName(instance: Instance): string
 end
 
 local function RoactifyInstance(instance: Instance, options)
+	local createMethod = options.CreateMethod or "Roact.createElement"
 	local snippet = Script.new()
 
 	local changedProps = select(2, Properties.GetChangedProperties(instance):await())
@@ -22,7 +23,7 @@ local function RoactifyInstance(instance: Instance, options)
 		return string.rep(options.TabCharacter, options.Indent)
 	end
 
-	snippet:CreateLine():Push(options.CreateMethod, '("', instance.ClassName, '"')
+	snippet:CreateLine():Push(createMethod, '("', instance.ClassName, '"')
 
 	if options.Indent > 0 then
 		local nameChanged = table.find(changedProps, "Name")

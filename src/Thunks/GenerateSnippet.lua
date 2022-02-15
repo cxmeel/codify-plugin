@@ -5,8 +5,6 @@ local Promise = require(Plugin.Packages.Promise)
 local Codify = require(Plugin.Lib.Codify)
 local Actions = require(Plugin.Actions)
 
-local DEPRECATE_STORE = require(Plugin.Store)
-
 local CodifyAsync = Promise.promisify(Codify)
 
 local function GenerateSnippet()
@@ -19,16 +17,14 @@ local function GenerateSnippet()
 
 		store:dispatch(Actions.SetSnippetProcessing(true))
 
-		local DEPRECATE_STATE = DEPRECATE_STORE:Get("Settings", {})
-
 		CodifyAsync(state.targetInstance.instance, {
-			Framework = DEPRECATE_STATE.Framework,
-			CreateMethod = DEPRECATE_STATE.CreateMethod,
-			Color3Format = DEPRECATE_STATE.Color3Format,
-			UDim2Format = DEPRECATE_STATE.UDim2Format,
-			NumberRangeFormat = DEPRECATE_STATE.NumberRangeFormat,
-			EnumFormat = DEPRECATE_STATE.EnumFormat,
-			NamingScheme = DEPRECATE_STATE.NamingScheme,
+			Framework = state.userSettings.framework,
+			CreateMethod = state.userSettings["createMethod" .. state.userSettings.framework],
+			Color3Format = state.userSettings.color3Format,
+			UDim2Format = state.userSettings.udim2Format,
+			NumberRangeFormat = state.userSettings.numberRangeFormat,
+			EnumFormat = state.userSettings.enumFormat,
+			NamingScheme = state.userSettings.namingScheme,
 		})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({

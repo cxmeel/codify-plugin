@@ -3,11 +3,12 @@ local Selection = game:GetService("Selection")
 local Highlighter = require(script.Packages.Highlighter)
 local Roact = require(script.Packages.Roact)
 
-local Store = require(script.Store)
 local AppComponent = require(script.Components.App)
 
 local RoduxHooks = require(script.Packages.RoduxHooks)
 local Rodux = require(script.Packages.Rodux)
+
+local UserSettingsManager = require(script.Lib.UserSettingsManager)
 local Reducer = require(script.Reducer)
 local Actions = require(script.Actions)
 local Thunks = require(script.Thunks)
@@ -15,6 +16,8 @@ local Thunks = require(script.Thunks)
 local store = Rodux.Store.new(Reducer, nil, {
 	Rodux.thunkMiddleware,
 })
+
+UserSettingsManager.new(plugin, store)
 
 do -- Enable debug mode --
 	local PluginDebugService = game:GetService("PluginDebugService")
@@ -24,22 +27,6 @@ do -- Enable debug mode --
 			elementTracing = true,
 		})
 	end
-end
-
-do -- Settings persistence --
-	local SettingsKey = "bedc0f22-settings"
-	local currentSettings = plugin:GetSetting(SettingsKey)
-
-	if currentSettings then
-		Store:SetState({
-			Settings = currentSettings,
-		})
-	end
-
-	Store:GetChangedSignal("Settings"):Connect(function()
-		local settings = Store:Get("Settings")
-		plugin:SetSetting(SettingsKey, settings)
-	end)
 end
 
 do -- Watch syntax colors --

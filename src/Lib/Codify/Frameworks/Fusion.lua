@@ -3,6 +3,7 @@ local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
 
 local function FusionifyInstance(instance: Instance, options)
+	local createMethod = options.CreateMethod or "New"
 	local snippet = Script.new()
 
 	local changedProps = select(2, Properties.GetChangedProperties(instance):await())
@@ -12,7 +13,7 @@ local function FusionifyInstance(instance: Instance, options)
 		return string.rep(options.TabCharacter, options.Indent)
 	end
 
-	snippet:CreateLine():Push('New "', instance.ClassName, '" {')
+	snippet:CreateLine():Push(createMethod, ' "', instance.ClassName, '" {')
 	options.Indent += 1
 
 	local name = instance.Name

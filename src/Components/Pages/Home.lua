@@ -10,7 +10,6 @@ local Hooks = require(Plugin.Packages.Hooks)
 
 local Frameworks = require(Plugin.Lib.Codify.Frameworks)
 local Thunks = require(Plugin.Thunks)
-local Store = require(Plugin.Store)
 
 local FrameworkSelect = require(Plugin.Components.FrameworkSelect)
 local TextInput = require(Plugin.Components.TextInput)
@@ -29,13 +28,15 @@ local function Page(_, hooks)
 	local theme, styles = StudioTheme.useTheme(hooks)
 	local showCopy, setShowCopy = hooks.useState(false)
 
-	local state = Store.useStore(hooks)
-
 	local dispatch = RoduxHooks.useDispatch(hooks)
 	local plugin = StudioPlugin.usePlugin(hooks)
 
 	local targetInstance = RoduxHooks.useSelector(hooks, function(state)
 		return state.targetInstance
+	end)
+
+	local userSettings = RoduxHooks.useSelector(hooks, function(state)
+		return state.userSettings
 	end)
 
 	local snippet = RoduxHooks.useSelector(hooks, function(state)
@@ -105,7 +106,7 @@ local function Page(_, hooks)
 		generateButton = e(Button, {
 			order = 40,
 			label = "Generate Snippet",
-			primary = not state.LargeInstance,
+			primary = not targetInstance.large,
 			size = UDim2.fromScale(1, 0),
 			autoSize = Enum.AutomaticSize.Y,
 			disabled = targetInstance.instance == nil or snippet.processing,
@@ -125,7 +126,7 @@ local function Page(_, hooks)
 
 			snippetText = e(TextInput, {
 				order = 20,
-				placeholder = (Frameworks[state.Settings.Framework] or {}).Sample,
+				placeholder = (Frameworks[userSettings.framework] or {}).Sample,
 				text = snippet.content,
 				font = styles.font.mono,
 				textSize = styles.fontSize + 2,
@@ -133,7 +134,7 @@ local function Page(_, hooks)
 				disabled = snippet.content == nil,
 				wrapped = false,
 				selectAllOnFocus = true,
-				syntaxHighlight = state.Settings.SyntaxHighlight,
+				syntaxHighlight = userSettings.syntaxHighlighting,
 
 				onFocus = function()
 					setShowCopy(true)

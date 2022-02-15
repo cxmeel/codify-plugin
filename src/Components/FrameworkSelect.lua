@@ -1,10 +1,12 @@
 local Plugin = script.Parent.Parent
 
+local RoduxHooks = require(Plugin.Packages.RoduxHooks)
 local Roact = require(Plugin.Packages.Roact)
 local Hooks = require(Plugin.Packages.Hooks)
 local Llama = require(Plugin.Packages.Llama)
 
-local Store = require(Plugin.Store)
+local Enums = require(Plugin.Data.Enums)
+local Actions = require(Plugin.Actions)
 
 local Dropdown = require(Plugin.Components.Dropdown)
 local Layout = require(Plugin.Components.Layout)
@@ -15,17 +17,47 @@ export type FrameworkSelectProps = {
 	order: number?,
 }
 
-local DROPDOWN_OPTIONS = Llama.Dictionary.values(Llama.Dictionary.map(Store.Enum.Framework, function(item, key)
+local FRAMEWORK_ENUM_MAP = {
+	[Enums.Framework.Regular] = {
+		icon = "FrameworkRegular",
+		label = "Regular",
+		hint = 'Instance.new("Frame")',
+	},
+	[Enums.Framework.Fusion] = {
+		icon = "FrameworkFusion",
+		label = "Fusion",
+		hint = 'New "Frame" { ... }',
+	},
+	[Enums.Framework.Roact] = {
+		icon = "FrameworkRoact",
+		label = "Roact",
+		hint = 'Roact.createElement("Frame", { ... }, { ... })',
+	},
+}
+
+local DROPDOWN_OPTIONS = Llama.Dictionary.values(Llama.Dictionary.map(FRAMEWORK_ENUM_MAP, function(details, enumItem)
 	return {
-		icon = key,
-		label = item[1],
-		hint = item[2],
-		value = key,
+		icon = details.icon,
+		label = details.label,
+		hint = details.hint,
+		value = enumItem,
 	}
 end))
 
 local function FrameworkSelect(props: FrameworkSelectProps, hooks)
-	local state = Store.useStore(hooks)
+	local dispatch = RoduxHooks.useDispatch(hooks)
+
+	local userSettings = RoduxHooks.useSelector(hooks, function(state)
+		return state.userSettings
+	end)
+
+	local framework = hooks.useMemo(function()
+		return userSettings.framework
+	end, { userSettings })
+
+	local details = hooks.useMemo(function()
+		return FRAMEWORK_ENUM_MAP[framework] or {}
+	end, { framework })
 
 	return e(Layout.Forms.Section, {
 		heading = "Framework",
@@ -33,14 +65,17 @@ local function FrameworkSelect(props: FrameworkSelectProps, hooks)
 		order = props.order,
 	}, {
 		value = e(Dropdown, {
-			icon = state.Settings.Framework,
-			label = Store.Enum.Framework[state.Settings.Framework][1],
-			hint = Store.Enum.Framework[state.Settings.Framework][2],
-			value = state.Settings.Framework,
+			icon = details.icon,
+			label = details.label,
+			hint = details.hint,
+			value = framework,
 			options = DROPDOWN_OPTIONS,
 
 			onChanged = function(value)
-				Store:SetState({ Settings = { Framework = value } })
+				dispatch(Actions.SetSetting({
+					key = "framework",
+					value = value,
+				}))
 			end,
 		}),
 	})

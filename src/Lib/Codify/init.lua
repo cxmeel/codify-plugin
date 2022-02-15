@@ -20,7 +20,8 @@ type CodifyInstanceOptions = CodifyOptions & {
 }
 
 local DEFAULT_OPTIONS: CodifyOptions = {
-	CreateMethod = "Roact.createElement",
+	Framework = "Regular",
+	CreateMethod = nil,
 	Color3Format = "FULL",
 	UDim2Format = "FULL",
 	EnumFormat = "FULL",
@@ -30,7 +31,7 @@ local DEFAULT_OPTIONS: CodifyOptions = {
 }
 
 local function CodifyInstance(instance: Instance, options: CodifyInstanceOptions)
-	local generator = (Frameworks[options.Framework or "Roact"] or Frameworks.Roact).Generator
+	local generator = Frameworks[options.Framework].Generator
 	local success, response = pcall(generator, instance, options)
 
 	if success then

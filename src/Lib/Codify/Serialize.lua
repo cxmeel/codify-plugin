@@ -28,7 +28,7 @@ end
 local FORMAT_MAP
 FORMAT_MAP = {
 	Color3Format = {
-		FULL = function(value: Color3)
+		Full = function(value: Color3)
 			local red = clamp(value.R, 0, 1)
 			local green = clamp(value.G, 0, 1)
 			local blue = clamp(value.B, 0, 1)
@@ -44,7 +44,7 @@ FORMAT_MAP = {
 			return fmt("Color3.new(%s, %s, %s)", red, green, blue)
 		end,
 
-		HEX = function(value: Color3)
+		Hex = function(value: Color3)
 			local hex: string = (value :: any):ToHex()
 			return fmt('Color3.fromHex("#%s")', hex:upper())
 		end,
@@ -73,7 +73,7 @@ FORMAT_MAP = {
 	},
 
 	UDim2Format = {
-		FULL = function(value: UDim2)
+		Full = function(value: UDim2)
 			local x = clamp(value.X.Scale, 0, 1)
 			local y = clamp(value.Y.Scale, 0, 1)
 			local ox = value.X.Offset
@@ -89,7 +89,7 @@ FORMAT_MAP = {
 			return fmt("UDim2.new(%s, %d, %s, %d)", xs, ox, ys, oy)
 		end,
 
-		SMART = function(value: UDim2)
+		Smart = function(value: UDim2)
 			local x = clamp(value.X.Scale, 0, 1)
 			local y = clamp(value.Y.Scale, 0, 1)
 			local ox = value.X.Offset
@@ -106,16 +106,16 @@ FORMAT_MAP = {
 				return fmt("UDim2.fromScale(%s, %s)", xs, ys)
 			end
 
-			return FORMAT_MAP.UDim2Format.FULL(value)
+			return FORMAT_MAP.UDim2Format.Full(value)
 		end,
 	},
 
 	NumberRangeFormat = {
-		FULL = function(value: NumberRange)
+		Full = function(value: NumberRange)
 			return fmt("NumberRange.new(%s, %s)", FormatNumber(value.Min), FormatNumber(value.Max))
 		end,
 
-		SMART = function(value: NumberRange)
+		Smart = function(value: NumberRange)
 			if value.Max == value.Min then
 				return fmt("NumberRange.new(%s)", FormatNumber(value.Min))
 			end
@@ -125,13 +125,13 @@ FORMAT_MAP = {
 	},
 
 	EnumFormat = {
-		FULL = tostring,
+		Full = tostring,
 
-		NUMBER = function(value: EnumItem)
+		Number = function(value: EnumItem)
 			return value.Value
 		end,
 
-		STRING = function(value: EnumItem)
+		String = function(value: EnumItem)
 			return fmt("%q", value.Name)
 		end,
 	},
