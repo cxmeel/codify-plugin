@@ -1,14 +1,15 @@
-local Selection = game:GetService("Selection")
+local PluginDebugService = game:GetService("PluginDebugService")
 
-local Highlighter = require(script.Packages.Highlighter)
 local Roact = require(script.Packages.Roact)
-
-local AppComponent = require(script.Components.App)
-
 local RoduxHooks = require(script.Packages.RoduxHooks)
 local Rodux = require(script.Packages.Rodux)
 
 local UserSettingsManager = require(script.Lib.UserSettingsManager)
+local HighlighterManager = require(script.Lib.HighlighterManager)
+local SelectionManager = require(script.Lib.SelectionManager)
+
+local AppComponent = require(script.Components.App)
+
 local Reducer = require(script.Reducer)
 local Actions = require(script.Actions)
 local Thunks = require(script.Thunks)
@@ -17,71 +18,23 @@ local store = Rodux.Store.new(Reducer, nil, {
 	Rodux.thunkMiddleware,
 })
 
+if plugin.Parent == PluginDebugService then
+	Roact.setGlobalConfig({
+		elementTracing = true,
+	})
+end
+
 UserSettingsManager.new(plugin, store)
+HighlighterManager.new(plugin)
 
-do -- Enable debug mode --
-	local PluginDebugService = game:GetService("PluginDebugService")
+do -- Handle Selection --
+	local selection = SelectionManager.new(plugin, {
+		classFilter = { "GuiBase2d", "UIBase", "ValueBase", "Folder", "Configuration" },
+	})
 
-	if plugin.Parent == PluginDebugService then
-		Roact.setGlobalConfig({
-			elementTracing = true,
-		})
-	end
-end
+	store:dispatch(Actions.SetTargetInstance(selection:GetCurrentSelection()))
 
-do -- Watch syntax colors --
-	local Studio = settings():GetService("Studio") :: Studio
-	local studioTheme = Studio.Theme :: StudioTheme
-
-	local function UpdateHighlighterScheme()
-		Highlighter.UpdateColors({
-			background = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptBackground),
-			iden = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptText),
-			keyword = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptKeyword),
-			builtin = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptBuiltInFunction),
-			string = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptString),
-			number = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptNumber),
-			comment = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptComment),
-			operator = studioTheme:GetColor(Enum.StudioStyleGuideColor.ScriptOperator),
-		})
-	end
-
-	Studio.ThemeChanged:Connect(function()
-		studioTheme = Studio.Theme :: StudioTheme
-		UpdateHighlighterScheme()
-	end)
-
-	UpdateHighlighterScheme()
-end
-
-do -- Watch selection --
-	local ValidSelectionClasses = { "GuiBase2d", "UIBase", "ValueBase", "Folder", "Configuration" }
-
-	local function GetCurrentSelection(): Instance?
-		local ok, selection = pcall(function()
-			local selection = Selection:Get()[1]
-
-			if not selection then
-				return
-			end
-
-			for _, class in ipairs(ValidSelectionClasses) do
-				if selection:IsA(class) then
-					return selection
-				end
-			end
-		end)
-
-		return ok and selection
-	end
-
-	do -- Check current selection --
-		local selection = GetCurrentSelection()
-		store:dispatch(Actions.SetTargetInstance(selection))
-	end
-
-	Selection.SelectionChanged:Connect(function()
-		local selection = GetCurrentSelection()
+	selection.Changed:Connect(function(selection)
 		store:dispatch(Actions.SetTargetInstance(selection))
 	end)
 end
