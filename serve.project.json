@@ -1,12 +1,12 @@
 {
-  "name": "RoactifyPluginServe",
+  "name": "CodifyPluginServe",
   "tree": {
     "$className": "DataModel",
     "$ignoreUnknownInstances": true,
     "ServerScriptService": {
       "$className": "ServerScriptService",
       "$ignoreUnknownInstances": true,
-      "RoactifyPlugin": {
+      "CodifyPlugin": {
         "$path": "default.project.json"
       }
     }

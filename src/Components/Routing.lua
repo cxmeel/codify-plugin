@@ -21,7 +21,7 @@ local function Routing(_, hooks)
 		router = e(RoactRouter.Router, {}, {
 			navigationTabs = e(Navigation.Container, nil, {
 				home = e(Navigation.Tab, {
-					label = "Roactify",
+					label = "Codify",
 					icon = "Brand",
 					order = 10,
 					location = "/",
@@ -40,8 +40,17 @@ local function Routing(_, hooks)
 				Position = UDim2.fromOffset(0, 36),
 				Size = UDim2.new(1, 0, 1, -36),
 			}, {
-				home = e(Pages.Home),
-				settings = e(Pages.Settings),
+				home = e(RoactRouter.Route, {
+					path = "/",
+					exact = true,
+					component = Pages.Home,
+				}),
+
+				settings = e(RoactRouter.Route, {
+					path = "/settings",
+					exact = true,
+					component = Pages.Settings,
+				}),
 			}),
 		}),
 	})

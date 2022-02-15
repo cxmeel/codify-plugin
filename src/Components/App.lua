@@ -20,13 +20,13 @@ local function App(props: AppProps, hooks)
 		plugin = props.plugin,
 	}, {
 		toolbar = e(StudioPlugin.Toolbar, {
-			name = "Roactify",
+			name = "Codify",
 		}, {
 			widgetToggle = e(StudioPlugin.ToolbarButton, {
 				id = "widgetToggle",
-				tooltip = "Show or hide the Roactify widget",
+				tooltip = "Show or hide the Codify widget",
 				icon = "rbxassetid://8730522354",
-				label = "Roactify",
+				label = "Codify",
 				active = widgetVisible,
 				onActivated = function()
 					setWidgetVisible(not widgetVisible)
@@ -35,10 +35,10 @@ local function App(props: AppProps, hooks)
 		}),
 
 		widget = e(StudioPlugin.Widget, {
-			id = "roactifyWidget",
+			id = "CodifyWidget",
 			initState = Enum.InitialDockState.Left,
 			enabled = widgetVisible,
-			title = "Roactify",
+			title = "Codify",
 
 			onInit = setWidgetVisible,
 			onToggle = setWidgetVisible,
@@ -54,7 +54,7 @@ local function App(props: AppProps, hooks)
 					},
 				},
 			}, {
-				routing = if widgetVisible then e(Routing) else nil,
+				routing = widgetVisible and e(Routing),
 			}),
 		}),
 	})

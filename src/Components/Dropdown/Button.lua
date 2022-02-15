@@ -16,6 +16,9 @@ export type DropdownButtonProps = {
 	disabled: boolean?,
 	active: boolean?,
 	order: number?,
+	icon: string?,
+	iconPosition: string?,
+	iconColour: Color3?,
 	onActivated: ((rbx: ImageButton) -> ())?,
 	onPositionChanged: ((rbx: ImageButton) -> ())?,
 	onSizeChanged: ((rbx: ImageButton) -> ())?,
@@ -29,9 +32,9 @@ local function DropdownButton(props: DropdownButtonProps, hooks)
 
 	local colours = hooks.useMemo(function()
 		local colours = {
-			border = { Enum.StudioStyleGuideColor.ButtonBorder, nil },
-			background = { Enum.StudioStyleGuideColor.Button, nil },
-			foreground = { Enum.StudioStyleGuideColor.ButtonText, nil },
+			border = { Enum.StudioStyleGuideColor.InputFieldBorder, nil },
+			background = { Enum.StudioStyleGuideColor.InputFieldBackground, nil },
+			foreground = { Enum.StudioStyleGuideColor.MainText, nil },
 			hint = { Enum.StudioStyleGuideColor.DimmedText, nil },
 		}
 
@@ -135,17 +138,26 @@ local function DropdownButton(props: DropdownButtonProps, hooks)
 					alignY = Enum.VerticalAlignment.Center,
 				}),
 
+				icon = props.icon and e(Icon, {
+					icon = props.icon,
+					order = if props.iconPosition == "end" then 40 else 10,
+					colour = if props.iconColour then props.iconColour else colours.foreground,
+					size = 16,
+				}),
+
 				label = e(Text, {
 					text = props.label,
 					textColour = colours.foreground,
-					order = 10,
+					wrapped = false,
+					order = 20,
 				}),
 
 				hint = if props.hint
 					then e(Text, {
 						text = props.hint,
 						textColour = colours.hint,
-						order = 20,
+						wrapped = false,
+						order = 30,
 					})
 					else nil,
 			}),

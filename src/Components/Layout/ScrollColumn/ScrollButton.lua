@@ -102,7 +102,7 @@ local function ScrollButton(props: ScrollButtonProps, hooks)
 		[Roact.Event.InputEnded] = onInputEnded,
 		[Roact.Event.Activated] = props.onActivated,
 	}, {
-		Icon = if props.icon then e(Icon, iconProps) else nil,
+		Icon = props.icon and e(Icon, iconProps),
 	})
 end
 
