@@ -22,10 +22,10 @@ type CodifyInstanceOptions = CodifyOptions & {
 local DEFAULT_OPTIONS: CodifyOptions = {
 	Framework = "Regular",
 	CreateMethod = nil,
-	Color3Format = "FULL",
-	UDim2Format = "FULL",
-	EnumFormat = "FULL",
-	NamingScheme = "ALL",
+	Color3Format = "Full",
+	UDim2Format = "Full",
+	EnumFormat = "Full",
+	NamingScheme = "All",
 	TabCharacter = "  ",
 	Indent = 0,
 }

@@ -28,7 +28,7 @@ local function RoactifyInstance(instance: Instance, options)
 	if options.Indent > 0 then
 		local nameChanged = table.find(changedProps, "Name")
 
-		if options.NamingScheme == "ALL" or (options.NamingScheme == "CHANGED" and nameChanged) then
+		if options.NamingScheme == "All" or (options.NamingScheme == "Changed" and nameChanged) then
 			local name = getSafeVarName(instance)
 			if options.LevelIdentifiers[name] ~= nil then
 				options.LevelIdentifiers[name] += 1
