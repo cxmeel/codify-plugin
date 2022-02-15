@@ -70,18 +70,22 @@ end
 do -- Watch selection --
 	local ValidSelectionClasses = { "GuiBase2d", "UIBase", "ValueBase", "Folder", "Configuration" }
 
-	local function IsSelectionValid(selection: Instance?)
-		if not selection then
-			return false
-		end
+	local function GetCurrentSelection(): Instance?
+		local ok, selection = pcall(function()
+			local selection = Selection:Get()[1]
 
-		for _, class in ipairs(ValidSelectionClasses) do
-			if selection:IsA(class) then
-				return true
+			if not selection then
+				return
 			end
-		end
 
-		return false
+			for _, class in ipairs(ValidSelectionClasses) do
+				if selection:IsA(class) then
+					return selection
+				end
+			end
+		end)
+
+		return ok and selection
 	end
 
 	local function IsLargeInstance(instance: Instance?)
@@ -94,39 +98,21 @@ do -- Watch selection --
 	end
 
 	do -- Check current selection --
-		local currentSelection = Selection:Get()[1]
-
-		local ok, valid = pcall(IsSelectionValid, currentSelection)
-
-		if not ok then
-			-- Probably selected something roblox locked
-			valid = false
-		end
-
-		local isLarge = if valid then IsLargeInstance(currentSelection) else false
+		local selection = GetCurrentSelection()
+		local isLarge = IsLargeInstance(selection)
 
 		Store:SetState({
-			RootTarget = if valid then currentSelection else Store.None,
+			RootTarget = selection or Store.None,
 			LargeInstance = isLarge,
 		})
-
-		currentSelection = nil
 	end
 
 	Selection.SelectionChanged:Connect(function()
-		local currentSelection = Selection:Get()[1]
-
-		local ok, valid = pcall(IsSelectionValid, currentSelection)
-
-		if not ok then
-			-- Probably selected something roblox locked
-			valid = false
-		end
-
-		local isLarge = if valid then IsLargeInstance(currentSelection) else false
+		local selection = GetCurrentSelection()
+		local isLarge = IsLargeInstance(selection)
 
 		Store:SetState({
-			RootTarget = if valid then currentSelection else Store.None,
+			RootTarget = selection or Store.None,
 			LargeInstance = isLarge,
 		})
 	end)
