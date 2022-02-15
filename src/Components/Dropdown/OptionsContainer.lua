@@ -55,7 +55,7 @@ local function OptionsContainer(props: OptionsContainerProps, hooks)
 	return e("ImageButton", {
 		AnchorPoint = containerDisplay.anchor,
 		AutoButtonColor = false,
-		BackgroundColor3 = theme:GetColor(Enum.StudioStyleGuideColor.Border),
+		BackgroundColor3 = theme:GetColor(Enum.StudioStyleGuideColor.InputFieldBorder),
 		Position = containerDisplay.position,
 		Size = containerDisplay.size,
 		ClipsDescendants = true,
@@ -64,7 +64,7 @@ local function OptionsContainer(props: OptionsContainerProps, hooks)
 		padding = e(Layout.Padding, { 1 }),
 
 		options = e("Frame", {
-			BackgroundColor3 = theme:GetColor(Enum.StudioStyleGuideColor.MainBackground),
+			BackgroundColor3 = theme:GetColor(Enum.StudioStyleGuideColor.InputFieldBackground),
 			ClipsDescendants = true,
 			Size = UDim2.fromScale(1, 1),
 		}, {
