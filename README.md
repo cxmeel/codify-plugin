@@ -30,7 +30,7 @@
 ✨ Design UI in Studio; convert it to code!
 
 [![Get on Itch][image/get/itch]][plugin/itch]
-[![Get on Github][image/get/github]][plugin/github]
+[![Get on Github][image/get/github]][repo/releases]
 [![Get on Roblox][image/get/roblox]][plugin/toolbox]
 
 </div>
