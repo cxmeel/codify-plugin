@@ -5,7 +5,7 @@ return {
 	},
 
 	version = "2.0.0",
-	repo = "csqrl/roactify-plugin",
+	repo = "csqrl/codify-plugin",
 
 	authors = {
 		{ userId = 3659905 },

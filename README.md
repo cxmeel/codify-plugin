@@ -1,9 +1,11 @@
 <!-- Links -->
 
-[repo/homepage]: https://github.com/csqrl/roactify-plugin
-[repo/releases]: https://github.com/csqrl/roactify-plugin/releases
-[repo/contributors]: https://github.com/csqrl/roactify-plugin/graphs/contributors
+[repo/homepage]: https://github.com/csqrl/codify-plugin
+[repo/releases]: https://github.com/csqrl/codify-plugin/releases
+[repo/contributors]: https://github.com/csqrl/codify-plugin/graphs/contributors
 [plugin/toolbox]: https://roblox.com/library/4749111907
+[plugin/itch]: https://csqrl.itch.io/codify
+[plugin/github]: https://github.com/csqrl/codify-plugin
 [devhub/managing-plugins]: https://developer.roblox.com/en-us/articles/Intro-to-Plugins#finding-and-managing-plugins
 [roact/repo]: https://github.com/roblox/roact
 [fusion/repo]: https://github.com/elttob/fusion
@@ -17,6 +19,9 @@
 [image/cover]: assets/Cover.png
 [image/demo-gif]: assets/Demo.gif
 [image/plugin-screenshots]: assets/PluginScreenshots.png
+[image/get/itch]: assets/GetItch.svg
+[image/get/github]: assets/GetGithub.svg
+[image/get/roblox]: assets/GetRoblox.svg
 
 <div align="center">
 
@@ -24,7 +29,9 @@
 
 ✨ Design UI in Studio; convert it to code!
 
-[📦 Source Code][repo/homepage] | [⏩ Install Codify][plugin/toolbox]
+[![Get on Itch][image/get/itch]][plugin/itch]
+[![Get on Github][image/get/github]][plugin/github]
+[![Get on Roblox][image/get/roblox]][plugin/toolbox]
 
 </div>
 
@@ -42,17 +49,21 @@ Codify is 100% free to download, but if you like this plugin, please **consider 
 
 ## itch.io
 
-_Coming soon!_
+Help support plugin developers and download the latest version of Codify from itch.io!
+
+[![Get on Itch][image/get/itch]][plugin/itch]
 
 ## Plugin Marketplace
 
 The simplest way to install Codify is to install it from the plugin marketplace. This gives you access to the latest version of the plugin, and easy updates via the [Plugin Management][devhub/managing-plugins] window.
 
-- [Install Codify &rarr;][plugin/toolbox]
+[![Get on Roblox][image/get/roblox]][plugin/toolbox]
 
 ## Manual Installation
 
 Codify is an open-source plugin. New releases are automatically published to both the Roblox plugin marketplace and GitHub releases. If you'd rather install the plugin manually, download the latest binary (`.rbxm` or `.rbxmx`) from the [releases page][repo/releases], and drop it into your Studio plugins directory.
+
+[![Get on GitHub][image/get/github]][repo/releases]
 
 # Overview of Permissions
 
@@ -64,7 +75,7 @@ Below is a list of URLs used by Codify _(all requests are unauthenticated)_:
 
 - https://s3.amazonaws.com/setup.roblox.com/versionQTStudio
 - https://s3.amazonaws.com/setup.roblox.com/{{version-hash}}-API-Dump.json
-- https://api.github.com/repos/csqrl/roactify-plugin/contributors?anon=1
+- https://api.github.com/repos/csqrl/codify-plugin/contributors?anon=1
 
 ## Script Injection
 
