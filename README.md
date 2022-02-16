@@ -20,7 +20,7 @@
 [image/demo-gif]: assets/Demo.gif
 [image/plugin-screenshots]: assets/PluginScreenshots.png
 [image/get/itch]: assets/GetItch.svg
-[image/get/github]: assets/GetGithub.svg
+[image/get/github]: assets/GetGitHub.svg
 [image/get/roblox]: assets/GetRoblox.svg
 
 <div align="center">
