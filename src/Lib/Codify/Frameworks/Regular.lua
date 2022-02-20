@@ -47,7 +47,7 @@ local function RegularifyInstance(instance: Instance, options)
 	end
 
 	if #children > 0 then
-		for _, child in ipairs(children) do
+		for index, child in ipairs(children) do
 			snippet:CreateLine()
 			snippet:CreateLine():Push(RegularifyInstance(child, options))
 
@@ -57,6 +57,10 @@ local function RegularifyInstance(instance: Instance, options)
 			end
 
 			snippet:CreateLine():Push(childVar, ".Parent = ", var)
+
+			if index == #children then
+				snippet:CreateLine()
+			end
 		end
 	end
 
