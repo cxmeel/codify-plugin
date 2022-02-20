@@ -85,7 +85,9 @@ This is necessary to the Save to Device feature only. The plugin will _temporari
 
 # Screenshots
 
-https://github.com/csqrl/codify-plugin/raw/dev/assets/DemoVideo.mp4
+Watch Codify in action on YouTube: https://youtu.be/aLFWPKNiBGU
+
+https://github.com/csqrl/codify-plugin/raw/assets/DemoVideo.mp4
 
 ![Screenshot of the Plugin][image/plugin-screenshots]
 
