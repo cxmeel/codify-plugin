@@ -51,7 +51,11 @@ local function FusionifyInstance(instance: Instance, options)
 		snippet:CreateLine():Push(tab(), "[Children] = {")
 		options.Indent += 1
 
-		for _, child in ipairs(children) do
+		for index, child in ipairs(children) do
+			if index > 1 then
+				snippet:CreateLine()
+			end
+
 			snippet:CreateLine():Push(tab(), FusionifyInstance(child, options), ",")
 		end
 

@@ -64,7 +64,11 @@ local function RoactifyInstance(instance: Instance, options)
 		snippet:Line():Push(", {")
 		options.Indent += 1
 
-		for _, child in ipairs(children) do
+		for index, child in ipairs(children) do
+			if index > 1 then
+				snippet:CreateLine()
+			end
+
 			snippet:CreateLine():Push(tab(), RoactifyInstance(child, options), ",")
 		end
 
