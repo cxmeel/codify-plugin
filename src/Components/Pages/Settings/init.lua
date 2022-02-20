@@ -27,25 +27,36 @@ local function Page(_, hooks)
 			order = 10,
 		}),
 
+		snippets = e(Layout.Forms.Section, {
+			heading = "Snippets",
+			hint = "Configure options relating to the main Codify tab.",
+			divider = true,
+			order = 20,
+		}, {
+			syntaxHighlighting = e(SyntaxHighlighting, {
+				order = 10,
+			}),
+		}),
+
 		output = e(Layout.Forms.Section, {
 			heading = "Output",
 			hint = "Customise the formatting of your generated code snippets. You will need to regenerate your snippets to reflect changes.",
 			divider = true,
-			order = 20,
+			order = 30,
 		}, {
 			createMethod = e(CreateMethod, {
 				order = 10,
 			}),
 
-			color3Format = e(Inputs.Color3Format, {
+			namingScheme = e(Inputs.NamingScheme, {
 				order = 20,
 			}),
 
-			enumFormat = e(Inputs.EnumFormat, {
+			color3Format = e(Inputs.Color3Format, {
 				order = 30,
 			}),
 
-			namingScheme = e(Inputs.NamingScheme, {
+			enumFormat = e(Inputs.EnumFormat, {
 				order = 40,
 			}),
 
@@ -56,14 +67,10 @@ local function Page(_, hooks)
 			udim2Format = e(Inputs.UDim2Format, {
 				order = 60,
 			}),
-
-			syntaxHighlighting = e(SyntaxHighlighting, {
-				order = 70,
-			}),
 		}),
 
 		about = e(About, {
-			order = 30,
+			order = 40,
 		}),
 	})
 end
