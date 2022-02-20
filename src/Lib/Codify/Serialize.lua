@@ -74,8 +74,8 @@ FORMAT_MAP = {
 
 	UDim2Format = {
 		Full = function(value: UDim2)
-			local x = clamp(value.X.Scale, 0, 1)
-			local y = clamp(value.Y.Scale, 0, 1)
+			local x = value.X.Scale
+			local y = value.Y.Scale
 			local ox = value.X.Offset
 			local oy = value.Y.Offset
 
@@ -90,8 +90,8 @@ FORMAT_MAP = {
 		end,
 
 		Smart = function(value: UDim2)
-			local x = clamp(value.X.Scale, 0, 1)
-			local y = clamp(value.Y.Scale, 0, 1)
+			local x = value.X.Scale
+			local y = value.Y.Scale
 			local ox = value.X.Offset
 			local oy = value.Y.Offset
 
