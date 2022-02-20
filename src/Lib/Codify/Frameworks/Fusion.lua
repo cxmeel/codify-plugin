@@ -18,13 +18,12 @@ local function FusionifyInstance(instance: Instance, options)
 	snippet:CreateLine():Push(createMethod, ' "', instance.ClassName, '" {')
 	options.Indent += 1
 
-	local name = instance.Name
 	local nameChanged = table.find(changedProps, "Name")
-	if options.NamingScheme == "NONE" or (options.NamingScheme == "CHANGED" and not nameChanged) then
-		name = nil
-	end
+	local name: string = nil
 
-	if name ~= nil then
+	if options.NamingScheme == "All" or (options.NamingScheme == "Changed" and nameChanged) then
+		name = instance.Name
+
 		if options.LevelIdentifiers[name] ~= nil then
 			options.LevelIdentifiers[name] += 1
 			name ..= tostring(options.LevelIdentifiers[name])
@@ -33,6 +32,10 @@ local function FusionifyInstance(instance: Instance, options)
 		end
 
 		snippet:CreateLine():Push(tab(), "Name = ", string.format("%q", name), ",")
+
+		if #children > 0 and #changedProps == 0 then
+			snippet:CreateLine()
+		end
 	end
 
 	if #changedProps > 0 then
@@ -46,10 +49,13 @@ local function FusionifyInstance(instance: Instance, options)
 			local value = Serialize.SerialiseProperty(instance, prop, options)
 			snippet:CreateLine():Push(tab(), prop, " = ", value, ",")
 		end
+
+		if #children > 0 then
+			snippet:CreateLine()
+		end
 	end
 
 	if #children > 0 then
-		snippet:CreateLine()
 		snippet:CreateLine():Push(tab(), "[Children] = {")
 		options.Indent += 1
 
