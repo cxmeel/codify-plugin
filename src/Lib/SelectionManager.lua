@@ -33,6 +33,10 @@ function Manager:GetCurrentSelection(): Instance?
 			return
 		end
 
+		if #self.classFilter == 0 then
+			return selection
+		end
+
 		for _, class in ipairs(self.classFilter) do
 			if selection:IsA(class) then
 				return selection
