@@ -36,7 +36,7 @@ local SHORT_BRICKCOLORS = {
 	Blue = BrickColor.Blue(),
 }
 
-local MATERIAL_PHYISCAL_PROPS: { [Enum.Material]: { number } } = {}
+local MATERIAL_PHYISCAL_PROPS: { [Enum.Material]: string } = {}
 
 do
 	for _, material in ipairs(Enum.Material:GetEnumItems()) do
