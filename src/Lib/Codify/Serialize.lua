@@ -5,11 +5,13 @@ local clamp = math.clamp
 type CodifyOptions = {
 	Framework: string?,
 	CreateMethod: string?,
+	BrickColorFormat: string?,
 	Color3Format: string?,
 	UDim2Format: string?,
 	EnumFormat: string?,
 	NamingScheme: string?,
 	NumberRangeFormat: string?,
+	PhysicalPropertiesFormat: string?,
 	TabCharacter: string?,
 	Indent: number?,
 }
@@ -313,23 +315,23 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 	local valueType = type(value)
 
 	if valueTypeOf == "Color3" then
-		return FORMAT_MAP.Color3Format[options.Color3Format](value)
+		return FORMAT_MAP.Color3Format[options.Color3Format or "Hex"](value)
 	elseif valueTypeOf == "BrickColor" then
-		return FORMAT_MAP.BrickColorFormat.Name(value)
+		return FORMAT_MAP.BrickColorFormat[options.BrickColorFormat or "Smart"](value)
 	elseif valueTypeOf == "UDim" then
 		return FORMAT_MAP.UDimFormat.Full(value)
 	elseif valueTypeOf == "UDim2" then
-		return FORMAT_MAP.UDim2Format[options.UDim2Format](value)
+		return FORMAT_MAP.UDim2Format[options.UDim2Format or "Smart"](value)
 	elseif valueTypeOf == "NumberRange" then
-		return FORMAT_MAP.NumberRangeFormat[options.NumberRangeFormat](value)
+		return FORMAT_MAP.NumberRangeFormat[options.NumberRangeFormat or "Smart"](value)
 	elseif valueTypeOf == "EnumItem" then
-		return FORMAT_MAP.EnumFormat[options.EnumFormat](value)
+		return FORMAT_MAP.EnumFormat[options.EnumFormat or "Full"](value)
 	elseif valueTypeOf == "Axes" then
 		return FORMAT_MAP.NormalIdConstructor.Full(value, "Axes")
 	elseif valueTypeOf == "Faces" then
 		return FORMAT_MAP.NormalIdConstructor.Full(value, "Faces")
 	elseif valueTypeOf == "PhysicalProperties" then
-		return FORMAT_MAP.PhysicalPropertiesFormat.Full(value)
+		return FORMAT_MAP.PhysicalPropertiesFormat[options.PhysicalPropertiesFormat or "Smart"](value)
 	elseif valueTypeOf == "CFrame" then
 		return FORMAT_MAP.CFrameFormat.Full(value)
 	elseif valueTypeOf == "ColorSequence" then

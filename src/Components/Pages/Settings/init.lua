@@ -67,6 +67,14 @@ local function Page(_, hooks)
 			udim2Format = e(Inputs.UDim2Format, {
 				order = 60,
 			}),
+
+			brickColorFormat = e(Inputs.BrickColorFormat, {
+				order = 70,
+			}),
+
+			physicalPropertiesFormat = e(Inputs.PhysicalPropertiesFormat, {
+				order = 80,
+			}),
 		}),
 
 		about = e(About, {
