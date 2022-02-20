@@ -2,15 +2,7 @@ local Serialize = require(script.Parent.Parent.Serialize)
 local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
 
-local function getSafeVarName(instance: Instance): string
-	local name = instance.Name
-	local first = string.find(name, "^%a")
-	local prefix = string.lower(string.sub(name, first, first))
-	local suffix = string.sub(name, first + 1)
-	local var: string = string.gsub(prefix .. suffix, "[^%w]", "_")
-
-	return var
-end
+local getSafeVarName = require(script.Parent.Parent.GetSafeName)
 
 local function RoactifyInstance(instance: Instance, options)
 	local createMethod = options.CreateMethod or "Roact.createElement"

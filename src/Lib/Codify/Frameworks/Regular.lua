@@ -1,75 +1,73 @@
-local Serialize = require(script.Parent.Parent.Serialize)
-local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
+local GetSafeName = require(script.Parent.Parent.GetSafeName)
+local Serialise = require(script.Parent.Parent.Serialize)
+local Script = require(script.Parent.Parent.Script)
 
-local function getSafeVarName(instance: Instance): string
-	local name = instance.Name
-	local first = string.find(name, "^%a")
-	local prefix = string.lower(string.sub(name, first, first))
-	local suffix = string.sub(name, first + 1)
-	local var: string = string.gsub(prefix .. suffix, "[^%w]", "_")
+local concat = table.concat
+local fmt = string.format
 
-	return var
-end
-
-local function RegularifyInstance(instance: Instance, options)
-	local snippet = Script.new()
+local function Regularify(instance: Instance, options)
+	local output = Script.new()
 
 	local changedProps = select(2, Properties.GetChangedProperties(instance):await())
 	local children = instance:GetChildren()
 
-	local var = getSafeVarName(instance)
-	if options.LevelIdentifiers[var] ~= nil then
-		options.LevelIdentifiers[var] += 1
-		var ..= tostring(options.LevelIdentifiers[var])
-	else
-		options.LevelIdentifiers[var] = 0
+	if not options._instanceNames then
+		options._instanceNames = {}
 	end
 
-	snippet:CreateLine():Push("local " .. var .. ' = Instance.new("', instance.ClassName, '")')
+	local name = GetSafeName(instance)
 
-	local nameChanged = table.find(changedProps, "Name")
-	if options.NamingScheme == "ALL" or (options.NamingScheme == "CHANGED" and nameChanged) then
-		snippet:CreateLine():Push(var, ".Name = ", string.format("%q", var))
+	if options._instanceNames[name] == nil then
+		options._instanceNames[name] = 0
+	else
+		options._instanceNames[name] += 1
+		name ..= options._instanceNames[name]
+	end
+
+	output:CreateLine():Push(fmt("local %s = Instance.new(%q)", name, instance.ClassName))
+
+	local isNameChanged = table.find(changedProps, "Name")
+
+	if options.NamingScheme == "All" or (options.NamingScheme == "Changed" and isNameChanged) then
+		output:CreateLine():Push(fmt("%s.Name = %q", name, name))
 	end
 
 	if #changedProps > 0 then
-		for _, prop in ipairs(changedProps) do
-			if prop == "Name" then
+		for _, property in ipairs(changedProps) do
+			if property == "Name" then
 				continue
 			end
 
-			options.PropIndent = #prop + 3
+			options.PropIndent = #property + 3
 
-			local value = Serialize.SerialiseProperty(instance, prop, options)
-			snippet:CreateLine():Push(var, ".", prop, " = ", value)
+			local value = Serialise.SerialiseProperty(instance, property, options)
+
+			output:CreateLine():Push(fmt("%s.%s = %s", name, property, value))
 		end
 	end
 
 	if #children > 0 then
 		for index, child in ipairs(children) do
-			snippet:CreateLine()
-			snippet:CreateLine():Push(RegularifyInstance(child, options))
+			output:CreateLine()
 
-			local childVar = getSafeVarName(child)
-			if options.LevelIdentifiers[childVar] > 0 then
-				childVar ..= tostring(options.LevelIdentifiers[childVar])
-			end
+			local snippet, childName = Regularify(child, options)
 
-			snippet:CreateLine():Push(childVar, ".Parent = ", var)
+			output:CreateLine():Push(snippet)
+			output:CreateLine():Push(fmt("%s.Parent = %s", childName, name))
 
 			if index == #children then
-				snippet:CreateLine()
+				output:CreateLine()
 			end
 		end
 	end
 
-	return snippet:Concat()
+	return output:Concat(), name
 end
 
 return {
-	Generator = RegularifyInstance,
-	Sample = table.concat({
+	Generator = Regularify,
+	Sample = concat({
 		'local lorem = Instance.new("Lorem")',
 		'lorem.ipsum = "dolor"',
 		'lorem.sit = "amet"',
