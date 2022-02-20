@@ -241,6 +241,18 @@ FORMAT_MAP = {
 			return fmt("CFrame.new(%s)", tostring(value))
 		end,
 	},
+
+	VectorFormat = {
+		Full = function(value: Vector2 | Vector3 | Vector2int16 | Vector3int16)
+			local elements = tostring(value):split(", ")
+
+			for index, element in ipairs(elements) do
+				elements[index] = FormatNumber(tonumber(element))
+			end
+
+			return fmt("%s.new(%s)", typeof(value), table.concat(elements, ", "))
+		end,
+	},
 }
 
 local function SerialiseColorSequence(sequence: ColorSequence, options: CodifyInstanceOptions)
@@ -303,7 +315,7 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 	if valueTypeOf == "Color3" then
 		return FORMAT_MAP.Color3Format[options.Color3Format](value)
 	elseif valueTypeOf == "BrickColor" then
-		return FORMAT_MAP.BrickColorFormat.Full(value)
+		return FORMAT_MAP.BrickColorFormat.Name(value)
 	elseif valueTypeOf == "UDim" then
 		return FORMAT_MAP.UDimFormat.Full(value)
 	elseif valueTypeOf == "UDim2" then
@@ -324,6 +336,8 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 		return SerialiseColorSequence(value, options)
 	elseif valueTypeOf == "NumberSequence" then
 		return SerialiseNumberSequence(value, options)
+	elseif valueType == "vector" or valueTypeOf:match("Vector%d") then
+		return FORMAT_MAP.VectorFormat.Full(value)
 	elseif valueTypeOf == "number" then
 		return FormatNumber(value)
 	elseif valueTypeOf == "string" then
