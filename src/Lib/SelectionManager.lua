@@ -1,7 +1,7 @@
 local Selection = game:GetService("Selection")
 
 export type SelectionManagerOptions = {
-	classFilter: { string }?,
+	classFilter: { string | (Instance) -> boolean }?,
 }
 
 local Manager = {}
@@ -33,10 +33,22 @@ function Manager:GetCurrentSelection(): Instance?
 			return
 		end
 
+		if #self.classFilter == 0 then
+			return selection
+		end
+
+		local passesChecks = true
+
 		for _, class in ipairs(self.classFilter) do
-			if selection:IsA(class) then
-				return selection
+			if type(class) == "function" then
+				passesChecks = class(selection)
+			elseif type(class) == "string" then
+				passesChecks = selection:IsA(class)
 			end
+		end
+
+		if passesChecks then
+			return selection
 		end
 	end)
 

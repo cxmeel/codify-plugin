@@ -56,7 +56,7 @@ function Properties.GetPropertyList(class: string)
 				end
 
 				if member.Tags then
-					local tagList = { "ReadOnly", "Deprecated", "Hidden" }
+					local tagList = { "ReadOnly", "Deprecated", "Hidden", "NotScriptable" }
 
 					for _, tag in ipairs(member.Tags) do
 						if table.find(tagList, tag) then

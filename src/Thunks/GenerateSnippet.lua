@@ -3,6 +3,7 @@ local Plugin = script.Parent.Parent
 local Promise = require(Plugin.Packages.Promise)
 
 local Codify = require(Plugin.Lib.Codify)
+local String = require(Plugin.Lib.String)
 local Actions = require(Plugin.Actions)
 
 local CodifyAsync = Promise.promisify(Codify)
@@ -25,11 +26,12 @@ local function GenerateSnippet()
 			NumberRangeFormat = state.userSettings.numberRangeFormat,
 			EnumFormat = state.userSettings.enumFormat,
 			NamingScheme = state.userSettings.namingScheme,
+			ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
 		})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({
 					name = state.targetInstance.instance.Name,
-					content = snippet,
+					content = String.Trim(snippet),
 				}))
 			end)
 			:catch(function() -- fail silently

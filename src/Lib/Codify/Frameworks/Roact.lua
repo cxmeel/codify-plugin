@@ -2,15 +2,7 @@ local Serialize = require(script.Parent.Parent.Serialize)
 local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
 
-local function getSafeVarName(instance: Instance): string
-	local name = instance.Name
-	local first = string.find(name, "^%a")
-	local prefix = string.lower(string.sub(name, first, first))
-	local suffix = string.sub(name, first + 1)
-	local var: string = string.gsub(prefix .. suffix, "[^%w]", "_")
-
-	return var
-end
+local getSafeVarName = require(script.Parent.Parent.GetSafeName)
 
 local function RoactifyInstance(instance: Instance, options)
 	local createMethod = options.CreateMethod or "Roact.createElement"
@@ -27,6 +19,10 @@ local function RoactifyInstance(instance: Instance, options)
 
 	if options.Indent > 0 then
 		local nameChanged = table.find(changedProps, "Name")
+
+		if nameChanged then
+			table.remove(changedProps, nameChanged)
+		end
 
 		if options.NamingScheme == "All" or (options.NamingScheme == "Changed" and nameChanged) then
 			local name = getSafeVarName(instance)
@@ -64,7 +60,11 @@ local function RoactifyInstance(instance: Instance, options)
 		snippet:Line():Push(", {")
 		options.Indent += 1
 
-		for _, child in ipairs(children) do
+		for index, child in ipairs(children) do
+			if index > 1 then
+				snippet:CreateLine()
+			end
+
 			snippet:CreateLine():Push(tab(), RoactifyInstance(child, options), ",")
 		end
 

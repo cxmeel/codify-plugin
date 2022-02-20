@@ -1,7 +1,7 @@
 [package]
 name = "csqrl/codify-plugin"
-description = "✨ Design UI in Studio; convert it to code!"
-version = "2.0.0" # Config/Config.lua
+description = "Convert Instances to code; just like magic!"
+version = "2.1.0" # Config/Config.lua
 license = "MIT"
 authors = ["csqrl (https://csqrl.dev)", "boatbomber (https://www.boatbomber.com/)"]
 contributors = ["chriscerie"]

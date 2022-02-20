@@ -29,7 +29,20 @@ HighlighterManager.new(plugin)
 
 do -- Handle Selection --
 	local selection = SelectionManager.new(plugin, {
-		classFilter = { "GuiBase2d", "UIBase", "ValueBase", "Folder", "Configuration" },
+		classFilter = {
+			function(selection: Instance)
+				return selection.Parent ~= game
+			end,
+
+			function(selection: Instance)
+				local ok = pcall(function()
+					local new = Instance.new(selection.ClassName)
+					new:Destroy()
+				end)
+
+				return ok
+			end,
+		},
 	})
 
 	store:dispatch(Actions.SetTargetInstance(selection:GetCurrentSelection()))

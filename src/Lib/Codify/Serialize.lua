@@ -5,11 +5,13 @@ local clamp = math.clamp
 type CodifyOptions = {
 	Framework: string?,
 	CreateMethod: string?,
+	BrickColorFormat: string?,
 	Color3Format: string?,
 	UDim2Format: string?,
 	EnumFormat: string?,
 	NamingScheme: string?,
 	NumberRangeFormat: string?,
+	PhysicalPropertiesFormat: string?,
 	TabCharacter: string?,
 	Indent: number?,
 }
@@ -23,6 +25,26 @@ type CodifyInstanceOptions = CodifyOptions & {
 
 local function FormatNumber(value: number): string
 	return fmt("%.3g", value)
+end
+
+local SHORT_BRICKCOLORS = {
+	White = BrickColor.White(),
+	Gray = BrickColor.Gray(),
+	DarkGray = BrickColor.DarkGray(),
+	Black = BrickColor.Black(),
+	Red = BrickColor.Red(),
+	Yellow = BrickColor.Yellow(),
+	Green = BrickColor.Green(),
+	Blue = BrickColor.Blue(),
+}
+
+local MATERIAL_PHYISCAL_PROPS: { [Enum.Material]: string } = {}
+
+do
+	for _, material in ipairs(Enum.Material:GetEnumItems()) do
+		local materialProps = PhysicalProperties.new(material)
+		MATERIAL_PHYISCAL_PROPS[material] = tostring(materialProps)
+	end
 end
 
 local FORMAT_MAP
@@ -74,8 +96,8 @@ FORMAT_MAP = {
 
 	UDim2Format = {
 		Full = function(value: UDim2)
-			local x = clamp(value.X.Scale, 0, 1)
-			local y = clamp(value.Y.Scale, 0, 1)
+			local x = value.X.Scale
+			local y = value.Y.Scale
 			local ox = value.X.Offset
 			local oy = value.Y.Offset
 
@@ -90,8 +112,8 @@ FORMAT_MAP = {
 		end,
 
 		Smart = function(value: UDim2)
-			local x = clamp(value.X.Scale, 0, 1)
-			local y = clamp(value.Y.Scale, 0, 1)
+			local x = value.X.Scale
+			local y = value.Y.Scale
 			local ox = value.X.Offset
 			local oy = value.Y.Offset
 
@@ -133,6 +155,104 @@ FORMAT_MAP = {
 
 		String = function(value: EnumItem)
 			return fmt("%q", value.Name)
+		end,
+	},
+
+	NormalIdConstructor = {
+		Full = function(value: Axes | Faces, className: string)
+			local axes = {}
+
+			for _, normalId in ipairs(Enum.NormalId:GetEnumItems()) do
+				if value[normalId.Name] then
+					table.insert(axes, FORMAT_MAP.EnumFormat.Full(normalId))
+				end
+			end
+
+			return fmt("%s.new(%s)", className, table.concat(axes, ", "))
+		end,
+	},
+
+	BrickColorFormat = {
+		Name = function(value: BrickColor)
+			return fmt("BrickColor.new(%q)", tostring(value))
+		end,
+
+		RGB = function(value: BrickColor)
+			return fmt(
+				"BrickColor.new(%s, %s, %s)",
+				FormatNumber(value.r),
+				FormatNumber(value.g),
+				FormatNumber(value.b)
+			)
+		end,
+
+		Number = function(value: BrickColor)
+			return fmt("BrickColor.new(%d)", value.Number)
+		end,
+
+		Color3 = function(value: BrickColor, options: CodifyInstanceOptions?)
+			local FormatColor3 = FORMAT_MAP.Color3Format[options and options.Color3Format or "Smart"]
+			return fmt("BrickColor3.new(%s)", FormatColor3(value.Color))
+		end,
+
+		Smart = function(value: BrickColor)
+			for methodName, colour in pairs(SHORT_BRICKCOLORS) do
+				if value == colour then
+					return fmt("BrickColor.%s()", methodName)
+				end
+			end
+
+			return FORMAT_MAP.BrickColorFormat.Name(value)
+		end,
+	},
+
+	PhysicalPropertiesFormat = {
+		Full = function(value: PhysicalProperties)
+			local props = {
+				FormatNumber(value.Density),
+				FormatNumber(value.Friction),
+				FormatNumber(value.Elasticity),
+				FormatNumber(value.FrictionWeight),
+				FormatNumber(value.ElasticityWeight),
+			}
+
+			return fmt("PhysicalProperties.new(%s)", table.concat(props, ", "))
+		end,
+
+		Smart = function(value: PhysicalProperties)
+			local propsString = tostring(value)
+
+			for material, materialPropsString in pairs(MATERIAL_PHYISCAL_PROPS) do
+				if propsString == materialPropsString then
+					return fmt("PhysicalProperties.new(%s)", FORMAT_MAP.EnumFormat.Full(material))
+				end
+			end
+
+			return FORMAT_MAP.PhysicalPropertiesFormat.Full(value)
+		end,
+	},
+
+	UDimFormat = {
+		Full = function(value: UDim)
+			return fmt("UDim.new(%s, %s)", FormatNumber(value.Scale), FormatNumber(value.Offset))
+		end,
+	},
+
+	CFrameFormat = {
+		Full = function(value: CFrame)
+			return fmt("CFrame.new(%s)", tostring(value))
+		end,
+	},
+
+	VectorFormat = {
+		Full = function(value: Vector2 | Vector3 | Vector2int16 | Vector3int16)
+			local elements = tostring(value):split(", ")
+
+			for index, element in ipairs(elements) do
+				elements[index] = FormatNumber(tonumber(element))
+			end
+
+			return fmt("%s.new(%s)", typeof(value), table.concat(elements, ", "))
 		end,
 	},
 }
@@ -195,17 +315,31 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 	local valueType = type(value)
 
 	if valueTypeOf == "Color3" then
-		return FORMAT_MAP.Color3Format[options.Color3Format](value)
+		return FORMAT_MAP.Color3Format[options.Color3Format or "Hex"](value)
+	elseif valueTypeOf == "BrickColor" then
+		return FORMAT_MAP.BrickColorFormat[options.BrickColorFormat or "Smart"](value)
+	elseif valueTypeOf == "UDim" then
+		return FORMAT_MAP.UDimFormat.Full(value)
 	elseif valueTypeOf == "UDim2" then
-		return FORMAT_MAP.UDim2Format[options.UDim2Format](value)
+		return FORMAT_MAP.UDim2Format[options.UDim2Format or "Smart"](value)
 	elseif valueTypeOf == "NumberRange" then
-		return FORMAT_MAP.NumberRangeFormat[options.NumberRangeFormat](value)
+		return FORMAT_MAP.NumberRangeFormat[options.NumberRangeFormat or "Smart"](value)
 	elseif valueTypeOf == "EnumItem" then
-		return FORMAT_MAP.EnumFormat[options.EnumFormat](value)
+		return FORMAT_MAP.EnumFormat[options.EnumFormat or "Full"](value)
+	elseif valueTypeOf == "Axes" then
+		return FORMAT_MAP.NormalIdConstructor.Full(value, "Axes")
+	elseif valueTypeOf == "Faces" then
+		return FORMAT_MAP.NormalIdConstructor.Full(value, "Faces")
+	elseif valueTypeOf == "PhysicalProperties" then
+		return FORMAT_MAP.PhysicalPropertiesFormat[options.PhysicalPropertiesFormat or "Smart"](value)
+	elseif valueTypeOf == "CFrame" then
+		return FORMAT_MAP.CFrameFormat.Full(value)
 	elseif valueTypeOf == "ColorSequence" then
 		return SerialiseColorSequence(value, options)
 	elseif valueTypeOf == "NumberSequence" then
 		return SerialiseNumberSequence(value, options)
+	elseif valueType == "vector" or valueTypeOf:match("Vector%d") then
+		return FORMAT_MAP.VectorFormat.Full(value)
 	elseif valueTypeOf == "number" then
 		return FormatNumber(value)
 	elseif valueTypeOf == "string" then

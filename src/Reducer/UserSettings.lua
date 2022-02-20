@@ -6,11 +6,13 @@ local Enums = require(Plugin.Data.Enums)
 
 local DEFAULT_SETTINGS = {
 	syntaxHighlighting = true,
+	brickColorFormat = Enums.BrickColorFormat.Smart,
 	color3Format = Enums.Color3Format.RGB,
 	enumFormat = Enums.EnumFormat.Full,
 	framework = Enums.Framework.Regular,
 	namingScheme = Enums.NamingScheme.All,
 	numberRangeFormat = Enums.NumberRangeFormat.Smart,
+	physicalPropertiesFormat = Enums.PhysicalPropertiesFormat.Smart,
 	udim2Format = Enums.UDim2Format.Smart,
 }
 

@@ -2,6 +2,9 @@ local Serialize = require(script.Parent.Parent.Serialize)
 local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
 
+local concat = table.concat
+local fmt = string.format
+
 local function FusionifyInstance(instance: Instance, options)
 	local createMethod = options.CreateMethod or "New"
 	local snippet = Script.new()
@@ -16,13 +19,12 @@ local function FusionifyInstance(instance: Instance, options)
 	snippet:CreateLine():Push(createMethod, ' "', instance.ClassName, '" {')
 	options.Indent += 1
 
-	local name = instance.Name
 	local nameChanged = table.find(changedProps, "Name")
-	if options.NamingScheme == "NONE" or (options.NamingScheme == "CHANGED" and not nameChanged) then
-		name = nil
-	end
+	local name: string = nil
 
-	if name ~= nil then
+	if options.NamingScheme == "All" or (options.NamingScheme == "Changed" and nameChanged) then
+		name = instance.Name
+
 		if options.LevelIdentifiers[name] ~= nil then
 			options.LevelIdentifiers[name] += 1
 			name ..= tostring(options.LevelIdentifiers[name])
@@ -31,6 +33,10 @@ local function FusionifyInstance(instance: Instance, options)
 		end
 
 		snippet:CreateLine():Push(tab(), "Name = ", string.format("%q", name), ",")
+
+		if #children > 0 and #changedProps == 0 then
+			snippet:CreateLine()
+		end
 	end
 
 	if #changedProps > 0 then
@@ -44,14 +50,21 @@ local function FusionifyInstance(instance: Instance, options)
 			local value = Serialize.SerialiseProperty(instance, prop, options)
 			snippet:CreateLine():Push(tab(), prop, " = ", value, ",")
 		end
+
+		if #children > 0 then
+			snippet:CreateLine()
+		end
 	end
 
 	if #children > 0 then
-		snippet:CreateLine()
-		snippet:CreateLine():Push(tab(), "[Children] = {")
+		snippet:CreateLine():Push(tab(), fmt("[%s] = {", options.ChildrenKey or "Children"))
 		options.Indent += 1
 
-		for _, child in ipairs(children) do
+		for index, child in ipairs(children) do
+			if index > 1 then
+				snippet:CreateLine()
+			end
+
 			snippet:CreateLine():Push(tab(), FusionifyInstance(child, options), ",")
 		end
 
@@ -60,7 +73,7 @@ local function FusionifyInstance(instance: Instance, options)
 	end
 
 	options.Indent -= 1
-	if #changedProps == 0 and #children == 0 then
+	if #changedProps == 0 and #children == 0 and not name then
 		snippet:Line():Push(" }")
 	else
 		snippet:CreateLine():Push(tab(), "}")
@@ -71,7 +84,8 @@ end
 
 return {
 	Generator = FusionifyInstance,
-	Sample = table.concat({
+
+	Sample = concat({
 		'return New "Lorem" {',
 		'  ipsum = "dolor"',
 		'  sit = "amet"',

@@ -9,6 +9,7 @@ local Layout = require(Plugin.Components.Layout)
 
 local SyntaxHighlighting = require(script.SyntaxHighlighting)
 local CreateMethod = require(script.CreateMethod)
+local ChildrenKey = require(script.ChildrenKey)
 local Inputs = require(script.Inputs)
 local About = require(script.About)
 
@@ -27,43 +28,62 @@ local function Page(_, hooks)
 			order = 10,
 		}),
 
+		snippets = e(Layout.Forms.Section, {
+			heading = "Snippets",
+			hint = "Configure options relating to the main Codify tab.",
+			divider = true,
+			order = 20,
+		}, {
+			syntaxHighlighting = e(SyntaxHighlighting, {
+				order = 10,
+			}),
+		}),
+
 		output = e(Layout.Forms.Section, {
 			heading = "Output",
 			hint = "Customise the formatting of your generated code snippets. You will need to regenerate your snippets to reflect changes.",
 			divider = true,
-			order = 20,
+			order = 30,
 		}, {
 			createMethod = e(CreateMethod, {
 				order = 10,
 			}),
 
-			color3Format = e(Inputs.Color3Format, {
+			childrenKey = e(ChildrenKey, {
 				order = 20,
 			}),
 
-			enumFormat = e(Inputs.EnumFormat, {
+			namingScheme = e(Inputs.NamingScheme, {
 				order = 30,
 			}),
 
-			namingScheme = e(Inputs.NamingScheme, {
+			color3Format = e(Inputs.Color3Format, {
 				order = 40,
 			}),
 
-			numberRangeFormat = e(Inputs.NumberRangeFormat, {
+			enumFormat = e(Inputs.EnumFormat, {
 				order = 50,
 			}),
 
-			udim2Format = e(Inputs.UDim2Format, {
+			numberRangeFormat = e(Inputs.NumberRangeFormat, {
 				order = 60,
 			}),
 
-			syntaxHighlighting = e(SyntaxHighlighting, {
+			udim2Format = e(Inputs.UDim2Format, {
 				order = 70,
+			}),
+
+			brickColorFormat = e(Inputs.BrickColorFormat, {
+				order = 80,
+			}),
+
+			physicalPropertiesFormat = e(Inputs.PhysicalPropertiesFormat, {
+				order = 90,
 			}),
 		}),
 
 		about = e(About, {
-			order = 30,
+			order = 40,
 		}),
 	})
 end

@@ -17,25 +17,23 @@
 <!-- Images -->
 
 [image/cover]: assets/Cover.png
-[image/demo-gif]: assets/Demo.gif
 [image/plugin-screenshots]: assets/PluginScreenshots.png
-[image/get/itch]: assets/GetItch.svg
-[image/get/github]: assets/GetGitHub.svg
-[image/get/roblox]: assets/GetRoblox.svg
+[image/get/itch]: https://raw.githubusercontent.com/gist/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/itch.svg
+[image/get/github]: https://raw.githubusercontent.com/gist/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/github.svg
+[image/get/roblox]: https://raw.githubusercontent.com/gist/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/robloxSmall.svg
 
 <div align="center">
 
 [![Cover][image/cover]][plugin/toolbox]
 
-✨ Design UI in Studio; convert it to code!
+✨ Convert Instances to code; just like magic!
 
 [![Get on Itch][image/get/itch]][plugin/itch]
 [![Get on Github][image/get/github]][repo/releases]
-[![Get on Roblox][image/get/roblox]][plugin/toolbox]
 
 </div>
 
-Codify _(formerly Roactify)_ is a collaborative project between [@boatbomber][boatbomber/github] and [@csqrl][csqrl/github], which converts your pre-existing GUI objects into code.
+Codify _(formerly Roactify)_ is a collaborative project between [@boatbomber][boatbomber/github] and [@csqrl][csqrl/github], which converts your pre-existing Roblox Instances into code (v2.1.0 supports all Instances!).
 
 Whether you work with vanilla Instances, or use a framework like [Roact][roact/repo] or [Fusion][fusion/repo], Codify has you covered!
 
@@ -73,9 +71,9 @@ Codify uses HTTP requests to fetch the latest information about Roblox Instances
 
 Below is a list of URLs used by Codify _(all requests are unauthenticated)_:
 
-- https://s3.amazonaws.com/setup.roblox.com/versionQTStudio
-- https://s3.amazonaws.com/setup.roblox.com/{{version-hash}}-API-Dump.json
-- https://api.github.com/repos/csqrl/codify-plugin/contributors?anon=1
+- `https://s3.amazonaws.com/setup.roblox.com/versionQTStudio`
+- `https://s3.amazonaws.com/setup.roblox.com/{{version-hash}}-API-Dump.json`
+- `https://api.github.com/repos/csqrl/codify-plugin/contributors?anon=1`
 
 ## Script Injection
 
@@ -87,7 +85,9 @@ This is necessary to the Save to Device feature only. The plugin will _temporari
 
 # Screenshots
 
-![GIF Demoing Plugin][image/demo-gif]
+Watch Codify in action on YouTube: https://youtu.be/aLFWPKNiBGU
+
+https://github.com/csqrl/codify-plugin/raw/assets/DemoVideo.mp4
 
 ![Screenshot of the Plugin][image/plugin-screenshots]
 
