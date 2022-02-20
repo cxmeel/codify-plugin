@@ -17,7 +17,6 @@
 <!-- Images -->
 
 [image/cover]: assets/Cover.png
-[image/demo-gif]: assets/Demo.gif
 [image/plugin-screenshots]: assets/PluginScreenshots.png
 [image/get/itch]: https://raw.githubusercontent.com/gist/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/itch.svg
 [image/get/github]: https://raw.githubusercontent.com/gist/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/github.svg
@@ -85,8 +84,6 @@ This is necessary to the Save to Device feature only. The plugin will _temporari
 - Temporary scripts are also unarchivable (`.Archivable` property set to `false`). This means that they will not be saved when (auto-)saving your project, or saving/publishing to Roblox.
 
 # Screenshots
-
-![GIF Demoing Plugin][image/demo-gif]
 
 ![Screenshot of the Plugin][image/plugin-screenshots]
 
