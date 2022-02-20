@@ -25,6 +25,26 @@ local function FormatNumber(value: number): string
 	return fmt("%.3g", value)
 end
 
+local SHORT_BRICKCOLORS = {
+	White = BrickColor.White(),
+	Gray = BrickColor.Gray(),
+	DarkGray = BrickColor.DarkGray(),
+	Black = BrickColor.Black(),
+	Red = BrickColor.Red(),
+	Yellow = BrickColor.Yellow(),
+	Green = BrickColor.Green(),
+	Blue = BrickColor.Blue(),
+}
+
+local MATERIAL_PHYISCAL_PROPS: { [Enum.Material]: { number } } = {}
+
+do
+	for _, material in ipairs(Enum.Material:GetEnumItems()) do
+		local materialProps = PhysicalProperties.new(material)
+		MATERIAL_PHYISCAL_PROPS[material] = tostring(materialProps)
+	end
+end
+
 local FORMAT_MAP
 FORMAT_MAP = {
 	Color3Format = {
@@ -135,6 +155,86 @@ FORMAT_MAP = {
 			return fmt("%q", value.Name)
 		end,
 	},
+
+	NormalIdConstructor = {
+		Full = function(value: Axes | Faces, className: string)
+			local axes = {}
+
+			for _, normalId in ipairs(Enum.NormalId:GetEnumItems()) do
+				if value[normalId.Name] then
+					table.insert(axes, FORMAT_MAP.EnumFormat.Full(normalId))
+				end
+			end
+
+			return fmt("%s.new(%s)", className, table.concat(axes, ", "))
+		end,
+	},
+
+	BrickColorFormat = {
+		Name = function(value: BrickColor)
+			return fmt("BrickColor.new(%q)", tostring(value))
+		end,
+
+		RGB = function(value: BrickColor)
+			return fmt(
+				"BrickColor.new(%s, %s, %s)",
+				FormatNumber(value.r),
+				FormatNumber(value.g),
+				FormatNumber(value.b)
+			)
+		end,
+
+		Number = function(value: BrickColor)
+			return fmt("BrickColor.new(%d)", value.Number)
+		end,
+
+		Color3 = function(value: BrickColor, options: CodifyInstanceOptions?)
+			local FormatColor3 = FORMAT_MAP.Color3Format[options and options.Color3Format or "Smart"]
+			return fmt("BrickColor3.new(%s)", FormatColor3(value.Color))
+		end,
+
+		Smart = function(value: BrickColor)
+			for methodName, colour in pairs(SHORT_BRICKCOLORS) do
+				if value == colour then
+					return fmt("BrickColor.%s()", methodName)
+				end
+			end
+
+			return FORMAT_MAP.BrickColorFormat.Name(value)
+		end,
+	},
+
+	PhysicalPropertiesFormat = {
+		Full = function(value: PhysicalProperties)
+			local props = {
+				FormatNumber(value.Density),
+				FormatNumber(value.Friction),
+				FormatNumber(value.Elasticity),
+				FormatNumber(value.FrictionWeight),
+				FormatNumber(value.ElasticityWeight),
+			}
+
+			return fmt("PhysicalProperties.new(%s)", table.concat(props, ", "))
+		end,
+
+		Smart = function(value: PhysicalProperties)
+			local propsString = tostring(value)
+
+			for material, materialPropsString in pairs(MATERIAL_PHYISCAL_PROPS) do
+				if propsString == materialPropsString then
+					return fmt("PhysicalProperties.new(%s)", FORMAT_MAP.EnumFormat.Full(material))
+				end
+			end
+
+			return FORMAT_MAP.PhysicalPropertiesFormat.Full(value)
+		end,
+	},
+
+	UDimFormat = {
+		Full = function(value: UDim)
+			return fmt("UDim.new(%s, %s)", FormatNumber(value.Scale), FormatNumber(value.Offset))
+		end,
+	},
 }
 
 local function SerialiseColorSequence(sequence: ColorSequence, options: CodifyInstanceOptions)
@@ -196,12 +296,22 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 
 	if valueTypeOf == "Color3" then
 		return FORMAT_MAP.Color3Format[options.Color3Format](value)
+	elseif valueTypeOf == "BrickColor" then
+		return FORMAT_MAP.BrickColorFormat.Full(value)
+	elseif valueTypeOf == "UDim" then
+		return FORMAT_MAP.UDimFormat.Full(value)
 	elseif valueTypeOf == "UDim2" then
 		return FORMAT_MAP.UDim2Format[options.UDim2Format](value)
 	elseif valueTypeOf == "NumberRange" then
 		return FORMAT_MAP.NumberRangeFormat[options.NumberRangeFormat](value)
 	elseif valueTypeOf == "EnumItem" then
 		return FORMAT_MAP.EnumFormat[options.EnumFormat](value)
+	elseif valueTypeOf == "Axes" then
+		return FORMAT_MAP.NormalIdConstructor.Full(value, "Axes")
+	elseif valueTypeOf == "Faces" then
+		return FORMAT_MAP.NormalIdConstructor.Full(value, "Faces")
+	elseif valueTypeOf == "PhysicalProperties" then
+		return FORMAT_MAP.PhysicalPropertiesFormat.Full(value)
 	elseif valueTypeOf == "ColorSequence" then
 		return SerialiseColorSequence(value, options)
 	elseif valueTypeOf == "NumberSequence" then
