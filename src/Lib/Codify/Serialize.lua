@@ -235,6 +235,12 @@ FORMAT_MAP = {
 			return fmt("UDim.new(%s, %s)", FormatNumber(value.Scale), FormatNumber(value.Offset))
 		end,
 	},
+
+	CFrameFormat = {
+		Full = function(value: CFrame)
+			return fmt("CFrame.new(%s)", tostring(value))
+		end,
+	},
 }
 
 local function SerialiseColorSequence(sequence: ColorSequence, options: CodifyInstanceOptions)
@@ -312,6 +318,8 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 		return FORMAT_MAP.NormalIdConstructor.Full(value, "Faces")
 	elseif valueTypeOf == "PhysicalProperties" then
 		return FORMAT_MAP.PhysicalPropertiesFormat.Full(value)
+	elseif valueTypeOf == "CFrame" then
+		return FORMAT_MAP.CFrameFormat.Full(value)
 	elseif valueTypeOf == "ColorSequence" then
 		return SerialiseColorSequence(value, options)
 	elseif valueTypeOf == "NumberSequence" then
