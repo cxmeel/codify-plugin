@@ -26,6 +26,7 @@ local function GenerateSnippet()
 			NumberRangeFormat = state.userSettings.numberRangeFormat,
 			EnumFormat = state.userSettings.enumFormat,
 			NamingScheme = state.userSettings.namingScheme,
+			ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
 		})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({

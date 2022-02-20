@@ -10,6 +10,8 @@ export type CodifyOptions = {
 	NumberRangeFormat: string?,
 	TabCharacter: string?,
 	Indent: number?,
+
+	ChildrenKey: string?, -- customise Fusion's [Children] key
 }
 
 type CodifyInstanceOptions = CodifyOptions & {

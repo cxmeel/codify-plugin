@@ -3,6 +3,7 @@ local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
 
 local concat = table.concat
+local fmt = string.format
 
 local function FusionifyInstance(instance: Instance, options)
 	local createMethod = options.CreateMethod or "New"
@@ -56,7 +57,7 @@ local function FusionifyInstance(instance: Instance, options)
 	end
 
 	if #children > 0 then
-		snippet:CreateLine():Push(tab(), "[Children] = {")
+		snippet:CreateLine():Push(tab(), fmt("[%s] = {", options.ChildrenKey or "Children"))
 		options.Indent += 1
 
 		for index, child in ipairs(children) do
@@ -94,11 +95,4 @@ return {
 		'  tempor = "incididunt"',
 		"}",
 	}, "\n"),
-
-	Template = concat({
-		"local New = Fusion.New",
-		"local Children = Fusion.Children",
-		"",
-		"%s",
-	}),
 }
