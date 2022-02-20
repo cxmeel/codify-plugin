@@ -2,6 +2,8 @@ local Serialize = require(script.Parent.Parent.Serialize)
 local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
 
+local concat = table.concat
+
 local function FusionifyInstance(instance: Instance, options)
 	local createMethod = options.CreateMethod or "New"
 	local snippet = Script.new()
@@ -64,7 +66,7 @@ local function FusionifyInstance(instance: Instance, options)
 	end
 
 	options.Indent -= 1
-	if #changedProps == 0 and #children == 0 then
+	if #changedProps == 0 and #children == 0 and not name then
 		snippet:Line():Push(" }")
 	else
 		snippet:CreateLine():Push(tab(), "}")
@@ -75,7 +77,8 @@ end
 
 return {
 	Generator = FusionifyInstance,
-	Sample = table.concat({
+
+	Sample = concat({
 		'return New "Lorem" {',
 		'  ipsum = "dolor"',
 		'  sit = "amet"',
@@ -85,4 +88,11 @@ return {
 		'  tempor = "incididunt"',
 		"}",
 	}, "\n"),
+
+	Template = concat({
+		"local New = Fusion.New",
+		"local Children = Fusion.Children",
+		"",
+		"%s",
+	}),
 }
