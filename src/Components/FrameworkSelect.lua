@@ -81,6 +81,4 @@ local function FrameworkSelect(props: FrameworkSelectProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(FrameworkSelect, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(FrameworkSelect)

@@ -68,6 +68,4 @@ local function ChildrenKey(props: ChildrenKeyProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(ChildrenKey, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(ChildrenKey)

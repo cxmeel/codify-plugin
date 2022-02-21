@@ -65,6 +65,4 @@ local function Icon(props: IconProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(Icon, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(Icon)

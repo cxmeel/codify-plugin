@@ -60,6 +60,4 @@ local function App(props: AppProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(App, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(App)

@@ -105,7 +105,6 @@ local function Dropdown(props: DropdownProps, hooks)
 end
 
 return Hooks.new(Roact)(Dropdown, {
-	componentType = "PureComponent",
 	defaultProps = {
 		options = {},
 	},

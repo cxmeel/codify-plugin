@@ -47,6 +47,4 @@ local function SyntaxHighlighting(props: SyntaxHighlightingProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(SyntaxHighlighting, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(SyntaxHighlighting)

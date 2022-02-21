@@ -67,6 +67,4 @@ local function FormSection(props: FormSectionProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(FormSection, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(FormSection)

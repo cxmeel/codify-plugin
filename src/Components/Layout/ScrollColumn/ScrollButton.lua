@@ -107,7 +107,6 @@ local function ScrollButton(props: ScrollButtonProps, hooks)
 end
 
 return Hooks.new(Roact)(ScrollButton, {
-	componentType = "PureComponent",
 	defaultProps = {
 		zindex = 30,
 	},

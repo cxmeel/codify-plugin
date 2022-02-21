@@ -168,6 +168,4 @@ local function Page(_, hooks)
 	})
 end
 
-return Hooks.new(Roact)(Page, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(Page)

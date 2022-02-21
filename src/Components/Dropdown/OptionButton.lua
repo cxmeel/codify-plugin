@@ -119,6 +119,4 @@ local function OptionButton(props: OptionButtonProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(OptionButton, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(OptionButton)

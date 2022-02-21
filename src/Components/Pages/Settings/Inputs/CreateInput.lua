@@ -76,7 +76,5 @@ return function(options: CreateInputOptions)
 		})
 	end
 
-	return Hooks.new(Roact)(SettingsInput, {
-		componentType = "PureComponent",
-	})
+	return Hooks.new(Roact)(SettingsInput)
 end

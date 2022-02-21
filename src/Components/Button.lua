@@ -170,7 +170,6 @@ local function Button(props: ButtonProps, hooks)
 end
 
 return Hooks.new(Roact)(Button, {
-	componentType = "PureComponent",
 	defaultProps = {
 		autoSize = Enum.AutomaticSize.XY,
 		alignX = Enum.HorizontalAlignment.Center,

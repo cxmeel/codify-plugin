@@ -51,6 +51,4 @@ local function Text(props: TextProps, hooks)
 	}, props[Roact.Children])
 end
 
-return Hooks.new(Roact)(Text, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(Text)

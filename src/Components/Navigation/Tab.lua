@@ -140,6 +140,4 @@ local function NavigationTab(props: NavigationTabProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(NavigationTab, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(NavigationTab)

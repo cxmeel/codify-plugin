@@ -68,6 +68,4 @@ local function CreateMethod(props: CreateMethodProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(CreateMethod, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(CreateMethod)

@@ -62,6 +62,4 @@ local function BaseCheckbox(props: BaseCheckboxProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(BaseCheckbox, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(BaseCheckbox)

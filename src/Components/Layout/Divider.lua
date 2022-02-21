@@ -30,7 +30,6 @@ local function Divider(props: DividerProps, hooks)
 end
 
 return Hooks.new(Roact)(Divider, {
-	componentType = "PureComponent",
 	defaultProps = {
 		height = 1,
 	},
