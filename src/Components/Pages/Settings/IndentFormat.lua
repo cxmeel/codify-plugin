@@ -5,6 +5,7 @@ local RoduxHooks = require(Plugin.Packages.RoduxHooks)
 local Roact = require(Plugin.Packages.Roact)
 local Hooks = require(Plugin.Packages.Hooks)
 
+local Enums = require(Plugin.Data.Enums)
 local Actions = require(Plugin.Actions)
 
 local TextInput = require(Plugin.Components.TextInput)
@@ -15,6 +16,10 @@ local e = Roact.createElement
 
 export type IndentFormatProps = {
 	order: number?,
+}
+
+local DISABLED_FRAMEWORKS = {
+	Enums.Framework.Regular,
 }
 
 local function IndentFormat(props: IndentFormatProps, hooks)
@@ -31,6 +36,10 @@ local function IndentFormat(props: IndentFormatProps, hooks)
 			tabWidth = userSettings.indentationLength,
 		}
 	end, { userSettings })
+
+	if table.find(DISABLED_FRAMEWORKS, userSettings.framework) then
+		return nil
+	end
 
 	return e(Layout.Forms.Section, {
 		heading = "Indentation",
@@ -74,6 +83,4 @@ local function IndentFormat(props: IndentFormatProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(IndentFormat, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(IndentFormat)

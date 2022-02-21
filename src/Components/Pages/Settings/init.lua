@@ -31,20 +31,24 @@ local function Page(_, hooks)
 
 		snippets = e(Layout.Forms.Section, {
 			heading = "Snippets",
-			hint = "Configure options relating to the main Codify tab.",
+			hint = "Configure options relating to code snippets.",
 			divider = true,
 			order = 20,
 		}, {
 			syntaxHighlighting = e(SyntaxHighlighting, {
 				order = 10,
 			}),
+
+			indentFormat = e(IndentFormat, {
+				order = 20,
+			}),
 		}),
 
-		output = e(Layout.Forms.Section, {
-			heading = "Output",
-			hint = "Customise the formatting of your generated code snippets. You will need to regenerate your snippets to reflect changes.",
+		frameworks = e(Layout.Forms.Section, {
+			heading = "Generation",
+			hint = "Configure various options relating to the generation of code snippets.",
 			divider = true,
-			order = 30,
+			order = 40,
 		}, {
 			createMethod = e(CreateMethod, {
 				order = 10,
@@ -54,41 +58,44 @@ local function Page(_, hooks)
 				order = 20,
 			}),
 
-			indentFormat = e(IndentFormat, {
+			namingScheme = e(Inputs.NamingScheme, {
 				order = 30,
 			}),
+		}),
 
-			namingScheme = e(Inputs.NamingScheme, {
-				order = 40,
-			}),
-
+		datatypes = e(Layout.Forms.Section, {
+			heading = "Data Types",
+			hint = "Configure how Roblox data types are formatted in your code snippets. You will need to regenerate your snippets to reflect changes.",
+			divider = true,
+			order = 50,
+		}, {
 			color3Format = e(Inputs.Color3Format, {
-				order = 50,
+				order = 20,
 			}),
 
 			enumFormat = e(Inputs.EnumFormat, {
-				order = 60,
+				order = 30,
 			}),
 
 			numberRangeFormat = e(Inputs.NumberRangeFormat, {
-				order = 70,
+				order = 40,
 			}),
 
 			udim2Format = e(Inputs.UDim2Format, {
-				order = 80,
+				order = 50,
 			}),
 
 			brickColorFormat = e(Inputs.BrickColorFormat, {
-				order = 90,
+				order = 60,
 			}),
 
 			physicalPropertiesFormat = e(Inputs.PhysicalPropertiesFormat, {
-				order = 100,
+				order = 70,
 			}),
 		}),
 
 		about = e(About, {
-			order = 40,
+			order = 60,
 		}),
 	})
 end
