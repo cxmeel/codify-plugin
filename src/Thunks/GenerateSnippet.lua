@@ -26,6 +26,8 @@ local function GenerateSnippet()
 			NumberRangeFormat = state.userSettings.numberRangeFormat,
 			EnumFormat = state.userSettings.enumFormat,
 			NamingScheme = state.userSettings.namingScheme,
+			PhysicalPropertiesFormat = state.userSettings.physicalPropertiesFormat,
+			BrickColorFormat = state.userSettings.brickColorFormat,
 			ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
 		})
 			:andThen(function(snippet)
