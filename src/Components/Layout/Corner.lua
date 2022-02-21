@@ -18,6 +18,4 @@ local function Corner(props: CornerProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(Corner, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(Corner)

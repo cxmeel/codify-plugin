@@ -26,19 +26,12 @@ local function NavigationTab(props: NavigationTabProps, hooks)
 	local hover, setHover = hooks.useState(false)
 	local press, setPress = hooks.useState(false)
 
-	local active = hooks.useMemo(function()
-		return history.location.path == props.location
-	end, { props.location, history.location })
+	local active = history.location.path == props.location
 
-	local modifier = hooks.useMemo(function()
-		if press then
-			return Enum.StudioStyleGuideModifier.Pressed
-		elseif hover then
-			return Enum.StudioStyleGuideModifier.Hover
-		end
-
-		return Enum.StudioStyleGuideModifier.Default
-	end, { hover, press, active })
+	local modifier = if press
+		then Enum.StudioStyleGuideModifier.Pressed
+		elseif hover then Enum.StudioStyleGuideModifier.Hover
+		else nil
 
 	local onActivated = hooks.useCallback(function()
 		history:push(props.location)
@@ -140,6 +133,4 @@ local function NavigationTab(props: NavigationTabProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(NavigationTab, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(NavigationTab)

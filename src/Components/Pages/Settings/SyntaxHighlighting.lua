@@ -22,9 +22,7 @@ local function SyntaxHighlighting(props: SyntaxHighlightingProps, hooks)
 		return state.userSettings
 	end)
 
-	local value = hooks.useMemo(function()
-		return userSettings.syntaxHighlighting
-	end, { userSettings })
+	local value = userSettings.syntaxHighlighting
 
 	return e(Layout.Forms.Section, {
 		heading = "Syntax Highlighting",
@@ -47,6 +45,4 @@ local function SyntaxHighlighting(props: SyntaxHighlightingProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(SyntaxHighlighting, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(SyntaxHighlighting)

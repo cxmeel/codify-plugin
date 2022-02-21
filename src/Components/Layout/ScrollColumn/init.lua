@@ -141,7 +141,6 @@ local function ScrollColumn(props: ScrollColumnProps, hooks)
 end
 
 return Hooks.new(Roact)(ScrollColumn, {
-	componentType = "PureComponent",
 	defaultProps = {
 		size = UDim2.fromScale(1, 1),
 		paddingTop = 0,

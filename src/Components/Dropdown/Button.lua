@@ -165,6 +165,4 @@ local function DropdownButton(props: DropdownButtonProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(DropdownButton, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(DropdownButton)

@@ -134,7 +134,6 @@ local function Alert(props: AlertProps, hooks)
 end
 
 return Hooks.new(Roact)(Alert, {
-	componentType = "PureComponent",
 	defaultProps = {
 		variant = Enum.MessageType.MessageInfo,
 	},

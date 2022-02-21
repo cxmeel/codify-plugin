@@ -55,6 +55,4 @@ local function About(props: AboutProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(About, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(About)

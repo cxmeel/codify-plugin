@@ -46,13 +46,8 @@ return function(options: CreateInputOptions)
 			return state.userSettings
 		end)
 
-		local value = hooks.useMemo(function()
-			return userSettings[options.settingsKey]
-		end, { userSettings })
-
-		local details = hooks.useMemo(function()
-			return options.enumMap[value] or {}
-		end, { value })
+		local value = userSettings[options.settingsKey]
+		local details = options.enumMap[value] or {}
 
 		return e(Layout.Forms.Section, {
 			heading = options.heading,
@@ -76,7 +71,5 @@ return function(options: CreateInputOptions)
 		})
 	end
 
-	return Hooks.new(Roact)(SettingsInput, {
-		componentType = "PureComponent",
-	})
+	return Hooks.new(Roact)(SettingsInput)
 end

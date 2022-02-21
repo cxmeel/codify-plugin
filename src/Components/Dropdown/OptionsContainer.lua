@@ -110,6 +110,4 @@ local function OptionsContainer(props: OptionsContainerProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(OptionsContainer, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(OptionsContainer)

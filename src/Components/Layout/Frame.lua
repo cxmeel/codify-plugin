@@ -21,7 +21,6 @@ local function Frame(props: FrameProps)
 end
 
 return Hooks.new(Roact)(Frame, {
-	componentType = "PureComponent",
 	defaultProps = {
 		autoSize = Enum.AutomaticSize.Y,
 		size = UDim2.fromScale(1, 0),

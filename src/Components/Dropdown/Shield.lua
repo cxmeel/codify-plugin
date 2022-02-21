@@ -36,6 +36,4 @@ local function DropdownPopoverShield(props: DropdownPopoverShieldProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(DropdownPopoverShield, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(DropdownPopoverShield)

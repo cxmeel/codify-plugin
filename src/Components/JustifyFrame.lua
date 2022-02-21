@@ -78,7 +78,6 @@ local function JustifyFrame(props: JustifyFrameProps, hooks)
 end
 
 return Hooks.new(Roact)(JustifyFrame, {
-	componentType = "PureComponent",
 	defaultProps = {
 		gap = 0,
 		alignX = Enum.HorizontalAlignment.Left,

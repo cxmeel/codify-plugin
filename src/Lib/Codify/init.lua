@@ -10,6 +10,8 @@ export type CodifyOptions = {
 	NumberRangeFormat: string?,
 	TabCharacter: string?,
 	Indent: number?,
+	PhysicalPropertiesFormat: string?,
+	BrickColorFormat: string?,
 
 	ChildrenKey: string?, -- customise Fusion's [Children] key
 }
@@ -23,10 +25,6 @@ type CodifyInstanceOptions = CodifyOptions & {
 
 local DEFAULT_OPTIONS: CodifyOptions = {
 	Framework = "Regular",
-	CreateMethod = nil,
-	Color3Format = "Full",
-	UDim2Format = "Full",
-	EnumFormat = "Full",
 	NamingScheme = "All",
 	TabCharacter = "  ",
 	Indent = 0,

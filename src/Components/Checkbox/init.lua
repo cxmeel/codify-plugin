@@ -27,15 +27,11 @@ local function Checkbox(props: CheckboxProps, hooks)
 	local hover, setHover = hooks.useState(false)
 	local press, setPress = hooks.useState(false)
 
-	local modifier = hooks.useMemo(function()
-		if props.disabled then
-			return Enum.StudioStyleGuideModifier.Disabled
-		elseif press then
-			return Enum.StudioStyleGuideModifier.Pressed
-		elseif hover then
-			return Enum.StudioStyleGuideModifier.Hover
-		end
-	end, { props.disabled, hover, press })
+	local modifier = if props.disabled
+		then Enum.StudioStyleGuideModifier.Disabled
+		elseif press then Enum.StudioStyleGuideModifier.Pressed
+		elseif hover then Enum.StudioStyleGuideModifier.Hover
+		else nil
 
 	local onActivated = hooks.useCallback(function()
 		if props.onChanged then
@@ -114,6 +110,4 @@ local function Checkbox(props: CheckboxProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(Checkbox, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(Checkbox)

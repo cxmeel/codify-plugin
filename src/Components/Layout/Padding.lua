@@ -30,6 +30,4 @@ local function Padding(props: PaddingProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(Padding, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(Padding)

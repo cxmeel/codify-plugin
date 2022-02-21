@@ -34,13 +34,8 @@ local function CreateMethod(props: CreateMethodProps, hooks)
 		return state.userSettings
 	end)
 
-	local framework = hooks.useMemo(function()
-		return userSettings.framework
-	end, { userSettings })
-
-	local value = hooks.useMemo(function()
-		return userSettings["createMethod" .. framework]
-	end, { userSettings, framework })
+	local framework = userSettings.framework
+	local value = userSettings["createMethod" .. framework]
 
 	if table.find(DISABLED_FRAMEWORKS, framework) then
 		return nil
@@ -68,6 +63,4 @@ local function CreateMethod(props: CreateMethodProps, hooks)
 	})
 end
 
-return Hooks.new(Roact)(CreateMethod, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(CreateMethod)

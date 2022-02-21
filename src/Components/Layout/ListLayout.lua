@@ -30,7 +30,6 @@ local function ListLayout(props: ListLayoutProps, hooks)
 end
 
 return Hooks.new(Roact)(ListLayout, {
-	componentType = "PureComponent",
 	defaultProps = {
 		direction = Enum.FillDirection.Horizontal,
 		order = Enum.SortOrder.LayoutOrder,

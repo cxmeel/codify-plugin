@@ -56,6 +56,4 @@ local function Routing(_, hooks)
 	})
 end
 
-return Hooks.new(Roact)(Routing, {
-	componentType = "PureComponent",
-})
+return Hooks.new(Roact)(Routing)
