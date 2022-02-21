@@ -34,13 +34,8 @@ local function ChildrenKey(props: ChildrenKeyProps, hooks)
 		return state.userSettings
 	end)
 
-	local framework = hooks.useMemo(function()
-		return userSettings.framework
-	end, { userSettings })
-
-	local value = hooks.useMemo(function()
-		return userSettings["childrenKey" .. framework]
-	end, { userSettings, framework })
+	local framework = userSettings.framework
+	local value = userSettings["childrenKey" .. framework]
 
 	if table.find(DISABLED_FRAMEWORKS, framework) then
 		return nil

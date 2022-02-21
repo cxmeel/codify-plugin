@@ -22,17 +22,12 @@ export type BaseCheckboxProps = {
 local function BaseCheckbox(props: BaseCheckboxProps, hooks)
 	local theme, styles = StudioTheme.useTheme(hooks)
 
-	local modifier = hooks.useMemo(function()
-		if props.disabled then
-			return Enum.StudioStyleGuideModifier.Disabled
-		elseif props.checked then
-			return Enum.StudioStyleGuideModifier.Selected
-		elseif props.pressed then
-			return Enum.StudioStyleGuideModifier.Pressed
-		elseif props.hovered then
-			return Enum.StudioStyleGuideModifier.Hover
-		end
-	end, { props.disabled, props.checked, props.pressed, props.hovered })
+	local modifier = if props.disabled
+		then Enum.StudioStyleGuideModifier.Disabled
+		elseif props.checked then Enum.StudioStyleGuideModifier.Selected
+		elseif props.pressed then Enum.StudioStyleGuideModifier.Pressed
+		elseif props.hovered then Enum.StudioStyleGuideModifier.Hover
+		else nil
 
 	return e("Frame", {
 		AnchorPoint = props.anchor,

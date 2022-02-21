@@ -51,13 +51,8 @@ local function FrameworkSelect(props: FrameworkSelectProps, hooks)
 		return state.userSettings
 	end)
 
-	local framework = hooks.useMemo(function()
-		return userSettings.framework
-	end, { userSettings })
-
-	local details = hooks.useMemo(function()
-		return FRAMEWORK_ENUM_MAP[framework] or {}
-	end, { framework })
+	local framework = userSettings.framework
+	local details = FRAMEWORK_ENUM_MAP[framework] or {}
 
 	return e(Layout.Forms.Section, {
 		heading = "Framework",

@@ -30,12 +30,10 @@ local function IndentFormat(props: IndentFormatProps, hooks)
 		return state.userSettings
 	end)
 
-	local values = hooks.useMemo(function()
-		return {
-			useTabs = userSettings.indentationUsesTabs,
-			tabWidth = userSettings.indentationLength,
-		}
-	end, { userSettings })
+	local values = {
+		useTabs = userSettings.indentationUsesTabs,
+		tabWidth = userSettings.indentationLength,
+	}
 
 	if table.find(DISABLED_FRAMEWORKS, userSettings.framework) then
 		return nil
