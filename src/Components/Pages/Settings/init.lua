@@ -8,6 +8,7 @@ local FrameworkSelect = require(Plugin.Components.FrameworkSelect)
 local Layout = require(Plugin.Components.Layout)
 
 local SyntaxHighlighting = require(script.SyntaxHighlighting)
+local IndentFormat = require(script.IndentFormat)
 local CreateMethod = require(script.CreateMethod)
 local ChildrenKey = require(script.ChildrenKey)
 local Inputs = require(script.Inputs)
@@ -53,32 +54,36 @@ local function Page(_, hooks)
 				order = 20,
 			}),
 
-			namingScheme = e(Inputs.NamingScheme, {
+			indentFormat = e(IndentFormat, {
 				order = 30,
 			}),
 
-			color3Format = e(Inputs.Color3Format, {
+			namingScheme = e(Inputs.NamingScheme, {
 				order = 40,
 			}),
 
-			enumFormat = e(Inputs.EnumFormat, {
+			color3Format = e(Inputs.Color3Format, {
 				order = 50,
 			}),
 
-			numberRangeFormat = e(Inputs.NumberRangeFormat, {
+			enumFormat = e(Inputs.EnumFormat, {
 				order = 60,
 			}),
 
-			udim2Format = e(Inputs.UDim2Format, {
+			numberRangeFormat = e(Inputs.NumberRangeFormat, {
 				order = 70,
 			}),
 
-			brickColorFormat = e(Inputs.BrickColorFormat, {
+			udim2Format = e(Inputs.UDim2Format, {
 				order = 80,
 			}),
 
-			physicalPropertiesFormat = e(Inputs.PhysicalPropertiesFormat, {
+			brickColorFormat = e(Inputs.BrickColorFormat, {
 				order = 90,
+			}),
+
+			physicalPropertiesFormat = e(Inputs.PhysicalPropertiesFormat, {
+				order = 100,
 			}),
 		}),
 

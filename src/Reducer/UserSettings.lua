@@ -14,6 +14,8 @@ local DEFAULT_SETTINGS = {
 	numberRangeFormat = Enums.NumberRangeFormat.Smart,
 	physicalPropertiesFormat = Enums.PhysicalPropertiesFormat.Smart,
 	udim2Format = Enums.UDim2Format.Smart,
+	indentationUsesTabs = false,
+	indentationLength = 2,
 }
 
 return function(state, action)
@@ -31,6 +33,11 @@ return function(state, action)
 			end
 
 			action.payload.value = newValue
+		elseif action.payload.value ~= nil then
+			if action.payload.key == "indentationLength" then
+				assert(type(action.payload.value) == "number", "SET_SETTING `payload.value` must be a number")
+				action.payload.value = math.max(0, action.payload.value)
+			end
 		elseif action.payload.value == nil then
 			action.payload.value = Llama.None
 		end

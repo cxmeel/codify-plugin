@@ -18,6 +18,10 @@ local function GenerateSnippet()
 
 		store:dispatch(Actions.SetSnippetProcessing(true))
 
+		local tabCharacter = if state.userSettings.indentationUsesTabs
+			then "\t"
+			else string.rep(" ", state.userSettings.indentationLength or 2)
+
 		CodifyAsync(state.targetInstance.instance, {
 			Framework = state.userSettings.framework,
 			CreateMethod = state.userSettings["createMethod" .. state.userSettings.framework],
@@ -29,6 +33,7 @@ local function GenerateSnippet()
 			PhysicalPropertiesFormat = state.userSettings.physicalPropertiesFormat,
 			BrickColorFormat = state.userSettings.brickColorFormat,
 			ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
+			TabCharacter = tabCharacter,
 		})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({
