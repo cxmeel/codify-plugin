@@ -1,11 +1,14 @@
-local Packages = script.Parent.Parent.Packages
+local Plugin = script.Parent.Parent
 
-local Roact = require(Packages.Roact)
-local StudioPlugin = require(Packages.StudioPlugin)
-local StudioTheme = require(Packages.StudioTheme)
-local Hooks = require(Packages.Hooks)
+local StudioPlugin = require(Plugin.Packages.StudioPlugin)
+local StudioTheme = require(Plugin.Packages.StudioTheme)
+local RoduxHooks = require(Plugin.Packages.RoduxHooks)
+local Roact = require(Plugin.Packages.Roact)
+local Hooks = require(Plugin.Packages.Hooks)
 
-local Routing = require(script.Parent.Routing)
+local Config = require(Plugin.Data.Config)
+
+local Routing = require(Plugin.Components.Routing)
 
 local e = Roact.createElement
 
@@ -16,6 +19,28 @@ type AppProps = {
 local function App(props: AppProps, hooks)
 	local widgetVisible, setWidgetVisible = hooks.useState(true)
 
+	local pluginMeta = RoduxHooks.useSelector(hooks, function(state)
+		return state.pluginMeta
+	end)
+
+	local pluginIcon = hooks.useMemo(function()
+		local build = pluginMeta.build:lower()
+
+		if Config.icons[build] then
+			return Config.icons[build]
+		end
+
+		return Config.icons.dev
+	end, { pluginMeta })
+
+	local buttonSuffix = hooks.useMemo(function()
+		if pluginMeta.build ~= "STABLE" then
+			return " [" .. pluginMeta.build .. "]"
+		end
+
+		return ""
+	end, { pluginMeta })
+
 	return e(StudioPlugin.Plugin, {
 		plugin = props.plugin,
 	}, {
@@ -25,8 +50,8 @@ local function App(props: AppProps, hooks)
 			widgetToggle = e(StudioPlugin.ToolbarButton, {
 				id = "widgetToggle",
 				tooltip = "Show or hide the Codify widget",
-				icon = "rbxassetid://8730522354",
-				label = "Codify",
+				icon = pluginIcon,
+				label = "Codify" .. buttonSuffix,
 				active = widgetVisible,
 				onActivated = function()
 					setWidgetVisible(not widgetVisible)
@@ -38,7 +63,7 @@ local function App(props: AppProps, hooks)
 			id = "CodifyWidget",
 			initState = Enum.InitialDockState.Left,
 			enabled = widgetVisible,
-			title = "Codify",
+			title = "Codify" .. buttonSuffix,
 
 			onInit = setWidgetVisible,
 			onToggle = setWidgetVisible,

@@ -67,6 +67,8 @@ do -- Create PluginAction --
 end
 
 do -- Mount app --
+	store:dispatch(Thunks.DeterminePluginMetadata(plugin))
+
 	local rootComponent = Roact.createElement(RoduxHooks.Provider, {
 		store = store,
 	}, {
