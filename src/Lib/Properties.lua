@@ -33,8 +33,8 @@ function Properties.FetchVersionHash(version: string?)
 				return assert(line:match("version%-(%x+)"), "Unable to find version hash in line: " .. line)
 			end
 
-			if lineNumber % 100 == 0 then
-				task.wait()
+			if lineNumber >= 128 then
+				break
 			end
 		end
 
