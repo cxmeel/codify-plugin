@@ -24,7 +24,7 @@
 
 <div align="center">
 
-[![Cover][image/cover]][plugin/toolbox]
+[![Cover][image/cover]][plugin/itch]
 
 ✨ Convert Instances to code; just like magic!
 
