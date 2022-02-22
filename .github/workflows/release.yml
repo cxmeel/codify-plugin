@@ -29,13 +29,13 @@ jobs:
       - name: Set Release Filename
         shell: bash
         run: |
-          echo "RELEASE_FILENAME=\"${{ github.event.repository.name }}-$PROJECT_VERSION.rbxm\"" >> $GITHUB_ENV
+          echo "RELEASE_FILENAME=${{ github.event.repository.name }}-$PROJECT_VERSION.rbxm" >> $GITHUB_ENV
 
       - name: Install Dependencies
         run: wally install
 
       - name: Build Project
-        run: rojo build default.project.json -o "$RELEASE_FILENAME"
+        run: rojo build default.project.json -o $RELEASE_FILENAME
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
