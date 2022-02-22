@@ -1,14 +1,12 @@
-name: Publish to Roblox
+name: Publish to Roblox (Canary)
 
 env:
-  ASSET_ID_STABLE: 4749111907
-  ASSET_ID_PREVIEW: 8903547414
   ASSET_ID_CANARY: 8827700015
 
 on:
-  workflow_dispatch:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 jobs:
   publish-public:
@@ -52,12 +50,3 @@ jobs:
       - name: Publish to Roblox (Canary)
         shell: bash
         run: rojo upload default.project.json --asset_id $ASSET_ID_CANARY --cookie ${{ secrets.ROBLOSECURITY }}
-
-      - name: Publish to Roblox (Preview)
-        shell: bash
-        run: rojo upload default.project.json --asset_id $ASSET_ID_PREVIEW --cookie ${{ secrets.ROBLOSECURITY }}
-
-      - name: Publish to Roblox (Stable)
-        if: ${{ github.event.release.prerelease == false }}
-        shell: bash
-        run: rojo upload default.project.json --asset_id $ASSET_ID_STABLE --cookie ${{ secrets.ROBLOSECURITY }}
