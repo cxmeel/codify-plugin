@@ -47,4 +47,4 @@ jobs:
 
       - name: Publish to Roblox (Canary)
         shell: bash
-        run: rojo upload default.project.json --asset_id $ASSET_ID_CANARY --cookie ${{ secrets.ROBLOSECURITY }}
+        run: rojo upload default.project.json --asset_id $ASSET_ID_CANARY --cookie "${{ secrets.ROBLOSECURITY }}"
