@@ -34,6 +34,8 @@ jobs:
             exit 1
           fi
 
+          echo "Logged in as $RBX_USERNAME."
+
       - name: Setup Toolchain
         uses: Roblox/setup-foreman@v1
         with:
