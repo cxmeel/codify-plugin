@@ -9,7 +9,7 @@ on:
       - main
       - dev
     paths:
-      - "src/"
+      - "src/**/*"
 
 jobs:
   publish-public:
