@@ -71,8 +71,9 @@ Codify uses HTTP requests to fetch the latest information about Roblox Instances
 
 Below is a list of URLs used by Codify _(all requests are unauthenticated)_:
 
+- `https://s3.amazonaws.com/setup.roblox.com/DeployHistory.txt`
 - `https://s3.amazonaws.com/setup.roblox.com/versionQTStudio`
-- `https://s3.amazonaws.com/setup.roblox.com/{{version-hash}}-API-Dump.json`
+- `https://s3.amazonaws.com/setup.roblox.com/version-{{hash}}-API-Dump.json`
 - `https://api.github.com/repos/csqrl/codify-plugin/contributors?anon=1`
 
 ## Script Injection
@@ -85,9 +86,9 @@ This is necessary to the Save to Device feature only. The plugin will _temporari
 
 # Screenshots
 
-| Watch Codify in action on YouTube |
-|:-:|
-| https://youtu.be/aLFWPKNiBGU |
+|                                Watch Codify in action on YouTube                                 |
+| :----------------------------------------------------------------------------------------------: |
+|                                   https://youtu.be/aLFWPKNiBGU                                   |
 | [![Video Thumbnail](https://img.youtube.com/vi/aLFWPKNiBGU/0.jpg)](https://youtu.be/aLFWPKNiBGU) |
 
 ![Screenshot of the Plugin][image/plugin-screenshots]

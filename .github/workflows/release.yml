@@ -1,4 +1,5 @@
 name: Create GitHub Release
+
 on:
   workflow_dispatch:
     branches:
@@ -16,35 +17,34 @@ jobs:
         uses: Roblox/setup-foreman@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          version: "^1.0.1"
 
       - name: Report Tool Versions
-        shell: bash
         run: foreman list
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get Release Details
         shell: bash
+        run: echo "PROJECT_VERSION=`grep -Po '(?<=version = ")([^"]+)' wally.toml`" >> $GITHUB_ENV
+
+      - name: Set Release Filename
+        shell: bash
         run: |
-          echo "PROJECT_VERSION=`grep -Po '(?<=version = ")([^"]+)' wally.toml`" >> $GITHUB_ENV
+          echo "RELEASE_FILENAME=\"${{ github.event.repository.name }}-${ PROJECT_VERSION }.rbxm\"" >> $GITHUB_ENV
 
       - name: Install Dependencies
-        shell: bash
         run: wally install
 
       - name: Build Project
-        shell: bash
-        run: |
-          rojo build default.project.json -o release.rbxm
-          rojo build default.project.json -o release.rbxmx
+        run: rojo build default.project.json -o $RELEASE_FILENAME
 
-      - name: Upload Release to GitHub
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ env.PROJECT_VERSION }}
           tag_name: ${{ env.PROJECT_VERSION }}
           fail_on_unmatched_files: true
           files: |
-            release.rbxm
-            release.rbxmx
+            ${{ env.RELEASE_FILENAME }}.rbxm
           draft: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

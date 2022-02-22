@@ -32,6 +32,7 @@ local function Page(_, hooks)
 		snippets = e(Layout.Forms.Section, {
 			heading = "Snippets",
 			hint = "Configure options relating to code snippets.",
+			collapsible = true,
 			divider = true,
 			order = 20,
 		}, {
@@ -47,6 +48,7 @@ local function Page(_, hooks)
 		frameworks = e(Layout.Forms.Section, {
 			heading = "Generation",
 			hint = "Configure various options relating to the generation of code snippets.",
+			collapsible = true,
 			divider = true,
 			order = 40,
 		}, {
@@ -66,6 +68,7 @@ local function Page(_, hooks)
 		datatypes = e(Layout.Forms.Section, {
 			heading = "Data Types",
 			hint = "Configure how Roblox data types are formatted in your code snippets. You will need to regenerate your snippets to reflect changes.",
+			collapsible = true,
 			divider = true,
 			order = 50,
 		}, {

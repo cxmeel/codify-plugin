@@ -1,0 +1,52 @@
+name: Publish to Roblox (Canary)
+
+env:
+  ASSET_ID_CANARY: 8827700015
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Test Login Tokens
+        shell: bash
+        run: |
+          if [ -z "${{ secrets.ROBLOSECURITY }}" ]; then
+            echo "No cookie found. Please set the ROBLOSECURITY secret."
+            exit 1
+          fi
+
+          RBX_USERNAME=$(curl -s -X GET -H "Cookie: .ROBLOSECURITY=${{ secrets.ROBLOSECURITY }}" https://users.roblox.com/v1/users/authenticated | jq -r ".name")
+
+          if [ -z "$RBX_USERNAME" ]; then
+            echo "ROBLOSECURITY is invalid or expired. Please reset the ROBLOSECURITY secret."
+            exit 1
+          fi
+
+      - name: Setup Toolchain
+        uses: Roblox/setup-foreman@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Report Tool Versions
+        run: foreman list
+
+      - name: Install Dependencies
+        run: wally install
+
+      - name: Remove Test Files
+        shell: bash
+        run: find ./src ./packages -name "*.spec.lua" -type f -delete
+
+      - name: Publish to Roblox (Canary)
+        shell: bash
+        run: rojo upload default.project.json --asset_id $ASSET_ID_CANARY --cookie ${{ secrets.ROBLOSECURITY }}
