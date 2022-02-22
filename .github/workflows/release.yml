@@ -21,8 +21,6 @@ jobs:
 
       - name: Report Tool Versions
         run: foreman list
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get Release Details
         shell: bash
