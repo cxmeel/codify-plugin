@@ -1,7 +1,15 @@
 return {
 	pluginId = {
 		stable = 4749111907,
-		canary = nil,
+		preview = 8903547414,
+		canary = 8827700015,
+	},
+
+	icons = {
+		stable = "rbxassetid://8730522354",
+		preview = "rbxassetid://8906285173",
+		canary = "rbxassetid://8906285023",
+		dev = "rbxassetid://8906284857",
 	},
 
 	version = "2.2.0",
