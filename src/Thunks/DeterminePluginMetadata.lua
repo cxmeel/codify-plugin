@@ -10,10 +10,17 @@ local function DeterminePluginMetadata(plugin: Plugin)
 
 	return function(store)
 		if pluginId == nil or plugin.Parent == PluginDebugService then
-			return store:dispatch(Actions.SetPluginMetadata({
-				build = "DEV",
-				isDevMode = true,
-			}))
+			if plugin.Name:match("codify_dev_%x+") then
+				return store:dispatch(Actions.SetPluginMetadata({
+					build = "DEV",
+					isDevMode = true,
+				}))
+			else
+				-- Likely a local install (itch.io)...
+				return store:dispatch(Actions.SetPluginMetadata({
+					build = "STABLE",
+				}))
+			end
 		end
 
 		if pluginId == Config.pluginId.canary then
