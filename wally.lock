@@ -9,7 +9,7 @@ dependencies = []
 
 [[package]]
 name = "csqrl/codify-plugin"
-version = "2.2.0"
+version = "2.2.2"
 dependencies = [["Highlighter", "boatbomber/highlighter@0.4.5"], ["Hooks", "kampfkarren/roact-hooks@0.3.0"], ["Llama", "freddylist/llama@1.1.1"], ["Promise", "evaera/promise@3.2.1"], ["Roact", "roblox/roact@1.4.2"], ["RoactRouter", "reselim/roact-router@1.0.3"], ["Rodux", "roblox/rodux@3.0.0"], ["RoduxHooks", "solarhorizon/rodux-hooks@0.2.1"], ["StudioPlugin", "csqrl/studio-plugin@1.0.1"], ["StudioTheme", "csqrl/studio-theme@1.0.2"]]
 
 [[package]]

@@ -1,7 +1,7 @@
 [package]
 name = "csqrl/codify-plugin"
 description = "Convert Instances to code; just like magic!"
-version = "2.2.1" # /src/Data/Config.lua
+version = "2.2.2" # /src/Data/Config.lua
 license = "MIT"
 authors = ["csqrl (https://csqrl.dev)", "boatbomber (https://www.boatbomber.com/)"]
 contributors = ["chriscerie"]
@@ -9,7 +9,7 @@ registry = "https://github.com/upliftgames/wally-index"
 realm = "shared"
 
 [dependencies]
-Highlighter = "boatbomber/highlighter@^0.4.5"
+Highlighter = "boatbomber/highlighter@=0.4.5"
 StudioPlugin = "csqrl/studio-plugin@^1.0.1"
 StudioTheme = "csqrl/studio-theme@^1.0.2"
 Promise = "evaera/promise@^3.2.1"
