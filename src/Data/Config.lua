@@ -12,7 +12,7 @@ return {
 		dev = "rbxassetid://8906284857",
 	},
 
-	version = "2.2.2",
+	version = "2.2.3",
 	repo = "csqrl/codify-plugin",
 
 	authors = {
