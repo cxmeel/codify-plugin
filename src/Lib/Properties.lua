@@ -1,4 +1,5 @@
-local DebugSettings = settings():GetService("DebugSettings")
+---@diagnostic disable-next-line: invalid-class-name
+local DebugSettings = settings():GetService("DebugSettings") :: DebugSettings
 local Plugin = script.Parent.Parent
 
 local HttpPromise = require(Plugin.Lib.HttpPromise)
@@ -6,6 +7,17 @@ local Promise = require(Plugin.Packages.Promise)
 local Llama = require(Plugin.Packages.Llama)
 
 local Properties = {}
+
+local IGNORED_PROPERTIES = {
+	Classes = {
+		GuiObject = {
+			"FontFace",
+		},
+	},
+	Global = {
+		"Parent",
+	},
+}
 
 function Properties.FetchLatestVersion()
 	return HttpPromise.RequestAsync("https://s3.amazonaws.com/setup.roblox.com/versionQTStudio", {
@@ -78,8 +90,25 @@ function Properties.GetClassAncestry(class: string)
 		end)
 end
 
+function Properties.GetIgnoredPropertyNames(class: string)
+	return Properties.GetClassAncestry(class):andThen(function(ancestry)
+		local ignoredProperties = {}
+
+		for _, ancestor in ipairs(ancestry) do
+			local ignoreList = IGNORED_PROPERTIES.Classes[ancestor.Name]
+
+			if ignoreList then
+				table.insert(ignoredProperties, ignoreList)
+			end
+		end
+
+		return Llama.List.flatten(ignoredProperties, 1)
+	end)
+end
+
 function Properties.GetPropertyList(class: string)
 	return Properties.GetClassAncestry(class):andThen(function(ancestry)
+		local success, ignoredProperties = Properties.GetIgnoredPropertyNames(class):await()
 		local properties = {}
 
 		for _, ancestor in ipairs(ancestry) do
@@ -106,6 +135,10 @@ function Properties.GetPropertyList(class: string)
 			end)
 
 			for _, property in ipairs(propertyMembers) do
+				if success and ignoredProperties and table.find(ignoredProperties, property.Name) then
+					continue
+				end
+
 				table.insert(properties, property.Name)
 			end
 		end
@@ -120,7 +153,7 @@ function Properties.GetChangedProperties(instance: Instance)
 		local changedProps = {}
 
 		for _, property in ipairs(properties) do
-			if property == "Parent" then
+			if table.find(IGNORED_PROPERTIES.Global, property) then
 				continue
 			end
 

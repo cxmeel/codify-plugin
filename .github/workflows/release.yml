@@ -13,8 +13,33 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Get Release Details
+        run: echo "PROJECT_VERSION=`grep -Po '(?<=version = ")([^"]+)' wally.toml`" >> $GITHUB_ENV
+
+      - name: Ensure Version Match
+        run: |
+          CONFIG_VERSION=$( grep -Po '(?<=version = ")([^"]+)' src/Data/Config.lua )
+
+          if [ -z "$PROJECT_VERSION"]; then
+            echo "Wally version not found in wally.toml"
+            exit 1
+          fi
+
+          if [ -z "$CONFIG_VERSION"]; then
+            echo "Config version not found in src/Data/Config.lua"
+            exit 1
+          fi
+
+          if [ "$PROJECT_VERSION" != "$CONFIG_VERSION" ]; then
+            echo "Wally version ($PROJECT_VERSION) does not match config version ($CONFIG_VERSION)"
+            exit 1
+          fi
+
+      - name: Set Release Filename
+        run: echo "RELEASE_FILENAME=${{ github.event.repository.name }}-$PROJECT_VERSION.rbxm" >> $GITHUB_ENV
+
       - name: Setup Toolchain
-        uses: Roblox/setup-foreman@v1
+        uses: roblox/setup-foreman@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: "^1.0.1"
@@ -22,17 +47,11 @@ jobs:
       - name: Report Tool Versions
         run: foreman list
 
-      - name: Get Release Details
-        shell: bash
-        run: echo "PROJECT_VERSION=`grep -Po '(?<=version = ")([^"]+)' wally.toml`" >> $GITHUB_ENV
-
-      - name: Set Release Filename
-        shell: bash
-        run: |
-          echo "RELEASE_FILENAME=${{ github.event.repository.name }}-$PROJECT_VERSION.rbxm" >> $GITHUB_ENV
-
       - name: Install Dependencies
         run: wally install
+
+      - name: Remove Tests
+        run: find . -name "*.spec.lua" -delete
 
       - name: Build Project
         run: rojo build default.project.json -o $RELEASE_FILENAME
