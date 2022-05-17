@@ -1,16 +1,32 @@
+local split = string.split
+local match = string.match
 local lower = string.lower
-local find = string.find
 local gsub = string.gsub
 local sub = string.sub
+
+local DICTIONARY = split("abcdefghijklmnopqrstuvwxyz", "")
+
+local function CreateSafeName(name: string)
+	local firstChar = utf8.codepoint(sub(name, 1, 1))
+	local rest = gsub(sub(name, 2), "[^%w]", "_")
+
+	return DICTIONARY[firstChar % #DICTIONARY] .. rest
+end
 
 local function GetSafeName(instance: Instance)
 	local name = instance.Name
 
-	local firstChar = find(name, "^%a")
-	local prefix = lower(sub(name, firstChar, firstChar))
-	local suffix = sub(name, firstChar + 1)
+	local matchedSafeName = { match(name, "([%a_])(.+)") }
+	local safeName
 
-	local safeName = gsub(prefix .. suffix, "[^%w]", "_")
+	if #matchedSafeName == 2 then
+		safeName = lower(matchedSafeName[1]) .. matchedSafeName[2]
+		safeName = gsub(safeName, "[^%w_]", "_")
+	elseif match(name, "([%a_])") then
+		safeName = lower(name)
+	else
+		safeName = CreateSafeName(name)
+	end
 
 	return safeName
 end
