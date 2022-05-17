@@ -338,6 +338,8 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 		return SerialiseColorSequence(value, options)
 	elseif valueTypeOf == "NumberSequence" then
 		return SerialiseNumberSequence(value, options)
+	elseif valueTypeOf == "Instance" then
+		return nil
 	elseif valueType == "vector" or valueTypeOf:match("Vector%d") then
 		return FORMAT_MAP.VectorFormat.Full(value)
 	elseif valueTypeOf == "number" then

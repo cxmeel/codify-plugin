@@ -43,10 +43,13 @@ local function Regularify(instance: Instance, options)
 				continue
 			end
 
-			options.PropIndent = #property + 3
-
 			local value = Serialise.SerialiseProperty(instance, property, options)
 
+			if value == nil then
+				continue
+			end
+
+			options.PropIndent = #property + 3
 			output:CreateLine():Push(fmt("%s.%s = %s", name, property, value))
 		end
 	end

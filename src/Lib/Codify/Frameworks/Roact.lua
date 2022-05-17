@@ -50,9 +50,13 @@ local function RoactifyInstance(instance: Instance, options)
 				continue
 			end
 
-			options.PropIndent = #prop + 3
-
 			local value = Serialize.SerialiseProperty(instance, prop, options)
+
+			if value == nil then
+				continue
+			end
+
+			options.PropIndent = #prop + 3
 			snippet:CreateLine():Push(tab(), prop, " = ", value, ",")
 		end
 
