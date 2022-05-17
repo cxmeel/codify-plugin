@@ -2,7 +2,7 @@ local Packages = script.Parent.Parent.Packages
 
 local Roact = require(Packages.Roact)
 local Hooks = require(Packages.Hooks)
-local Llama = require(Packages.Llama)
+local Sift = require(Packages.Sift)
 
 local DropdownButton = require(script.Button)
 local PopoverShield = require(script.Shield)
@@ -47,7 +47,7 @@ local function Dropdown(props: DropdownProps, hooks)
 			return labelA < labelB
 		end)
 
-		return Llama.List.map(props.options, function(option: DropdownOption, index: number)
+		return Sift.Array.map(props.options, function(option: DropdownOption, index: number)
 			return e(OptionButton, {
 				icon = option.icon,
 				iconColour = option.iconColour,

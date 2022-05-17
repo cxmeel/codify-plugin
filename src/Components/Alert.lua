@@ -3,7 +3,7 @@ local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 local Hooks = require(Packages.Hooks)
 local StudioTheme = require(Packages.StudioTheme)
-local Llama = require(Packages.Llama)
+local Sift = require(Packages.Sift)
 
 local Icon = require(script.Parent.Icon)
 local Text = require(script.Parent.Text)
@@ -47,7 +47,7 @@ local function Alert(props: AlertProps, hooks)
 			return false
 		end
 
-		return Llama.Dictionary.count(props[Roact.Children]) > 0
+		return Sift.Dictionary.count(props[Roact.Children]) > 0
 	end, { props[Roact.Children] })
 
 	return e("Frame", {

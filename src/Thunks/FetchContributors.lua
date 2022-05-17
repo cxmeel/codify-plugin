@@ -1,14 +1,14 @@
 local Plugin = script.Parent.Parent
 
 local HttpPromise = require(Plugin.Lib.HttpPromise)
-local Llama = require(Plugin.Packages.Llama)
+local Sift = require(Plugin.Packages.Sift)
 local Actions = require(Plugin.Actions)
 
 local function FetchContributors(repo: string, authors: { string }?)
 	local repoOwner = repo:match("^[^/]+")
 
 	repoOwner = repoOwner and repoOwner:lower()
-	authors = Llama.List.map(authors or {}, function(author)
+	authors = Sift.Array.map(authors or {}, function(author)
 		return author:lower()
 	end)
 
@@ -19,7 +19,7 @@ local function FetchContributors(repo: string, authors: { string }?)
 					return a.contributions > b.contributions
 				end)
 
-				return Llama.List.reduce(data, function(reduction, user)
+				return Sift.Array.reduce(data, function(reduction, user)
 					local username = user.login or user.name
 
 					if username and not (username == repoOwner or table.find(authors, username)) then

@@ -3,7 +3,7 @@ local Packages = script.Parent.Parent.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 local Hooks = require(Packages.Hooks)
 local StudioTheme = require(Packages.StudioTheme)
-local Llama = require(Packages.Llama)
+local Sift = require(Packages.Sift)
 
 local Icon = require(script.Parent.Parent.Parent.Icon)
 
@@ -75,7 +75,7 @@ local function ScrollButton(props: ScrollButtonProps, hooks)
 	end
 
 	local iconProps = hooks.useMemo(function()
-		return Llama.Dictionary.merge(
+		return Sift.Dictionary.merge(
 			{
 				anchor = Vector2.new(0.5, 0.5),
 				position = UDim2.fromScale(0.5, 0.5),

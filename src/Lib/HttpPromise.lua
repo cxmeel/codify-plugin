@@ -2,7 +2,7 @@ local HttpService = game:GetService("HttpService")
 local Plugin = script.Parent.Parent
 
 local Promise = require(Plugin.Packages.Promise)
-local Llama = require(Plugin.Packages.Llama)
+local Sift = require(Plugin.Packages.Sift)
 local String = require(script.Parent.String)
 
 export type RequestAsyncOptions = {
@@ -77,7 +77,7 @@ local function FetchCachedData(url: string): any?
 end
 
 local function ParseResponseHeaderCSV(header: string)
-	return Llama.List.reduce(header:split(","), function(reduction, value)
+	return Sift.Array.reduce(header:split(","), function(reduction, value)
 		local kvPair = value:split("=")
 
 		kvPair[1] = String.Trim(kvPair[1]):lower()
@@ -148,7 +148,7 @@ local function RequestAsync(url: string, options: RequestAsyncOptions?)
 		return Promise.resolve(cachedData)
 	end
 
-	local config = Llama.Dictionary.merge(DEFAULT_OPTIONS, options) :: RequestAsyncOptions
+	local config = Sift.Dictionary.merge(DEFAULT_OPTIONS, options) :: RequestAsyncOptions
 	local URL = ParseURL(url)
 
 	return PromptDomainApproval(url):andThen(function()

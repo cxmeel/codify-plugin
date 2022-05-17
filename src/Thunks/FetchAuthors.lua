@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local Plugin = script.Parent.Parent
 
 local Promise = require(Plugin.Packages.Promise)
-local Llama = require(Plugin.Packages.Llama)
+local Sift = require(Plugin.Packages.Sift)
 
 local Config = require(Plugin.Data.Config)
 local Actions = require(Plugin.Actions)
@@ -32,7 +32,7 @@ end
 
 local function FetchAuthors()
 	return function(store)
-		Promise.all(Llama.List.map(Config.authors, function(author)
+		Promise.all(Sift.Array.map(Config.authors, function(author)
 			return Promise.retryWithDelay(GetUsernameFromUserIdAsync, 3, 30, author.userId)
 		end))
 			:andThen(function(authors)

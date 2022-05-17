@@ -1,7 +1,7 @@
 [package]
 name = "csqrl/codify-plugin"
 description = "Convert Instances to code; just like magic!"
-version = "2.2.3" # /src/Data/Config.lua
+version = "2.2.4" # /src/Data/Config.lua
 license = "MIT"
 authors = ["csqrl (https://csqrl.dev)", "boatbomber (https://www.boatbomber.com/)"]
 contributors = ["chriscerie"]
@@ -10,15 +10,12 @@ realm = "shared"
 
 [dependencies]
 Highlighter = "boatbomber/highlighter@=0.4.5"
-StudioPlugin = "csqrl/studio-plugin@^1.0.1"
-StudioTheme = "csqrl/studio-theme@^1.0.2"
-Promise = "evaera/promise@^3.2.1"
-Llama = "freddylist/llama@1.1.1"
-Hooks = "kampfkarren/roact-hooks@^0.3.0"
-RoactRouter = "reselim/roact-router@^1.0.3"
-Roact = "roblox/roact@^1.4.2"
-Rodux = "roblox/rodux@^3.0.0"
-RoduxHooks = "solarhorizon/rodux-hooks@^0.2.1"
-
-# [dev-dependencies]
-# TestEZ = "roblox/testez@^0.4.1"
+StudioPlugin = "csqrl/studio-plugin@=1.0.1"
+StudioTheme = "csqrl/studio-theme@=1.0.2"
+Promise = "evaera/promise@=4.0.0"
+Hooks = "kampfkarren/roact-hooks@=0.3.0"
+RoactRouter = "reselim/roact-router@=1.0.3"
+Roact = "roblox/roact@=1.4.2"
+Rodux = "roblox/rodux@=3.0.0"
+RoduxHooks = "solarhorizon/rodux-hooks@=0.2.2"
+Sift = "csqrl/sift@=0.0.0"

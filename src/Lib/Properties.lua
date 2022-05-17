@@ -4,7 +4,7 @@ local Plugin = script.Parent.Parent
 
 local HttpPromise = require(Plugin.Lib.HttpPromise)
 local Promise = require(Plugin.Packages.Promise)
-local Llama = require(Plugin.Packages.Llama)
+local Sift = require(Plugin.Packages.Sift)
 
 local Properties = {}
 
@@ -67,7 +67,7 @@ function Properties.FetchAPIDump(hash: string)
 end
 
 local function FindClassEntry(dump, class: string)
-	local entryIndex = Llama.List.findWhere(dump.Classes, function(classEntry)
+	local entryIndex = Sift.Array.findWhere(dump.Classes, function(classEntry)
 		return classEntry.Name == class
 	end)
 
@@ -106,7 +106,7 @@ function Properties.GetIgnoredPropertyNames(class: string)
 			table.insert(ignoredProperties, globalProperty)
 		end
 
-		return Llama.List.flatten(ignoredProperties, 1)
+		return Sift.Array.flatten(ignoredProperties, 1)
 	end)
 end
 
@@ -116,7 +116,7 @@ function Properties.GetPropertyList(class: string)
 		local properties = {}
 
 		for _, ancestor in ipairs(ancestry) do
-			local propertyMembers = Llama.List.filter(ancestor.Members, function(member)
+			local propertyMembers = Sift.Array.filter(ancestor.Members, function(member)
 				if member.MemberType ~= "Property" then
 					return false
 				end

@@ -3,7 +3,7 @@ local Plugin = script.Parent.Parent
 local RoduxHooks = require(Plugin.Packages.RoduxHooks)
 local Roact = require(Plugin.Packages.Roact)
 local Hooks = require(Plugin.Packages.Hooks)
-local Llama = require(Plugin.Packages.Llama)
+local Sift = require(Plugin.Packages.Sift)
 
 local Enums = require(Plugin.Data.Enums)
 local Actions = require(Plugin.Actions)
@@ -35,7 +35,7 @@ local FRAMEWORK_ENUM_MAP = {
 	},
 }
 
-local DROPDOWN_OPTIONS = Llama.Dictionary.values(Llama.Dictionary.map(FRAMEWORK_ENUM_MAP, function(details, enumItem)
+local DROPDOWN_OPTIONS = Sift.Dictionary.values(Sift.Dictionary.map(FRAMEWORK_ENUM_MAP, function(details, enumItem)
 	return {
 		icon = details.icon,
 		label = details.label,

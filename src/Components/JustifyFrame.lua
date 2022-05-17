@@ -1,7 +1,7 @@
 local Packages = script.Parent.Parent.Packages
 
 local Roact = require(Packages.Roact)
-local Llama = require(Packages.Llama)
+local Sift = require(Packages.Sift)
 local Hooks = require(Packages.Hooks)
 
 local e = Roact.createElement
@@ -25,7 +25,7 @@ local function JustifyFrame(props: JustifyFrameProps, hooks)
 			return 1
 		end
 
-		return max(Llama.Dictionary.count(props[Roact.Children]), 1)
+		return max(Sift.Dictionary.count(props[Roact.Children]), 1)
 	end, { props[Roact.Children] })
 
 	local childSize = hooks.useMemo(function()
@@ -41,7 +41,7 @@ local function JustifyFrame(props: JustifyFrameProps, hooks)
 			return {}
 		end
 
-		return Llama.Dictionary.map(props[Roact.Children], function(el)
+		return Sift.Dictionary.map(props[Roact.Children], function(el)
 			local prop = el.props["$justify"]
 
 			if type(prop) ~= "string" then
@@ -50,7 +50,7 @@ local function JustifyFrame(props: JustifyFrameProps, hooks)
 
 			return e(
 				el.component,
-				Llama.Dictionary.merge(el.props, {
+				Sift.Dictionary.merge(el.props, {
 					[prop] = childSize,
 				})
 			)
