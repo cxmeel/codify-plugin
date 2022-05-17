@@ -74,6 +74,12 @@ local function Page(_, hooks)
 			order = 15,
 		}),
 
+		instanceOmitHint = e(Text, {
+			text = "Instance-based properties (e.g. Adornee, PrimaryPart) will not be included in the output.",
+			textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+			order = 16,
+		}),
+
 		activeSelection = e(Layout.Frame, {
 			order = 20,
 		}, {
