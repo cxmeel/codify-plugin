@@ -102,6 +102,10 @@ function Properties.GetIgnoredPropertyNames(class: string)
 			end
 		end
 
+		for _, globalProperty in ipairs(IGNORED_PROPERTIES.Global) do
+			table.insert(ignoredProperties, globalProperty)
+		end
+
 		return Llama.List.flatten(ignoredProperties, 1)
 	end)
 end
@@ -153,10 +157,6 @@ function Properties.GetChangedProperties(instance: Instance)
 		local changedProps = {}
 
 		for _, property in ipairs(properties) do
-			if table.find(IGNORED_PROPERTIES.Global, property) then
-				continue
-			end
-
 			if newInstance[property] ~= instance[property] then
 				table.insert(changedProps, property)
 			end
