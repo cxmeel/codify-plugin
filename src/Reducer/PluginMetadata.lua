@@ -1,5 +1,5 @@
 local Plugin = script.Parent.Parent
-local Llama = require(Plugin.Packages.Llama)
+local Sift = require(Plugin.Packages.Sift)
 
 local INIT_STATE = {
 	isDevMode = false,
@@ -10,7 +10,7 @@ return function(state, action)
 	state = state or INIT_STATE
 
 	if action.type == "SET_PLUGIN_METADATA" then
-		return Llama.Dictionary.merge(state, action.payload)
+		return Sift.Dictionary.merge(state, action.payload)
 	end
 
 	return state

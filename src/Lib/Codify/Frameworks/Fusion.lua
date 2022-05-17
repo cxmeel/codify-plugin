@@ -9,8 +9,12 @@ local function FusionifyInstance(instance: Instance, options)
 	local createMethod = options.CreateMethod or "New"
 	local snippet = Script.new()
 
-	local changedProps = select(2, Properties.GetChangedProperties(instance):await())
+	local success, changedProps = Properties.GetChangedProperties(instance):await()
 	local children = instance:GetChildren()
+
+	if not success then
+		error("Failed to get changed properties: " .. tostring(changedProps), 2)
+	end
 
 	local function tab()
 		return string.rep(options.TabCharacter, options.Indent)
@@ -25,13 +29,6 @@ local function FusionifyInstance(instance: Instance, options)
 	if options.NamingScheme == "All" or (options.NamingScheme == "Changed" and nameChanged) then
 		name = instance.Name
 
-		if options.LevelIdentifiers[name] ~= nil then
-			options.LevelIdentifiers[name] += 1
-			name ..= tostring(options.LevelIdentifiers[name])
-		else
-			options.LevelIdentifiers[name] = 0
-		end
-
 		snippet:CreateLine():Push(tab(), "Name = ", string.format("%q", name), ",")
 
 		if #children > 0 and #changedProps == 0 then
@@ -45,9 +42,13 @@ local function FusionifyInstance(instance: Instance, options)
 				continue
 			end
 
-			options.PropIndent = #prop + 3
-
 			local value = Serialize.SerialiseProperty(instance, prop, options)
+
+			if value == nil then
+				continue
+			end
+
+			options.PropIndent = #prop + 3
 			snippet:CreateLine():Push(tab(), prop, " = ", value, ",")
 		end
 

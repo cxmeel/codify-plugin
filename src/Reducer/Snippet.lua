@@ -1,4 +1,4 @@
-local Llama = require(script.Parent.Parent.Packages.Llama)
+local Sift = require(script.Parent.Parent.Packages.Sift)
 
 return function(state, action)
 	state = state or {
@@ -10,7 +10,7 @@ return function(state, action)
 	if action.type == "SET_SNIPPET_PROCESSING" then
 		assert(type(action.payload) == "boolean", "SET_SNIPPET_PROCESSING `action.payload` must be a boolean")
 
-		return Llama.Dictionary.merge(state, {
+		return Sift.Dictionary.merge(state, {
 			processing = action.payload,
 		})
 	elseif action.type == "SET_SNIPPET_CONTENT" then
@@ -22,7 +22,7 @@ return function(state, action)
 			"SET_SNIPPET_CONTENT `action.payload.content` must be a string"
 		)
 
-		return Llama.Dictionary.merge(state, {
+		return Sift.Dictionary.merge(state, {
 			content = action.payload.content,
 			name = action.payload.name,
 		})

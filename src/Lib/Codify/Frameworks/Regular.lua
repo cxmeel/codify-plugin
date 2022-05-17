@@ -9,8 +9,12 @@ local fmt = string.format
 local function Regularify(instance: Instance, options)
 	local output = Script.new()
 
-	local changedProps = select(2, Properties.GetChangedProperties(instance):await())
+	local success, changedProps = Properties.GetChangedProperties(instance):await()
 	local children = instance:GetChildren()
+
+	if not success then
+		error("Failed to get changed properties: " .. tostring(changedProps), 2)
+	end
 
 	if not options._instanceNames then
 		options._instanceNames = {}
@@ -30,7 +34,7 @@ local function Regularify(instance: Instance, options)
 	local isNameChanged = table.find(changedProps, "Name")
 
 	if options.NamingScheme == "All" or (options.NamingScheme == "Changed" and isNameChanged) then
-		output:CreateLine():Push(fmt("%s.Name = %q", name, name))
+		output:CreateLine():Push(fmt("%s.Name = %q", name, instance.Name))
 	end
 
 	if #changedProps > 0 then
@@ -39,10 +43,13 @@ local function Regularify(instance: Instance, options)
 				continue
 			end
 
-			options.PropIndent = #property + 3
-
 			local value = Serialise.SerialiseProperty(instance, property, options)
 
+			if value == nil then
+				continue
+			end
+
+			options.PropIndent = #property + 3
 			output:CreateLine():Push(fmt("%s.%s = %s", name, property, value))
 		end
 	end

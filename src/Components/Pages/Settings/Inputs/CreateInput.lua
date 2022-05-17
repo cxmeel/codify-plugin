@@ -3,7 +3,7 @@ local Plugin = script.Parent.Parent.Parent.Parent.Parent
 local RoduxHooks = require(Plugin.Packages.RoduxHooks)
 local Roact = require(Plugin.Packages.Roact)
 local Hooks = require(Plugin.Packages.Hooks)
-local Llama = require(Plugin.Packages.Llama)
+local Sift = require(Plugin.Packages.Sift)
 
 local Actions = require(Plugin.Actions)
 
@@ -31,7 +31,7 @@ export type CreateInputOptions = {
 }
 
 return function(options: CreateInputOptions)
-	local DROPDOWN_OPTIONS = Llama.Dictionary.values(Llama.Dictionary.map(options.enumMap, function(details, enumItem)
+	local DROPDOWN_OPTIONS = Sift.Dictionary.values(Sift.Dictionary.map(options.enumMap, function(details, enumItem)
 		return {
 			label = details.label,
 			hint = details.hint,

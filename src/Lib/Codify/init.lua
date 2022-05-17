@@ -1,4 +1,4 @@
-local Llama = require(script.Parent.Parent.Packages.Llama)
+local Sift = require(script.Parent.Parent.Packages.Sift)
 local Frameworks = require(script.Frameworks)
 export type CodifyOptions = {
 	Framework: string?,
@@ -43,7 +43,7 @@ local function CodifyInstance(instance: Instance, options: CodifyInstanceOptions
 end
 
 local function Codify(rootInstance: Instance, options: CodifyOptions?)
-	local config = Llama.Dictionary.merge(DEFAULT_OPTIONS, options or {}, {
+	local config = Sift.Dictionary.merge(DEFAULT_OPTIONS, options or {}, {
 		LevelIdentifiers = {},
 	}) :: CodifyInstanceOptions
 

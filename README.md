@@ -97,16 +97,16 @@ This is necessary to the Save to Device feature only. The plugin will _temporari
 
 The following open-source projects helped to make Codify possible!
 
-- [highlighter](https://github.com/boatbomber/Highlighter/tree/v0.4.5) by @boatbomber
-- [studio-plugin](https://github.com/csqrl/studio-plugin/tree/1.0.1) by @csqrl
-- [studio-theme](https://github.com/csqrl/studio-theme/tree/1.0.2) by @csqrl
-- [roblox-lua-promise](https://github.com/evaera/roblox-lua-promise/tree/v3.2.1) by @evaera
-- [llama](https://github.com/freddylist/llama/tree/v1.1.1) by @freddylist
-- [roact-hooks](https://github.com/Kampfkarren/roact-hooks/tree/0.3.0) by @kampfkarren
-- [roact-router](https://github.com/Reselim/roact-router/tree/v1.0.0) by @reselim
-- [roact](https://github.com/Roblox/roact/tree/v1.4.2) by @roblox
-- [rodux](https://github.com/Roblox/rodux/tree/v3.0.0) by @roblox
-- [rodux-hooks](https://github.com/SolarHorizon/rodux-hooks/tree/0.2.1) by @solarhorizon
+- [highlighter](https://github.com/boatbomber/highlighter) by @boatbomber
+- [studio-plugin](https://github.com/csqrl/studio-plugin) by @csqrl
+- [studio-theme](https://github.com/csqrl/studio-theme) by @csqrl
+- [roblox-lua-promise](https://github.com/evaera/roblox-lua-promise) by @evaera
+- [roact-hooks](https://github.com/kampfkarren/roact-hooks) by @kampfkarren
+- [roact-router](https://github.com/reselim/roact-router) by @reselim
+- [roact](https://github.com/roblox/roact) by @roblox
+- [rodux](https://github.com/roblox/rodux) by @roblox
+- [rodux-hooks](https://github.com/solarhorizon/rodux-hooks) by @solarhorizon
+- [sift](https://github.com/csqrl/sift) by @csqrl
 
 ## Disclaimer
 

@@ -1,6 +1,6 @@
 local Plugin = script.Parent.Parent
 
-local Llama = require(Plugin.Packages.Llama)
+local Sift = require(Plugin.Packages.Sift)
 local String = require(Plugin.Lib.String)
 local Enums = require(Plugin.Data.Enums)
 
@@ -19,7 +19,7 @@ local DEFAULT_SETTINGS = {
 }
 
 return function(state, action)
-	state = state or Llama.Dictionary.copy(DEFAULT_SETTINGS)
+	state = state or Sift.Dictionary.copy(DEFAULT_SETTINGS)
 
 	if action.type == "SET_SETTING" then
 		assert(type(action.payload) == "table", "SET_SETTING `payload` must be a table")
@@ -29,7 +29,7 @@ return function(state, action)
 			local newValue = String.Trim(action.payload.value)
 
 			if #newValue == 0 then
-				newValue = DEFAULT_SETTINGS[action.payload.key] or Llama.None
+				newValue = DEFAULT_SETTINGS[action.payload.key] or Sift.None
 			end
 
 			action.payload.value = newValue
@@ -39,10 +39,10 @@ return function(state, action)
 				action.payload.value = math.max(0, action.payload.value)
 			end
 		elseif action.payload.value == nil then
-			action.payload.value = Llama.None
+			action.payload.value = Sift.None
 		end
 
-		return Llama.Dictionary.merge(state, {
+		return Sift.Dictionary.merge(state, {
 			[action.payload.key] = action.payload.value,
 		})
 	end
