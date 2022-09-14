@@ -255,6 +255,12 @@ FORMAT_MAP = {
 			return fmt("%s.new(%s)", typeof(value), table.concat(elements, ", "))
 		end,
 	},
+
+	FontFormat = {
+		Font = function(value: Font)
+			return fmt("%s.new(%s, %s, %s)", typeof(value), tostring(value.Family), tostring(value.Weight), tostring(value.Style))
+		end
+	}
 }
 
 local function SerialiseColorSequence(sequence: ColorSequence, options: CodifyInstanceOptions)
@@ -348,6 +354,8 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 		return fmt("%q", value)
 	elseif valueType == "userdata" then
 		return fmt("%s.new(%s)", valueTypeOf, tostring(value))
+	elseif valueType == "Font" then
+
 	end
 
 	return tostring(value)
