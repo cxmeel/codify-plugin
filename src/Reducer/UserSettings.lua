@@ -16,6 +16,7 @@ local DEFAULT_SETTINGS = {
 	udim2Format = Enums.UDim2Format.Smart,
 	indentationUsesTabs = false,
 	indentationLength = 2,
+	fontFormat = Enums.FontFormat.Full,
 }
 
 return function(state, action)

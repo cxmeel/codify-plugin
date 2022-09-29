@@ -14,6 +14,7 @@ type CodifyOptions = {
 	PhysicalPropertiesFormat: string?,
 	TabCharacter: string?,
 	Indent: number?,
+	FontFormat: string?,
 }
 
 type CodifyInstanceOptions = CodifyOptions & {
@@ -23,7 +24,15 @@ type CodifyInstanceOptions = CodifyOptions & {
 	}?,
 }
 
+type GuiTextObject = TextBox | TextLabel | TextButton
+
 local function FormatNumber(value: number): string
+	if value == math.huge then
+		return "math.huge"
+	elseif value == -math.huge then
+		return "-math.huge"
+	end
+
 	return fmt("%.3g", value)
 end
 
@@ -255,6 +264,47 @@ FORMAT_MAP = {
 			return fmt("%s.new(%s)", typeof(value), table.concat(elements, ", "))
 		end,
 	},
+
+	FontFormat = {
+		Full = function(instance: GuiTextObject, options: CodifyInstanceOptions): string
+			local value = instance.FontFace
+
+			local isDefaultStyle = value.Style == Enum.FontStyle.Normal
+			local isDefaultWeight = value.Weight == Enum.FontWeight.Regular
+
+			if isDefaultStyle and isDefaultWeight then
+				return fmt("Font.new(%q)", value.Family)
+			end
+
+			local baseIndent = rep(options.TabCharacter, options.Indent)
+			local propIndent = rep(options.TabCharacter, options.Indent + 1)
+
+			local fontProps = {
+				fmt("%q", value.Family),
+				fmt("Enum.FontWeight.%s", value.Weight.Name),
+				fmt("Enum.FontStyle.%s", value.Style.Name),
+			}
+
+			return fmt(
+				"Font.new(\n%s%s,\n%s%s,\n%s%s\n%s)",
+				propIndent,
+				fontProps[1],
+				propIndent,
+				fontProps[2],
+				propIndent,
+				fontProps[3],
+				baseIndent
+			)
+		end,
+
+		Smart = function(instance: GuiTextObject, options: CodifyInstanceOptions): string
+			if instance.Font == Enum.Font.Unknown then
+				return FORMAT_MAP.FontFormat.Full(instance, options)
+			end
+
+			return fmt("Font.fromEnum(Enum.Font.%s)", instance.Font.Name)
+		end,
+	},
 }
 
 local function SerialiseColorSequence(sequence: ColorSequence, options: CodifyInstanceOptions)
@@ -310,7 +360,7 @@ local function SerialiseNumberSequence(sequence: NumberSequence, options: Codify
 end
 
 local function SerialiseProperty(instance: Instance, property: string, options: CodifyInstanceOptions)
-	local value = instance[property] :: any
+	local value = (instance :: any)[property]
 	local valueTypeOf = typeof(value)
 	local valueType = type(value)
 
@@ -338,6 +388,8 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 		return SerialiseColorSequence(value, options)
 	elseif valueTypeOf == "NumberSequence" then
 		return SerialiseNumberSequence(value, options)
+	elseif valueTypeOf == "Font" then
+		return FORMAT_MAP.FontFormat[options.FontFormat or "Full"](instance, options)
 	elseif valueTypeOf == "Instance" then
 		return nil
 	elseif valueType == "vector" or valueTypeOf:match("Vector%d") then

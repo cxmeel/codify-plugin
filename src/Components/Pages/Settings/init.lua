@@ -78,7 +78,11 @@ local function Page(_, hooks)
 
 			enumFormat = e(Inputs.EnumFormat, {
 				order = 30,
-			}),
+      }),
+      
+      fontFormat = e(Inputs.FontFormat, {
+        order = 35,
+      }),
 
 			numberRangeFormat = e(Inputs.NumberRangeFormat, {
 				order = 40,

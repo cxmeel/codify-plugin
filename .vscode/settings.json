@@ -4,5 +4,10 @@
     "unused-function": "Error",
     "unused-vararg": "Error",
     "duplicate-index": "Error"
+  },
+  "[lua]": {
+    "editor.defaultFormatter": "JohnnyMorganz.stylua",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
   }
 }

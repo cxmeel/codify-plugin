@@ -23,18 +23,19 @@ local function GenerateSnippet()
 			else string.rep(" ", state.userSettings.indentationLength or 2)
 
 		CodifyAsync(state.targetInstance.instance, {
-			Framework = state.userSettings.framework,
-			CreateMethod = state.userSettings["createMethod" .. state.userSettings.framework],
-			Color3Format = state.userSettings.color3Format,
-			UDim2Format = state.userSettings.udim2Format,
-			NumberRangeFormat = state.userSettings.numberRangeFormat,
-			EnumFormat = state.userSettings.enumFormat,
-			NamingScheme = state.userSettings.namingScheme,
-			PhysicalPropertiesFormat = state.userSettings.physicalPropertiesFormat,
-			BrickColorFormat = state.userSettings.brickColorFormat,
-			ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
-			TabCharacter = tabCharacter,
-		})
+				Framework = state.userSettings.framework,
+				CreateMethod = state.userSettings["createMethod" .. state.userSettings.framework],
+				Color3Format = state.userSettings.color3Format,
+				UDim2Format = state.userSettings.udim2Format,
+				NumberRangeFormat = state.userSettings.numberRangeFormat,
+				EnumFormat = state.userSettings.enumFormat,
+				NamingScheme = state.userSettings.namingScheme,
+				PhysicalPropertiesFormat = state.userSettings.physicalPropertiesFormat,
+				BrickColorFormat = state.userSettings.brickColorFormat,
+				ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
+				TabCharacter = tabCharacter,
+				FontFormat = state.userSettings.fontFormat,
+			})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({
 					name = state.targetInstance.instance.Name,

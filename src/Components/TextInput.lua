@@ -163,13 +163,19 @@ local function TextInput(props: TextInputProps, hooks)
 					setHeight(rbx.TextBounds.Y + 2)
 
 					if props.syntaxHighlight then
-						Highlighter.Highlight(rbx)
+						Highlighter.highlight({
+							textObject = rbx,
+							forceUpdate = true,
+						})
 					end
 				end,
 
 				[Roact.Change.AbsoluteSize] = function(rbx: TextBox)
 					if props.syntaxHighlight then
-						Highlighter.Highlight(rbx)
+						Highlighter.highlight({
+							textObject = rbx,
+							forceUpdate = true,
+						})
 					end
 				end,
 
@@ -179,7 +185,9 @@ local function TextInput(props: TextInputProps, hooks)
 					end
 
 					if props.syntaxHighlight then
-						Highlighter.Highlight(rbx)
+						Highlighter.highlight({
+							textObject = rbx,
+						})
 					end
 				end,
 

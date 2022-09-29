@@ -23,16 +23,6 @@ local function App(props: AppProps, hooks)
 		return state.pluginMeta
 	end)
 
-	local pluginIcon = hooks.useMemo(function()
-		local build = pluginMeta.build:lower()
-
-		if Config.icons[build] then
-			return Config.icons[build]
-		end
-
-		return Config.icons.dev
-	end, { pluginMeta })
-
 	local buttonSuffix = hooks.useMemo(function()
 		if pluginMeta.build ~= "STABLE" then
 			return " [" .. pluginMeta.build .. "]"
@@ -50,7 +40,7 @@ local function App(props: AppProps, hooks)
 			widgetToggle = e(StudioPlugin.ToolbarButton, {
 				id = "widgetToggle",
 				tooltip = "Show or hide the Codify widget",
-				icon = pluginIcon,
+				icon = Config.icons.stable,
 				label = "Codify" .. buttonSuffix,
 				active = widgetVisible,
 				onActivated = function()
@@ -72,7 +62,7 @@ local function App(props: AppProps, hooks)
 				styles = {
 					font = {
 						default = Enum.Font.Gotham,
-						semibold = Enum.Font.GothamSemibold,
+						semibold = Enum.Font.GothamMedium,
 						bold = Enum.Font.GothamBold,
 						black = Enum.Font.GothamBlack,
 						mono = Enum.Font.Code,
