@@ -24,7 +24,7 @@ end
 function Manager:UpdateColourScheme()
 	local theme = Studio.Theme :: StudioTheme
 
-	self.highlighter.UpdateColors({
+	self.highlighter.setTokenColors({
 		background = theme:GetColor(Enum.StudioStyleGuideColor.ScriptBackground),
 		iden = theme:GetColor(Enum.StudioStyleGuideColor.ScriptText),
 		keyword = theme:GetColor(Enum.StudioStyleGuideColor.ScriptKeyword),
