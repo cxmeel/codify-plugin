@@ -1,5 +1,6 @@
 local Sift = require(script.Parent.Parent.Packages.Sift)
 local Frameworks = require(script.Frameworks)
+
 export type CodifyOptions = {
 	Framework: string?,
 	CreateMethod: string?,
@@ -12,6 +13,7 @@ export type CodifyOptions = {
 	Indent: number?,
 	PhysicalPropertiesFormat: string?,
 	BrickColorFormat: string?,
+	FontFormat: string?,
 
 	ChildrenKey: string?, -- customise Fusion's [Children] key
 }

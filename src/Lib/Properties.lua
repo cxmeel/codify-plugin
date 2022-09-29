@@ -1,5 +1,4 @@
----@diagnostic disable-next-line: invalid-class-name
-local DebugSettings = settings():GetService("DebugSettings") :: DebugSettings
+local DebugSettings = settings():GetService("DebugSettings")
 local Plugin = script.Parent.Parent
 
 local HttpPromise = require(Plugin.Lib.HttpPromise)
@@ -11,7 +10,7 @@ local Properties = {}
 local IGNORED_PROPERTIES = {
 	Classes = {
 		GuiObject = {
-			"FontFace",
+			"Font",
 		},
 	},
 	Global = {
