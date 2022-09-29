@@ -24,6 +24,12 @@ type CodifyInstanceOptions = CodifyOptions & {
 }
 
 local function FormatNumber(value: number): string
+	if value == math.huge then
+		return "math.huge"
+	elseif value == -math.huge then
+		return "-math.huge"
+	end
+
 	return fmt("%.3g", value)
 end
 
@@ -310,7 +316,7 @@ local function SerialiseNumberSequence(sequence: NumberSequence, options: Codify
 end
 
 local function SerialiseProperty(instance: Instance, property: string, options: CodifyInstanceOptions)
-	local value = instance[property] :: any
+	local value = (instance :: any)[property]
 	local valueTypeOf = typeof(value)
 	local valueType = type(value)
 

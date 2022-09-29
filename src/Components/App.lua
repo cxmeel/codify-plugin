@@ -72,7 +72,7 @@ local function App(props: AppProps, hooks)
 				styles = {
 					font = {
 						default = Enum.Font.Gotham,
-						semibold = Enum.Font.GothamSemibold,
+						semibold = Enum.Font.GothamMedium,
 						bold = Enum.Font.GothamBold,
 						black = Enum.Font.GothamBlack,
 						mono = Enum.Font.Code,
