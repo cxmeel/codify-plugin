@@ -15,7 +15,7 @@
 [images/itch-badge]: https://gist.github.com/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/itch.svg
 [images/github-badge]: https://gist.github.com/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/githubSource.svg
 [images/screenshots-row]: https://github.com/csqrl/codify-plugin/raw/main/assets/PluginScreenshots.png
-[images/yt-demo]: assets/YouTubeEmbed.png
+[images/yt-demo]: https://github.com/csqrl/codify-plugin/raw/main/assets/YouTubeEmbed.png
 
 <!-- Content -->
 <div align="center">
