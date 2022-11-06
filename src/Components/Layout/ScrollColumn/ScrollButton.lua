@@ -25,32 +25,32 @@ local function ScrollButton(props: ScrollButtonProps, hooks)
 	local hover, setHover = hooks.useState(false)
 	local press, setPress = hooks.useState(false)
 
-	local colours = hooks.useMemo(function()
-		local colours = {
+	local colors = hooks.useMemo(function()
+		local colors = {
 			background = Enum.StudioStyleGuideColor.ScrollBar,
 			foreground = Enum.StudioStyleGuideColor.TitlebarText,
 			border = Enum.StudioStyleGuideColor.Border,
 		}
 
 		if props.disabled then
-			colours.background = theme:GetColor(colours.background :: any, Enum.StudioStyleGuideModifier.Disabled)
-			colours.foreground = theme:GetColor(colours.foreground :: any, Enum.StudioStyleGuideModifier.Disabled)
-			colours.border = theme:GetColor(colours.border :: any, Enum.StudioStyleGuideModifier.Disabled)
+			colors.background = theme:GetColor(colors.background :: any, Enum.StudioStyleGuideModifier.Disabled)
+			colors.foreground = theme:GetColor(colors.foreground :: any, Enum.StudioStyleGuideModifier.Disabled)
+			colors.border = theme:GetColor(colors.border :: any, Enum.StudioStyleGuideModifier.Disabled)
 		elseif press then
-			colours.background = theme:GetColor(colours.background :: any, Enum.StudioStyleGuideModifier.Pressed)
-			colours.foreground = theme:GetColor(colours.foreground :: any, Enum.StudioStyleGuideModifier.Pressed)
-			colours.border = theme:GetColor(colours.border :: any, Enum.StudioStyleGuideModifier.Pressed)
+			colors.background = theme:GetColor(colors.background :: any, Enum.StudioStyleGuideModifier.Pressed)
+			colors.foreground = theme:GetColor(colors.foreground :: any, Enum.StudioStyleGuideModifier.Pressed)
+			colors.border = theme:GetColor(colors.border :: any, Enum.StudioStyleGuideModifier.Pressed)
 		elseif hover then
-			colours.background = theme:GetColor(colours.background :: any, Enum.StudioStyleGuideModifier.Hover)
-			colours.foreground = theme:GetColor(colours.foreground :: any, Enum.StudioStyleGuideModifier.Hover)
-			colours.border = theme:GetColor(colours.border :: any, Enum.StudioStyleGuideModifier.Hover)
+			colors.background = theme:GetColor(colors.background :: any, Enum.StudioStyleGuideModifier.Hover)
+			colors.foreground = theme:GetColor(colors.foreground :: any, Enum.StudioStyleGuideModifier.Hover)
+			colors.border = theme:GetColor(colors.border :: any, Enum.StudioStyleGuideModifier.Hover)
 		else
-			colours.background = theme:GetColor(colours.background :: any, Enum.StudioStyleGuideModifier.Default)
-			colours.foreground = theme:GetColor(colours.foreground :: any, Enum.StudioStyleGuideModifier.Default)
-			colours.border = theme:GetColor(colours.border :: any, Enum.StudioStyleGuideModifier.Default)
+			colors.background = theme:GetColor(colors.background :: any, Enum.StudioStyleGuideModifier.Default)
+			colors.foreground = theme:GetColor(colors.foreground :: any, Enum.StudioStyleGuideModifier.Default)
+			colors.border = theme:GetColor(colors.border :: any, Enum.StudioStyleGuideModifier.Default)
 		end
 
-		return colours
+		return colors
 	end, { props.disabled, press, hover, theme })
 
 	local onInputBegan = hooks.useCallback(function(_, input: InputObject)
@@ -79,7 +79,7 @@ local function ScrollButton(props: ScrollButtonProps, hooks)
 			{
 				anchor = Vector2.new(0.5, 0.5),
 				position = UDim2.fromScale(0.5, 0.5),
-				colour = colours.foreground,
+				color = colors.foreground,
 			},
 			if type(props.icon) == "table"
 				then props.icon
@@ -87,13 +87,13 @@ local function ScrollButton(props: ScrollButtonProps, hooks)
 					icon = props.icon,
 				}
 		)
-	end, { props.icon, colours.foreground })
+	end, { props.icon, colors.foreground })
 
 	return e(if props.onActivated then "ImageButton" else "Frame", {
 		AutoButtonColor = if props.onActivated then false else nil,
 		AnchorPoint = props.anchor,
-		BackgroundColor3 = colours.background,
-		BorderColor3 = colours.border,
+		BackgroundColor3 = colors.background,
+		BorderColor3 = colors.border,
 		Position = props.position,
 		Size = props.size,
 		ZIndex = props.zindex,

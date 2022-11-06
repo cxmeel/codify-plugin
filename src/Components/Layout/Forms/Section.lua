@@ -63,7 +63,7 @@ local function FormSection(props: FormSectionProps, hooks)
 			}, {
 				image = e(Icon, {
 					icon = "Caret",
-					colour = theme:GetColor(Enum.StudioStyleGuideColor.BrightText),
+					color = theme:GetColor(Enum.StudioStyleGuideColor.BrightText),
 					rotation = collapsed and -90 or 0,
 					order = 10,
 				}),
@@ -76,7 +76,7 @@ local function FormSection(props: FormSectionProps, hooks)
 
 			label = e(Text, {
 				text = props.heading,
-				textColour = theme:GetColor(Enum.StudioStyleGuideColor.BrightText),
+				textColor = theme:GetColor(Enum.StudioStyleGuideColor.BrightText),
 				size = props.collapsible and UDim2.new(1, -16, 0, 0),
 				font = not props.formItem and styles.font.semibold,
 				order = 20,
@@ -86,7 +86,7 @@ local function FormSection(props: FormSectionProps, hooks)
 		collapsible = not collapsed and Roact.createFragment({
 			hint = props.hint and e(Text, {
 				text = props.hint,
-				textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+				textColor = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
 				order = 20,
 			}),
 

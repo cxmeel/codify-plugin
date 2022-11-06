@@ -51,7 +51,7 @@ local function BaseCheckbox(props: BaseCheckboxProps, hooks)
 				icon = "Tick",
 				anchor = Vector2.new(0.5, 0.5),
 				position = UDim2.fromScale(0.5, 0.5),
-				colour = theme:GetColor(Enum.StudioStyleGuideColor.CheckedFieldIndicator, modifier),
+				color = theme:GetColor(Enum.StudioStyleGuideColor.CheckedFieldIndicator, modifier),
 			}),
 		}),
 	})

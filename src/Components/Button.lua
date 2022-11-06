@@ -34,7 +34,7 @@ local function Button(props: ButtonProps, hooks)
 
 	local buttonStyles = {
 		modifiers = {},
-		colours = {
+		colors = {
 			background = if props.primary
 				then Enum.StudioStyleGuideColor.DialogMainButton
 				else Enum.StudioStyleGuideColor.Button,
@@ -92,7 +92,7 @@ local function Button(props: ButtonProps, hooks)
 	return e("ImageButton", {
 		AutoButtonColor = false,
 		AutomaticSize = props.autoSize,
-		BackgroundColor3 = theme:GetColor(buttonStyles.colours.border, buttonStyles.modifiers.background),
+		BackgroundColor3 = theme:GetColor(buttonStyles.colors.border, buttonStyles.modifiers.background),
 		Position = props.position,
 		LayoutOrder = props.order,
 		Size = props.size,
@@ -108,7 +108,7 @@ local function Button(props: ButtonProps, hooks)
 
 		content = e("Frame", {
 			AutomaticSize = autoSizeProps.autoSize,
-			BackgroundColor3 = theme:GetColor(buttonStyles.colours.background, buttonStyles.modifiers.background),
+			BackgroundColor3 = theme:GetColor(buttonStyles.colors.background, buttonStyles.modifiers.background),
 			Size = autoSizeProps.size,
 			ClipsDescendants = true,
 		}, {
@@ -127,7 +127,7 @@ local function Button(props: ButtonProps, hooks)
 				then e(Icon, {
 					icon = props.icon,
 					order = if props.iconPosition == "end" then 40 else 10,
-					colour = theme:GetColor(buttonStyles.colours.foreground, buttonStyles.modifiers.foreground),
+					color = theme:GetColor(buttonStyles.colors.foreground, buttonStyles.modifiers.foreground),
 					size = 16,
 				})
 				else nil,
@@ -135,7 +135,7 @@ local function Button(props: ButtonProps, hooks)
 			label = e(Text, {
 				autoSize = Enum.AutomaticSize.XY,
 				text = props.label,
-				textColour = theme:GetColor(buttonStyles.colours.foreground, buttonStyles.modifiers.foreground),
+				textColor = theme:GetColor(buttonStyles.colors.foreground, buttonStyles.modifiers.foreground),
 				alignX = Enum.TextXAlignment.Center,
 				alignY = Enum.TextYAlignment.Center,
 				size = UDim2.new(),
@@ -146,7 +146,7 @@ local function Button(props: ButtonProps, hooks)
 				then e(Text, {
 					autoSize = Enum.AutomaticSize.XY,
 					text = props.hint,
-					textColour = theme:GetColor(
+					textColor = theme:GetColor(
 						Enum.StudioStyleGuideColor.DimmedText,
 						buttonStyles.modifiers.foreground
 					),

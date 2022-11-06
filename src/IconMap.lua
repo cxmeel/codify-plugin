@@ -65,7 +65,7 @@ return {
 	FrameworkFusion = {
 		Dark = {
 			assetId = "rbxassetid://11459333521",
-			colour = Color3.fromRGB(255, 255, 255),
+			color = Color3.fromRGB(255, 255, 255),
 			w = 16,
 			h = 16,
 			x = 4,
@@ -73,7 +73,7 @@ return {
 		},
 		Light = {
 			assetId = "rbxassetid://11459333521",
-			colour = Color3.fromRGB(255, 255, 255),
+			color = Color3.fromRGB(255, 255, 255),
 			w = 16,
 			h = 16,
 			x = 24,
@@ -89,7 +89,7 @@ return {
 	},
 	FrameworkRegular = {
 		assetId = "rbxassetid://11459333521",
-		colour = Color3.fromRGB(0, 162, 255),
+		color = Color3.fromRGB(0, 162, 255),
 		w = 16,
 		h = 16,
 		x = 4,
@@ -104,7 +104,7 @@ return {
 	},
 	FrameworkRojo = {
 		assetId = "rbxassetid://11459333521",
-		colour = Color3.fromHex("e13835"),
+		color = Color3.fromHex("e13835"),
 		w = 16,
 		h = 16,
 		x = 44,

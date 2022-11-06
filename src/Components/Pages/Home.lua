@@ -71,13 +71,13 @@ local function Page(_, hooks)
 
 		settingsHint = e(Text, {
 			text = "Output formatting can be configured in the Settings tab.",
-			textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+			textColor = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
 			order = 15,
 		}),
 
 		instanceOmitHint = e(Text, {
 			text = "Instance-based properties (e.g. Adornee, PrimaryPart) will not be included in the output.",
-			textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+			textColor = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
 			order = 16,
 		}),
 
@@ -91,7 +91,7 @@ local function Page(_, hooks)
 				icon = activeSelection.icon.Image,
 				imageOffset = activeSelection.icon.ImageRectOffset,
 				imageSize = activeSelection.icon.ImageRectSize,
-				colour = Color3.new(1, 1, 1),
+				color = Color3.new(1, 1, 1),
 				size = 16,
 				order = 10,
 			}),
@@ -176,7 +176,7 @@ local function Page(_, hooks)
 
 			copyText = showCopy and e(Text, {
 				text = COPY_TEXT,
-				textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+				textColor = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
 				textSize = styles.fontSize - 1,
 				font = styles.font.semibold,
 				order = 10,

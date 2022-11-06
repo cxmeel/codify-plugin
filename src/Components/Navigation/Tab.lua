@@ -117,7 +117,7 @@ local function NavigationTab(props: NavigationTabProps, hooks)
 				then e(Icon, {
 					icon = props.icon,
 					size = 16,
-					colour = theme:GetColor(Enum.StudioStyleGuideColor.MainText, modifier),
+					color = theme:GetColor(Enum.StudioStyleGuideColor.MainText, modifier),
 					order = 10,
 				})
 				else nil,
@@ -125,7 +125,7 @@ local function NavigationTab(props: NavigationTabProps, hooks)
 			label = if props.label
 				then e(Text, {
 					text = props.label,
-					textColour = theme:GetColor(Enum.StudioStyleGuideColor.MainText, modifier),
+					textColor = theme:GetColor(Enum.StudioStyleGuideColor.MainText, modifier),
 					order = 20,
 				})
 				else nil,

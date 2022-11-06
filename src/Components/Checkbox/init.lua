@@ -95,7 +95,7 @@ local function Checkbox(props: CheckboxProps, hooks)
 
 			label = e(Text, {
 				text = props.label,
-				textColour = if props.emphasised
+				textColor = if props.emphasised
 					then theme:GetColor(Enum.StudioStyleGuideColor.BrightText, modifier)
 					else theme:GetColor(Enum.StudioStyleGuideColor.MainText, modifier),
 				order = 10,
@@ -103,7 +103,7 @@ local function Checkbox(props: CheckboxProps, hooks)
 
 			hint = props.hint and e(Text, {
 				text = props.hint,
-				textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText, modifier),
+				textColor = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText, modifier),
 				order = 20,
 			}),
 		}),

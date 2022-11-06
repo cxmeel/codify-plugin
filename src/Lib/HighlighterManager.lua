@@ -12,16 +12,16 @@ function Manager.new(plugin: Plugin)
 	self.plugin = plugin
 	self.highlighter = Highlighter
 
-	self:UpdateColourScheme()
+	self:UpdateColorScheme()
 
 	Studio.ThemeChanged:Connect(function()
-		self:UpdateColourScheme()
+		self:UpdateColorScheme()
 	end)
 
 	return self
 end
 
-function Manager:UpdateColourScheme()
+function Manager:UpdateColorScheme()
 	local theme = Studio.Theme :: StudioTheme
 
 	self.highlighter.setTokenColors({

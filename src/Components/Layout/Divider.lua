@@ -8,7 +8,7 @@ local e = Roact.createElement
 
 export type DividerProps = {
 	height: number?,
-	colour: Color3?,
+	color: Color3?,
 	anchor: Vector2?,
 	position: UDim2?,
 	order: number?,
@@ -20,7 +20,7 @@ local function Divider(props: DividerProps, hooks)
 
 	return e("Frame", {
 		AnchorPoint = props.anchor,
-		BackgroundColor3 = if props.colour then props.colour else theme:GetColor(Enum.StudioStyleGuideColor.Border),
+		BackgroundColor3 = if props.color then props.color else theme:GetColor(Enum.StudioStyleGuideColor.Border),
 		BorderSizePixel = 0,
 		LayoutOrder = props.order,
 		Position = props.position,

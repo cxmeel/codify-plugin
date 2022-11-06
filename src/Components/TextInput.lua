@@ -16,7 +16,7 @@ export type TextInputProps = {
 	readonly: boolean?,
 	text: string?,
 	textSize: number?,
-	textColour: (Color3 | Enum.StudioStyleGuideColor)?,
+	textColor: (Color3 | Enum.StudioStyleGuideColor)?,
 	size: UDim2?,
 	position: UDim2?,
 	zindex: number?,
@@ -47,7 +47,7 @@ local function TextInput(props: TextInputProps, hooks)
 
 	local inputRef = hooks.useValue(Roact.createRef())
 
-	local colours = hooks.useMemo(function()
+	local colors = hooks.useMemo(function()
 		local modifiers = { background = nil, foreground = nil, border = nil, placeholder = nil, caption = nil }
 
 		if props.disabled then
@@ -117,7 +117,7 @@ local function TextInput(props: TextInputProps, hooks)
 	return e("ImageButton", {
 		Active = not props.disabled,
 		AutoButtonColor = false,
-		BackgroundColor3 = colours.border,
+		BackgroundColor3 = colors.border,
 		Position = props.position,
 		LayoutOrder = props.order,
 		Size = UDim2.new(
@@ -153,7 +153,7 @@ local function TextInput(props: TextInputProps, hooks)
 			autoSize = Enum.AutomaticSize.Y,
 			size = UDim2.fromScale(1, 0),
 			text = props.caption,
-			textColour = colours.caption,
+			textColor = colors.caption,
 			order = 10,
 
 			onAbsoluteSizeChanged = function(rbx)
@@ -166,7 +166,7 @@ local function TextInput(props: TextInputProps, hooks)
 		}),
 
 		content = e("Frame", {
-			BackgroundColor3 = colours.background,
+			BackgroundColor3 = colors.background,
 			Size = UDim2.new(1, 0, 0, height + styles.spacing * 2),
 			LayoutOrder = 20,
 			ClipsDescendants = true,
@@ -184,7 +184,7 @@ local function TextInput(props: TextInputProps, hooks)
 				Font = props.font or styles.font.default,
 				Text = props.text,
 				TextSize = props.textSize or styles.fontSize,
-				TextColor3 = colours.foreground,
+				TextColor3 = colors.foreground,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Top,
 				ClearTextOnFocus = false,
@@ -194,7 +194,7 @@ local function TextInput(props: TextInputProps, hooks)
 				ClipsDescendants = true,
 				MultiLine = props.multiline,
 				PlaceholderText = props.placeholder,
-				PlaceholderColor3 = colours.placeholder,
+				PlaceholderColor3 = colors.placeholder,
 
 				[Roact.Ref] = inputRef.value,
 				[Roact.Change.TextBounds] = function(rbx: TextBox)
