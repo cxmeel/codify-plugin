@@ -397,6 +397,12 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 	elseif valueTypeOf == "number" then
 		return FormatNumber(value)
 	elseif valueTypeOf == "string" then
+		local isMultiline = value:match("\n")
+
+		if isMultiline then
+			return fmt("[[%s]]", value:gsub("]]", "]\\]"))
+		end
+
 		return fmt("%q", value)
 	elseif valueType == "userdata" then
 		return fmt("%s.new(%s)", valueTypeOf, tostring(value))
