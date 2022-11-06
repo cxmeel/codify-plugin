@@ -9,5 +9,8 @@
     "editor.defaultFormatter": "JohnnyMorganz.stylua",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
-  }
+  },
+  "robloxLsp.diagnostics.globals": [
+    "version"
+  ]
 }
