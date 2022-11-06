@@ -109,6 +109,15 @@ local function Page(_, hooks)
 			order = 30,
 		}),
 
+		generateError = snippet.error and e(Alert, {
+			label = if string.match(snippet.error, "Request timed out")
+				then "Request timed out. Please try again."
+				else "An error occurred while generating the snippet. Please try again.",
+			icon = if string.match(snippet.error, "Request timed out") then "CloudWarning" else "Warning",
+			variant = Enum.MessageType.MessageError,
+			order = 40,
+		}),
+
 		generateButton = e(Button, {
 			order = 40,
 			label = "Generate Snippet",
