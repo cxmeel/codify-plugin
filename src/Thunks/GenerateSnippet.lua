@@ -41,9 +41,12 @@ local function GenerateSnippet()
 					name = state.targetInstance.instance.Name,
 					content = String.Trim(snippet),
 				}))
+
+				store:dispatch(Actions.SetSnippetError(nil))
 			end)
-			:catch(function() -- fail silently
-				return false
+			:catch(function(rejection)
+				local errorText = tostring(rejection.error)
+				store:dispatch(Actions.SetSnippetError(errorText))
 			end)
 			:finally(function()
 				store:dispatch(Actions.SetSnippetProcessing(false))
