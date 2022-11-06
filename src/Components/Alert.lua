@@ -103,9 +103,8 @@ local function Alert(props: AlertProps, hooks)
 
 					icon = if props.icon
 						then e(Icon, {
-							id = props.icon,
+							icon = props.icon,
 							colour = theme:GetColor(variant.text),
-							size = 20,
 						})
 						else nil,
 
