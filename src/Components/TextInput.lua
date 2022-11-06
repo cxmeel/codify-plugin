@@ -120,7 +120,12 @@ local function TextInput(props: TextInputProps, hooks)
 		BackgroundColor3 = colours.border,
 		Position = props.position,
 		LayoutOrder = props.order,
-		Size = UDim2.new(1, 0, 0, height + captionHeight + 2 + (styles.spacing * 2) + (styles.spacing / 2)),
+		Size = UDim2.new(
+			1,
+			0,
+			0,
+			height + 2 + (styles.spacing * 2) + (props.caption and (captionHeight + (styles.spacing / 2)) or 0)
+		),
 		ZIndex = props.zindex,
 		Image = "",
 
