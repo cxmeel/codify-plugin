@@ -30,7 +30,7 @@ local function ParallelLuauToggle(props: ParallelLuauToggleProps, hooks)
 
 	return e(Layout.Forms.Section, {
 		heading = "Parallel Luau",
-		hint = "Use parallel luau to generate code snippets. This will prevent Studio from becoming unresponsive while generating code, but still may take a while and cause lag.",
+		hint = "Use parallel Luau to generate code snippets. This should prevent Studio from becoming unresponsive while generating code, but still may take a while and cause lag.",
 		formItem = true,
 		order = props.order,
 	}, {
