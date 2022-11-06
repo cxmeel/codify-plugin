@@ -24,6 +24,8 @@ export type TextProps = {
 	zindex: number?,
 	order: number?,
 	clipsDescendants: boolean?,
+
+	onAbsoluteSizeChanged: ((TextLabel) -> ())?,
 }
 
 local function Text(props: TextProps, hooks)
@@ -48,6 +50,8 @@ local function Text(props: TextProps, hooks)
 		TextTruncate = props.truncate,
 		TextScaled = props.textScaled,
 		TextTransparency = props.textTransparency,
+
+		[Roact.Change.AbsoluteSize] = props.onAbsoluteSizeChanged,
 	}, props[Roact.Children])
 end
 
