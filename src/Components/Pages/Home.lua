@@ -104,8 +104,11 @@ local function Page(_, hooks)
 		}),
 
 		largeInstance = targetInstance.large and e(Alert, {
-			label = "This Instance appears to have a lot of children! Can it be broken into smaller components?",
+			label = if snippet.processing
+				then "This may take a while! Studio may lag or become unresponsive."
+				else "This Instance appears to have a lot of children! Can it be broken into smaller components?",
 			variant = Enum.MessageType.MessageWarning,
+			icon = "Warning",
 			order = 30,
 		}),
 
