@@ -35,7 +35,11 @@ local function GenerateSnippet()
 				ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
 				TabCharacter = tabCharacter,
 				FontFormat = state.userSettings.fontFormat,
-				ParallelLuau = state.userSettings.parallelLuauGeneration,
+				ParallelLuau = if task ~= nil
+						and task.synchronize ~= nil
+						and task.desynchronize ~= nil
+					then state.userSettings.parallelLuauGeneration
+					else false,
 			})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({
