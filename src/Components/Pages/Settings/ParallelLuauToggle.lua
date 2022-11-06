@@ -16,10 +16,6 @@ export type ParallelLuauToggleProps = {
 }
 
 local function ParallelLuauToggle(props: ParallelLuauToggleProps, hooks)
-	if not task or not (task.synchronize and task.desynchronize) then
-		return nil
-	end
-
 	local dispatch = RoduxHooks.useDispatch(hooks)
 
 	local userSettings = RoduxHooks.useSelector(hooks, function(state)
@@ -38,6 +34,7 @@ local function ParallelLuauToggle(props: ParallelLuauToggleProps, hooks)
 			label = "Parallel Luau",
 			order = 10,
 			value = value,
+			disabled = not task or not (task.synchronize and task.desynchronize),
 
 			onChanged = function(value)
 				dispatch(Actions.SetSetting({
