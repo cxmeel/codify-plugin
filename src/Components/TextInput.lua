@@ -43,6 +43,7 @@ local function TextInput(props: TextInputProps, hooks)
 	local press, setPress = hooks.useState(false)
 	local focus, setFocus = hooks.useState(false)
 	local height, setHeight = hooks.useState(400)
+	local captionHeight, setCaptionHeight = hooks.useState(0)
 
 	local inputRef = hooks.useValue(Roact.createRef())
 
@@ -116,12 +117,10 @@ local function TextInput(props: TextInputProps, hooks)
 	return e("ImageButton", {
 		Active = not props.disabled,
 		AutoButtonColor = false,
-		AutomaticSize = Enum.AutomaticSize.Y,
 		BackgroundColor3 = colours.border,
 		Position = props.position,
 		LayoutOrder = props.order,
-		-- Size = UDim2.new(1, 0, 0, height + 2 + styles.spacing * 2),
-		Size = UDim2.fromScale(1, 0),
+		Size = UDim2.new(1, 0, 0, height + captionHeight + 2 + (styles.spacing * 2) + (styles.spacing / 2)),
 		ZIndex = props.zindex,
 		Image = "",
 
@@ -151,6 +150,10 @@ local function TextInput(props: TextInputProps, hooks)
 			text = props.caption,
 			textColour = colours.caption,
 			order = 10,
+
+			onAbsoluteSizeChanged = function(rbx)
+				setCaptionHeight(rbx.AbsoluteSize.Y)
+			end,
 		}, {
 			padding = e(Layout.Padding, {
 				bottom = styles.spacing / 2,
@@ -158,7 +161,6 @@ local function TextInput(props: TextInputProps, hooks)
 		}),
 
 		content = e("Frame", {
-			AutomaticSize = Enum.AutomaticSize.Y,
 			BackgroundColor3 = colours.background,
 			Size = UDim2.new(1, 0, 0, height + styles.spacing * 2),
 			LayoutOrder = 20,
@@ -172,7 +174,6 @@ local function TextInput(props: TextInputProps, hooks)
 
 			input = e("TextBox", {
 				Active = not props.disabled,
-				AutomaticSize = Enum.AutomaticSize.Y,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, height),
 				Font = props.font or styles.font.default,
