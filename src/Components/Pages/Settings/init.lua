@@ -109,6 +109,7 @@ local function Page(_, hooks)
 			collapsed = true,
 			divider = true,
 			order = 60,
+			icon = "Fire",
 		}, {
 			parallelLuau = e(ParallelLuauToggle, {
 				order = 10,

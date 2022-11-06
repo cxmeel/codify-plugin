@@ -20,6 +20,7 @@ export type FormSectionProps = {
 	formItem: boolean?,
 	collapsed: boolean?,
 	collapsible: boolean?,
+	icon: string?,
 }
 
 local function FormSection(props: FormSectionProps, hooks)
@@ -54,7 +55,7 @@ local function FormSection(props: FormSectionProps, hooks)
 				direction = Enum.FillDirection.Horizontal,
 			}),
 
-			icon = props.collapsible and e("Frame", {
+			collapseIcon = props.collapsible and e("Frame", {
 				AutomaticSize = Enum.AutomaticSize.XY,
 				BackgroundTransparency = 1,
 				LayoutOrder = 10,
@@ -66,6 +67,11 @@ local function FormSection(props: FormSectionProps, hooks)
 					rotation = collapsed and -90 or 0,
 					order = 10,
 				}),
+			}),
+
+			icon = props.icon and e(Icon, {
+				icon = props.icon,
+				order = 15,
 			}),
 
 			label = e(Text, {
