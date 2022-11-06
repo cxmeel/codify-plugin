@@ -1,6 +1,7 @@
 local Plugin = script.Parent.Parent.Parent
 
 local StudioTheme = require(Plugin.Packages.StudioTheme)
+local RoactRouter = require(Plugin.Packages.RoactRouter)
 local Roact = require(Plugin.Packages.Roact)
 local Hooks = require(Plugin.Packages.Hooks)
 
@@ -18,11 +19,14 @@ local ParallelLuauToggle = require(script.ParallelLuauToggle)
 local e = Roact.createElement
 
 local function Page(_, hooks)
+	local location = RoactRouter.useLocation(hooks)
+
 	local _, styles = StudioTheme.useTheme(hooks)
 
 	return e(Layout.ScrollColumn, {
 		paddingTop = styles.spacing,
 		paddingBottom = styles.spacing,
+		visible = location.path == "/settings",
 	}, {
 		padding = e(Layout.Padding),
 

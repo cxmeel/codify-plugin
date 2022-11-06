@@ -4,6 +4,7 @@ local Plugin = script.Parent.Parent.Parent
 
 local StudioPlugin = require(Plugin.Packages.StudioPlugin)
 local StudioTheme = require(Plugin.Packages.StudioTheme)
+local RoactRouter = require(Plugin.Packages.RoactRouter)
 local RoduxHooks = require(Plugin.Packages.RoduxHooks)
 local Roact = require(Plugin.Packages.Roact)
 local Hooks = require(Plugin.Packages.Hooks)
@@ -25,6 +26,8 @@ local IS_WINDOWS = game:GetService("GuiService").IsWindows
 local COPY_TEXT = if IS_WINDOWS then "CTRL+C to Copy" else "Command+C to Copy"
 
 local function Page(_, hooks)
+	local location = RoactRouter.useLocation(hooks)
+
 	local theme, styles = StudioTheme.useTheme(hooks)
 	local showCopy, setShowCopy = hooks.useState(false)
 
@@ -61,6 +64,7 @@ local function Page(_, hooks)
 	return e(Layout.ScrollColumn, {
 		paddingTop = styles.spacing,
 		paddingBottom = styles.spacing,
+		visible = location.path == "/",
 	}, {
 		padding = e(Layout.Padding),
 
@@ -104,18 +108,16 @@ local function Page(_, hooks)
 		}),
 
 		largeInstance = targetInstance.large and e(Alert, {
-			label = if snippet.processing
-				then "This may take a while! Studio may lag or become unresponsive."
-				else "This Instance appears to have a lot of children! Can it be broken into smaller components?",
+			label = snippet.processing and "This may take a while! Studio may lag or become unresponsive."
+				or "This Instance appears to have a lot of children! Can it be broken into smaller components?",
 			variant = Enum.MessageType.MessageWarning,
 			icon = "Warning",
 			order = 30,
 		}),
 
 		generateError = snippet.error and e(Alert, {
-			label = if string.match(snippet.error, "Request timed out")
-				then "Request timed out. Please try again."
-				else "An error occurred while generating the snippet. Please try again.",
+			label = string.match(snippet.error, "Request timed out") and "Request timed out. Please try again."
+				or "An error occurred while generating the snippet. Please try again.",
 			icon = if string.match(snippet.error, "Request timed out") then "CloudWarning" else "Warning",
 			variant = Enum.MessageType.MessageError,
 			order = 40,
@@ -123,7 +125,7 @@ local function Page(_, hooks)
 
 		generateButton = e(Button, {
 			order = 40,
-			label = "Generate Snippet",
+			label = snippet.processing and "Working on it..." or "Generate Snippet",
 			primary = not targetInstance.large,
 			size = UDim2.fromScale(1, 0),
 			autoSize = Enum.AutomaticSize.Y,

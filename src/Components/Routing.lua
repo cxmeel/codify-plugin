@@ -44,12 +44,14 @@ local function Routing(_, hooks)
 					path = "/",
 					exact = true,
 					component = Pages.Home,
+					alwaysRender = true,
 				}),
 
 				settings = e(RoactRouter.Route, {
 					path = "/settings",
 					exact = true,
 					component = Pages.Settings,
+					alwaysRender = true,
 				}),
 			}),
 		}),

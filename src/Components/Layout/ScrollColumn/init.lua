@@ -16,6 +16,7 @@ export type ScrollColumnProps = {
 	paddingTop: number?,
 	paddingBottom: number?,
 	scrollbarWidth: number?,
+	visible: boolean?,
 }
 
 local function ScrollColumn(props: ScrollColumnProps, hooks)
@@ -56,6 +57,7 @@ local function ScrollColumn(props: ScrollColumnProps, hooks)
 		Position = props.position,
 		Size = props.size,
 		ClipsDescendants = true,
+		Visible = props.visible,
 	}, {
 		scrollbar = if scrollbarVisible
 			then Roact.createFragment({
