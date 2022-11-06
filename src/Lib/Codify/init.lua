@@ -34,14 +34,7 @@ local DEFAULT_OPTIONS: CodifyOptions = {
 
 local function CodifyInstance(instance: Instance, options: CodifyInstanceOptions)
 	local generator = Frameworks[options.Framework].Generator
-	local success, response = pcall(generator, instance, options)
-
-	if success then
-		return response
-	else
-		warn(response)
-		return ""
-	end
+	return generator(instance, options)
 end
 
 local function Codify(rootInstance: Instance, options: CodifyOptions?)
