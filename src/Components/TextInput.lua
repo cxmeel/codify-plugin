@@ -6,6 +6,7 @@ local StudioTheme = require(Packages.StudioTheme)
 local Highlighter = require(Packages.Highlighter)
 
 local Layout = require(script.Parent.Layout)
+local Text = require(script.Parent.Text)
 
 local e = Roact.createElement
 
@@ -27,6 +28,7 @@ export type TextInputProps = {
 	maxHeight: number?,
 	selectAllOnFocus: boolean?,
 	syntaxHighlight: boolean?,
+	caption: string?,
 
 	onChanged: ((TextBox) -> ())?,
 	onSubmit: ((TextBox) -> ())?,
@@ -45,28 +47,34 @@ local function TextInput(props: TextInputProps, hooks)
 	local inputRef = hooks.useValue(Roact.createRef())
 
 	local colours = hooks.useMemo(function()
-		local modifiers = { background = nil, foreground = nil, border = nil, placeholder = nil }
+		local modifiers = { background = nil, foreground = nil, border = nil, placeholder = nil, caption = nil }
 
 		if props.disabled then
 			modifiers.background = Enum.StudioStyleGuideModifier.Disabled
 			modifiers.foreground = Enum.StudioStyleGuideModifier.Disabled
 			modifiers.border = Enum.StudioStyleGuideModifier.Disabled
 			modifiers.placeholder = Enum.StudioStyleGuideModifier.Disabled
+			modifiers.caption = Enum.StudioStyleGuideModifier.Disabled
 		elseif focus then
 			modifiers.background = Enum.StudioStyleGuideModifier.Selected
 			modifiers.foreground = Enum.StudioStyleGuideModifier.Default
 			modifiers.border = Enum.StudioStyleGuideModifier.Selected
 			modifiers.placeholder = Enum.StudioStyleGuideModifier.Selected
+			modifiers.caption = Enum.StudioStyleGuideModifier.Selected
 		elseif press then
 			modifiers.background = Enum.StudioStyleGuideModifier.Pressed
 			modifiers.foreground = Enum.StudioStyleGuideModifier.Pressed
 			modifiers.border = Enum.StudioStyleGuideModifier.Pressed
 			modifiers.placeholder = Enum.StudioStyleGuideModifier.Pressed
+			modifiers.caption = Enum.StudioStyleGuideModifier.Pressed
 		elseif hover then
 			modifiers.background = Enum.StudioStyleGuideModifier.Hover
 			modifiers.foreground = Enum.StudioStyleGuideModifier.Hover
 			modifiers.border = Enum.StudioStyleGuideModifier.Hover
 			modifiers.placeholder = Enum.StudioStyleGuideModifier.Hover
+			modifiers.caption = Enum.StudioStyleGuideModifier.Hover
+		else
+			modifiers.caption = Enum.StudioStyleGuideModifier.Disabled
 		end
 
 		return {
@@ -74,6 +82,7 @@ local function TextInput(props: TextInputProps, hooks)
 			border = theme:GetColor(Enum.StudioStyleGuideColor.InputFieldBorder, modifiers.border),
 			placeholder = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText, modifiers.placeholder),
 			foreground = theme:GetColor(Enum.StudioStyleGuideColor.MainText, modifiers.foreground),
+			caption = theme:GetColor(Enum.StudioStyleGuideColor.MainText, modifiers.caption),
 		}
 	end, { hover, press, focus, props.disabled, theme })
 
@@ -107,10 +116,12 @@ local function TextInput(props: TextInputProps, hooks)
 	return e("ImageButton", {
 		Active = not props.disabled,
 		AutoButtonColor = false,
+		AutomaticSize = Enum.AutomaticSize.Y,
 		BackgroundColor3 = colours.border,
 		Position = props.position,
 		LayoutOrder = props.order,
-		Size = UDim2.new(1, 0, 0, height + 2 + styles.spacing * 2),
+		-- Size = UDim2.new(1, 0, 0, height + 2 + styles.spacing * 2),
+		Size = UDim2.fromScale(1, 0),
 		ZIndex = props.zindex,
 		Image = "",
 
@@ -129,9 +140,29 @@ local function TextInput(props: TextInputProps, hooks)
 		corners = e(Layout.Corner),
 		padding = e(Layout.Padding, { 1 }),
 
+		layout = e(Layout.ListLayout, {
+			direction = Enum.FillDirection.Vertical,
+			gap = styles.spacing / 2,
+		}),
+
+		caption = props.caption and e(Text, {
+			autoSize = Enum.AutomaticSize.Y,
+			size = UDim2.fromScale(1, 0),
+			text = props.caption,
+			textColour = colours.caption,
+			order = 10,
+		}, {
+			padding = e(Layout.Padding, {
+				bottom = styles.spacing / 2,
+			}),
+		}),
+
 		content = e("Frame", {
+			AutomaticSize = Enum.AutomaticSize.Y,
 			BackgroundColor3 = colours.background,
 			Size = UDim2.new(1, 0, 0, height + styles.spacing * 2),
+			LayoutOrder = 20,
+			ClipsDescendants = true,
 		}, {
 			padding = e(Layout.Padding),
 
@@ -141,6 +172,7 @@ local function TextInput(props: TextInputProps, hooks)
 
 			input = e("TextBox", {
 				Active = not props.disabled,
+				AutomaticSize = Enum.AutomaticSize.Y,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, height),
 				Font = props.font or styles.font.default,

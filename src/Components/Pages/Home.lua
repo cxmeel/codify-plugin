@@ -4,7 +4,6 @@ local Plugin = script.Parent.Parent.Parent
 
 local StudioPlugin = require(Plugin.Packages.StudioPlugin)
 local StudioTheme = require(Plugin.Packages.StudioTheme)
-local RoactRouter = require(Plugin.Packages.RoactRouter)
 local RoduxHooks = require(Plugin.Packages.RoduxHooks)
 local Roact = require(Plugin.Packages.Roact)
 local Hooks = require(Plugin.Packages.Hooks)
@@ -24,10 +23,9 @@ local e = Roact.createElement
 
 local IS_WINDOWS = game:GetService("GuiService").IsWindows
 local COPY_TEXT = if IS_WINDOWS then "CTRL+C to Copy" else "Command+C to Copy"
+local MAX_TEXTBOX_CHARS = 16300
 
 local function Page(_, hooks)
-	local location = RoactRouter.useLocation(hooks)
-
 	local theme, styles = StudioTheme.useTheme(hooks)
 	local showCopy, setShowCopy = hooks.useState(false)
 
@@ -64,7 +62,6 @@ local function Page(_, hooks)
 	return e(Layout.ScrollColumn, {
 		paddingTop = styles.spacing,
 		paddingBottom = styles.spacing,
-		visible = location.path == "/",
 	}, {
 		padding = e(Layout.Padding),
 
@@ -155,6 +152,9 @@ local function Page(_, hooks)
 				wrapped = false,
 				selectAllOnFocus = true,
 				syntaxHighlight = userSettings.syntaxHighlighting,
+				caption = snippet.content
+					and #snippet.content >= MAX_TEXTBOX_CHARS
+					and 'Snippet may be truncated. Use the "Save to Device" feature to view full snippet.',
 
 				onFocus = function()
 					setShowCopy(true)
@@ -164,19 +164,28 @@ local function Page(_, hooks)
 					setShowCopy(false)
 				end,
 			}),
+		}),
+
+		snippetActions = e(Layout.Frame, {
+			order = 60,
+		}, {
+			layout = e(Layout.ListLayout, {
+				direction = Enum.FillDirection.Vertical,
+				alignX = Enum.HorizontalAlignment.Right,
+			}),
 
 			copyText = showCopy and e(Text, {
 				text = COPY_TEXT,
 				textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
-				textSize = styles.fontSize - 2,
+				textSize = styles.fontSize - 1,
 				font = styles.font.semibold,
-				order = 30,
+				order = 10,
 			}),
 
 			downloadButton = e(Button, {
 				primary = true,
 				disabled = snippet.content == nil,
-				order = 40,
+				order = 20,
 				label = "Save to Device",
 				icon = "Download",
 
