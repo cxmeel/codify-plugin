@@ -8,11 +8,19 @@ local function RoactifyInstance(instance: Instance, options)
 	local createMethod = options.CreateMethod or "Roact.createElement"
 	local snippet = Script.new()
 
+	if options.ParallelLuau then
+		task.synchronize()
+	end
+
 	local success, changedProps = Properties.GetChangedProperties(instance):await()
 	local children = instance:GetChildren()
 
 	if not success then
 		error("Failed to get changed properties: " .. tostring(changedProps), 2)
+	end
+
+	if options.ParallelLuau then
+		task.desynchronize()
 	end
 
 	local function tab()

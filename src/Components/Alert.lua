@@ -103,15 +103,14 @@ local function Alert(props: AlertProps, hooks)
 
 					icon = if props.icon
 						then e(Icon, {
-							id = props.icon,
-							colour = theme:GetColor(variant.text),
-							size = 20,
+							icon = props.icon,
+							color = theme:GetColor(variant.text),
 						})
 						else nil,
 
 					label = e(Text, {
 						text = props.label,
-						textColour = theme:GetColor(variant.text),
+						textColor = theme:GetColor(variant.text),
 						autoSize = Enum.AutomaticSize.Y,
 						size = UDim2.fromScale(1, 0),
 					}),

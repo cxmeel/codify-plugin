@@ -205,8 +205,8 @@ FORMAT_MAP = {
 		end,
 
 		Smart = function(value: BrickColor)
-			for methodName, colour in pairs(SHORT_BRICKCOLORS) do
-				if value == colour then
+			for methodName, color in pairs(SHORT_BRICKCOLORS) do
+				if value == color then
 					return fmt("BrickColor.%s()", methodName)
 				end
 			end
@@ -397,6 +397,12 @@ local function SerialiseProperty(instance: Instance, property: string, options: 
 	elseif valueTypeOf == "number" then
 		return FormatNumber(value)
 	elseif valueTypeOf == "string" then
+		local isMultiline = value:match("\n")
+
+		if isMultiline then
+			return fmt("[[%s]]", value:gsub("]]", "]\\]"))
+		end
+
 		return fmt("%q", value)
 	elseif valueType == "userdata" then
 		return fmt("%s.new(%s)", valueTypeOf, tostring(value))

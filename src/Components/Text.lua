@@ -13,7 +13,7 @@ export type TextProps = {
 	font: Enum.Font?,
 	richText: boolean?,
 	text: string?,
-	textColour: Color3?,
+	textColor: Color3?,
 	textSize: number?,
 	textTransparency: number?,
 	textScaled: boolean?,
@@ -24,6 +24,8 @@ export type TextProps = {
 	zindex: number?,
 	order: number?,
 	clipsDescendants: boolean?,
+
+	onAbsoluteSizeChanged: ((TextLabel) -> ())?,
 }
 
 local function Text(props: TextProps, hooks)
@@ -40,7 +42,7 @@ local function Text(props: TextProps, hooks)
 		Font = props.font or styles.font.default,
 		RichText = props.richText,
 		Text = props.text,
-		TextColor3 = props.textColour or theme:GetColor(Enum.StudioStyleGuideColor.MainText),
+		TextColor3 = props.textColor or theme:GetColor(Enum.StudioStyleGuideColor.MainText),
 		TextSize = props.textSize or styles.fontSize,
 		TextWrapped = if props.wrapped ~= nil then props.wrapped else true,
 		TextXAlignment = props.alignX or Enum.TextXAlignment.Left,
@@ -48,6 +50,8 @@ local function Text(props: TextProps, hooks)
 		TextTruncate = props.truncate,
 		TextScaled = props.textScaled,
 		TextTransparency = props.textTransparency,
+
+		[Roact.Change.AbsoluteSize] = props.onAbsoluteSizeChanged,
 	}, props[Roact.Children])
 end
 

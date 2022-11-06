@@ -18,7 +18,7 @@ type DropdownOption = {
 	value: any,
 	icon: string?,
 	iconPosition: string?,
-	iconColour: Color3?,
+	iconColor: Color3?,
 }
 
 export type DropdownProps = {
@@ -30,7 +30,7 @@ export type DropdownProps = {
 	onChanged: ((value: any) -> ())?,
 	icon: string?,
 	iconPosition: string?,
-	iconColour: Color3?,
+	iconColor: Color3?,
 }
 
 local function Dropdown(props: DropdownProps, hooks)
@@ -50,7 +50,7 @@ local function Dropdown(props: DropdownProps, hooks)
 		return Sift.Array.map(props.options, function(option: DropdownOption, index: number)
 			return e(OptionButton, {
 				icon = option.icon,
-				iconColour = option.iconColour,
+				iconColor = option.iconColor,
 				iconPosition = option.iconPosition,
 				label = option.label or tostring(option.value),
 				hint = option.hint,
@@ -71,7 +71,7 @@ local function Dropdown(props: DropdownProps, hooks)
 			disabled = props.disabled,
 			icon = props.icon,
 			iconPosition = props.iconPosition,
-			iconColour = props.iconColour,
+			iconColor = props.iconColor,
 			label = props.label,
 			hint = props.hint,
 			active = showDropdown,

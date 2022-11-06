@@ -7,12 +7,9 @@ return {
 
 	icons = {
 		stable = "rbxassetid://8730522354",
-		preview = "rbxassetid://8906285173",
-		canary = "rbxassetid://8906285023",
-		dev = "rbxassetid://8906284857",
 	},
 
-	version = "2.2.4-patch.3",
+	version = "2.2.5",
 	repo = "csqrl/codify-plugin",
 
 	authors = {

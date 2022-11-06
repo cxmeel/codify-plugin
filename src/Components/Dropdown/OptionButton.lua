@@ -16,7 +16,7 @@ export type OptionButtonProps = {
 	order: number?,
 	icon: string?,
 	iconPosition: string?,
-	iconColour: Color3?,
+	iconColor: Color3?,
 	disabled: boolean?,
 	selected: boolean?,
 	onActivated: ((rbx: ImageButton) -> ())?,
@@ -27,34 +27,34 @@ local function OptionButton(props: OptionButtonProps, hooks)
 
 	local hover, setHover = hooks.useState(false)
 
-	local colours = hooks.useMemo(function()
-		local colours = {
+	local colors = hooks.useMemo(function()
+		local colors = {
 			background = { Enum.StudioStyleGuideColor.TableItem, nil, 1 },
 			foreground = { Enum.StudioStyleGuideColor.MainText, nil },
 			hint = { Enum.StudioStyleGuideColor.DimmedText, nil },
 		}
 
 		if props.disabled then
-			colours.foreground[2] = Enum.StudioStyleGuideModifier.Disabled
-			colours.hint[2] = Enum.StudioStyleGuideModifier.Disabled
+			colors.foreground[2] = Enum.StudioStyleGuideModifier.Disabled
+			colors.hint[2] = Enum.StudioStyleGuideModifier.Disabled
 		elseif props.selected then
-			colours.background[3] = 0
-			colours.background[2] = Enum.StudioStyleGuideModifier.Selected
-			colours.foreground[2] = Enum.StudioStyleGuideModifier.Selected
-			colours.hint[2] = Enum.StudioStyleGuideModifier.Selected
+			colors.background[3] = 0
+			colors.background[2] = Enum.StudioStyleGuideModifier.Selected
+			colors.foreground[2] = Enum.StudioStyleGuideModifier.Selected
+			colors.hint[2] = Enum.StudioStyleGuideModifier.Selected
 		elseif hover then
-			colours.background[3] = 0
-			colours.background[2] = Enum.StudioStyleGuideModifier.Hover
-			colours.foreground[2] = Enum.StudioStyleGuideModifier.Hover
-			colours.hint[2] = Enum.StudioStyleGuideModifier.Hover
+			colors.background[3] = 0
+			colors.background[2] = Enum.StudioStyleGuideModifier.Hover
+			colors.foreground[2] = Enum.StudioStyleGuideModifier.Hover
+			colors.hint[2] = Enum.StudioStyleGuideModifier.Hover
 		end
 
-		colours.backgroundTransparency = colours.background[3]
-		colours.background = theme:GetColor(colours.background[1], colours.background[2])
-		colours.foreground = theme:GetColor(colours.foreground[1], colours.foreground[2])
-		colours.hint = theme:GetColor(colours.hint[1], colours.hint[2])
+		colors.backgroundTransparency = colors.background[3]
+		colors.background = theme:GetColor(colors.background[1], colors.background[2])
+		colors.foreground = theme:GetColor(colors.foreground[1], colors.foreground[2])
+		colors.hint = theme:GetColor(colors.hint[1], colors.hint[2])
 
-		return colours
+		return colors
 	end, { theme, hover, props.disabled, props.selected })
 
 	local onInputBegan = hooks.useCallback(function(_, input: InputObject)
@@ -76,8 +76,8 @@ local function OptionButton(props: OptionButtonProps, hooks)
 	return e("ImageButton", {
 		AutoButtonColor = false,
 		AutomaticSize = Enum.AutomaticSize.Y,
-		BackgroundColor3 = colours.background,
-		BackgroundTransparency = colours.backgroundTransparency,
+		BackgroundColor3 = colors.background,
+		BackgroundTransparency = colors.backgroundTransparency,
 		Size = UDim2.fromScale(1, 0),
 
 		[Roact.Event.Activated] = props.onActivated,
@@ -97,13 +97,13 @@ local function OptionButton(props: OptionButtonProps, hooks)
 		icon = props.icon and e(Icon, {
 			icon = props.icon,
 			order = if props.iconPosition == "end" then 40 else 10,
-			colour = if props.iconColour then props.iconColour else colours.foreground,
+			color = if props.iconColor then props.iconColor else colors.foreground,
 			size = 16,
 		}),
 
 		label = e(Text, {
 			text = props.label,
-			textColour = colours.foreground,
+			textColor = colors.foreground,
 			wrapped = false,
 			order = 20,
 		}),
@@ -111,7 +111,7 @@ local function OptionButton(props: OptionButtonProps, hooks)
 		hint = if props.hint
 			then e(Text, {
 				text = props.hint,
-				textColour = colours.hint,
+				textColor = colors.hint,
 				wrapped = false,
 				order = 30,
 			})

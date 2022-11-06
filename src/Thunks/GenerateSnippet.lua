@@ -35,15 +35,26 @@ local function GenerateSnippet()
 				ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
 				TabCharacter = tabCharacter,
 				FontFormat = state.userSettings.fontFormat,
+				ParallelLuau = if task ~= nil
+						and task.synchronize ~= nil
+						and task.desynchronize ~= nil
+					then state.userSettings.parallelLuauGeneration
+					else false,
 			})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({
 					name = state.targetInstance.instance.Name,
 					content = String.Trim(snippet),
 				}))
+
+				store:dispatch(Actions.SetSnippetError(nil))
 			end)
-			:catch(function() -- fail silently
-				return false
+			:catch(function(rejection)
+				local errorText = tostring(rejection.error)
+
+				warn(rejection)
+
+				store:dispatch(Actions.SetSnippetError(errorText))
 			end)
 			:finally(function()
 				store:dispatch(Actions.SetSnippetProcessing(false))

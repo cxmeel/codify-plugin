@@ -23,6 +23,7 @@ local e = Roact.createElement
 
 local IS_WINDOWS = game:GetService("GuiService").IsWindows
 local COPY_TEXT = if IS_WINDOWS then "CTRL+C to Copy" else "Command+C to Copy"
+local MAX_TEXTBOX_CHARS = 16300
 
 local function Page(_, hooks)
 	local theme, styles = StudioTheme.useTheme(hooks)
@@ -70,13 +71,13 @@ local function Page(_, hooks)
 
 		settingsHint = e(Text, {
 			text = "Output formatting can be configured in the Settings tab.",
-			textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+			textColor = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
 			order = 15,
 		}),
 
 		instanceOmitHint = e(Text, {
 			text = "Instance-based properties (e.g. Adornee, PrimaryPart) will not be included in the output.",
-			textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+			textColor = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
 			order = 16,
 		}),
 
@@ -90,7 +91,7 @@ local function Page(_, hooks)
 				icon = activeSelection.icon.Image,
 				imageOffset = activeSelection.icon.ImageRectOffset,
 				imageSize = activeSelection.icon.ImageRectSize,
-				colour = Color3.new(1, 1, 1),
+				color = Color3.new(1, 1, 1),
 				size = 16,
 				order = 10,
 			}),
@@ -104,14 +105,24 @@ local function Page(_, hooks)
 		}),
 
 		largeInstance = targetInstance.large and e(Alert, {
-			label = "This Instance appears to have a lot of children! Can it be broken into smaller components?",
+			label = snippet.processing and "This may take a while! Studio may lag or become unresponsive."
+				or "This Instance appears to have a lot of children! Can it be broken into smaller components?",
 			variant = Enum.MessageType.MessageWarning,
+			icon = "Warning",
 			order = 30,
+		}),
+
+		generateError = snippet.error and e(Alert, {
+			label = string.match(snippet.error, "Request timed out") and "Request timed out. Please try again."
+				or "An error occurred while generating the snippet. Please try again.",
+			icon = if string.match(snippet.error, "Request timed out") then "CloudWarning" else "Warning",
+			variant = Enum.MessageType.MessageError,
+			order = 40,
 		}),
 
 		generateButton = e(Button, {
 			order = 40,
-			label = "Generate Snippet",
+			label = snippet.processing and "Working on it..." or "Generate Snippet",
 			primary = not targetInstance.large,
 			size = UDim2.fromScale(1, 0),
 			autoSize = Enum.AutomaticSize.Y,
@@ -141,6 +152,9 @@ local function Page(_, hooks)
 				wrapped = false,
 				selectAllOnFocus = true,
 				syntaxHighlight = userSettings.syntaxHighlighting,
+				caption = snippet.content
+					and #snippet.content >= MAX_TEXTBOX_CHARS
+					and 'Snippet may be truncated. Use the "Save to Device" feature to view full snippet.',
 
 				onFocus = function()
 					setShowCopy(true)
@@ -150,19 +164,28 @@ local function Page(_, hooks)
 					setShowCopy(false)
 				end,
 			}),
+		}),
+
+		snippetActions = e(Layout.Frame, {
+			order = 60,
+		}, {
+			layout = e(Layout.ListLayout, {
+				direction = Enum.FillDirection.Vertical,
+				alignX = Enum.HorizontalAlignment.Right,
+			}),
 
 			copyText = showCopy and e(Text, {
 				text = COPY_TEXT,
-				textColour = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
-				textSize = styles.fontSize - 2,
+				textColor = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
+				textSize = styles.fontSize - 1,
 				font = styles.font.semibold,
-				order = 30,
+				order = 10,
 			}),
 
 			downloadButton = e(Button, {
 				primary = true,
 				disabled = snippet.content == nil,
-				order = 40,
+				order = 20,
 				label = "Save to Device",
 				icon = "Download",
 

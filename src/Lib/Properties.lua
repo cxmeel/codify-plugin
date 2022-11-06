@@ -1,9 +1,12 @@
-local DebugSettings = settings():GetService("DebugSettings")
-local Plugin = script.Parent.Parent
+local plugin = script:FindFirstAncestorOfClass("Plugin")
+local PluginRoot = script.Parent.Parent
+local RobloxVersion = version()
 
-local HttpPromise = require(Plugin.Lib.HttpPromise)
-local Promise = require(Plugin.Packages.Promise)
-local Sift = require(Plugin.Packages.Sift)
+local HttpPromise = require(PluginRoot.Lib.HttpPromise)
+local Promise = require(PluginRoot.Packages.Promise)
+local Sift = require(PluginRoot.Packages.Sift)
+
+local PLUGIN_CACHE_KEY = "API_DUMP_CACHE"
 
 local Properties = {}
 
@@ -18,7 +21,21 @@ local IGNORED_PROPERTIES = {
 	},
 }
 
-function Properties.FetchLatestVersion()
+function Properties.FetchDumpFromPluginCache()
+	local storedValue = plugin:GetSetting(PLUGIN_CACHE_KEY)
+
+	if not storedValue then
+		return Promise.resolve()
+	end
+
+	if storedValue.Version ~= RobloxVersion then
+		return Promise.resolve()
+	end
+
+	return Promise.resolve(storedValue)
+end
+
+function Properties.FetchLatestVersionHash()
 	return HttpPromise.RequestAsync("https://s3.amazonaws.com/setup.roblox.com/versionQTStudio", {
 		cache = -1,
 	}):andThen(function(version)
@@ -28,7 +45,7 @@ function Properties.FetchLatestVersion()
 end
 
 function Properties.FetchVersionHash(version: string?)
-	version = if version then version else DebugSettings.RobloxVersion
+	version = if version then version else RobloxVersion
 
 	local deployVersion = version:gsub("%.", ", ")
 
@@ -54,15 +71,39 @@ function Properties.FetchVersionHash(version: string?)
 end
 
 function Properties.FetchVersionWithFallback(version: string?)
-	return Properties.FetchVersionHash(version):catch(function()
-		return Properties.FetchLatestVersion()
+	return Properties.FetchDumpFromPluginCache():andThen(function(cachedDump)
+		if cachedDump and cachedDump.Version == RobloxVersion then
+			return Promise.resolve(cachedDump.VersionHash)
+		end
+
+		return Properties.FetchVersionHash(version):catch(function()
+			return Properties.FetchLatestVersionHash()
+		end)
 	end)
 end
 
 function Properties.FetchAPIDump(hash: string)
-	return HttpPromise.RequestJsonAsync("https://s3.amazonaws.com/setup.roblox.com/version-" .. hash .. "-API-Dump.json", {
-		cache = -1,
-	})
+	return Properties.FetchDumpFromPluginCache():andThen(function(cachedDump)
+		if cachedDump and cachedDump.VersionHash == hash then
+			return cachedDump.Data
+		end
+
+		return HttpPromise.RequestJsonAsync(
+			"https://s3.amazonaws.com/setup.roblox.com/version-" .. hash .. "-API-Dump.json",
+			{
+				cache = -1,
+			}
+		)
+			:andThen(function(apiDump)
+				plugin:SetSetting(PLUGIN_CACHE_KEY, {
+					Version = RobloxVersion,
+					VersionHash = hash,
+					Data = apiDump,
+				})
+
+				return apiDump
+			end)
+	end)
 end
 
 local function FindClassEntry(dump, class: string)

@@ -14,7 +14,7 @@ export type IconProps = {
 	size: (UDim2 | number)?,
 	position: UDim2?,
 	rotation: number?,
-	colour: Color3?,
+	color: Color3?,
 	zindex: number?,
 	order: number?,
 	resample: Enum.ResamplerMode?,
@@ -53,9 +53,9 @@ local function Icon(props: IconProps, hooks)
 		Size = size,
 		ZIndex = props.zindex,
 		Image = if icon then icon.assetId else props.icon,
-		ImageColor3 = if icon and icon.colour
-			then icon.colour
-			elseif props.colour then props.colour
+		ImageColor3 = if icon and icon.color
+			then icon.color
+			elseif props.color then props.color
 			else theme:GetColor(Enum.StudioStyleGuideColor.MainText),
 		ImageRectOffset = if icon then Vector2.new(icon.x, icon.y) else props.imageOffset,
 		ImageRectSize = if icon then Vector2.new(icon.w, icon.h) else props.imageSize,
