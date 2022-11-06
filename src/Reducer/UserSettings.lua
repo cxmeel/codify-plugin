@@ -17,6 +17,7 @@ local DEFAULT_SETTINGS = {
 	indentationUsesTabs = false,
 	indentationLength = 2,
 	fontFormat = Enums.FontFormat.Full,
+	parallelLuauGeneration = false,
 }
 
 return function(state, action)

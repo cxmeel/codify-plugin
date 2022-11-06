@@ -13,6 +13,7 @@ local CreateMethod = require(script.CreateMethod)
 local ChildrenKey = require(script.ChildrenKey)
 local Inputs = require(script.Inputs)
 local About = require(script.About)
+local ParallelLuauToggle = require(script.ParallelLuauToggle)
 
 local e = Roact.createElement
 
@@ -78,11 +79,11 @@ local function Page(_, hooks)
 
 			enumFormat = e(Inputs.EnumFormat, {
 				order = 30,
-      }),
-      
-      fontFormat = e(Inputs.FontFormat, {
-        order = 35,
-      }),
+			}),
+
+			fontFormat = e(Inputs.FontFormat, {
+				order = 35,
+			}),
 
 			numberRangeFormat = e(Inputs.NumberRangeFormat, {
 				order = 40,
@@ -101,8 +102,21 @@ local function Page(_, hooks)
 			}),
 		}),
 
-		about = e(About, {
+		experimental = e(Layout.Forms.Section, {
+			heading = "Experimental",
+			hint = "These features may be highly unstable and may cause issues. Use at your own risk.",
+			collapsible = true,
+			collapsed = true,
+			divider = true,
 			order = 60,
+		}, {
+			parallelLuau = e(ParallelLuauToggle, {
+				order = 10,
+			}),
+		}),
+
+		about = e(About, {
+			order = 70,
 		}),
 	})
 end

@@ -35,6 +35,7 @@ local function GenerateSnippet()
 				ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
 				TabCharacter = tabCharacter,
 				FontFormat = state.userSettings.fontFormat,
+				ParallelLuau = state.userSettings.parallelLuauGeneration,
 			})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({
@@ -46,6 +47,9 @@ local function GenerateSnippet()
 			end)
 			:catch(function(rejection)
 				local errorText = tostring(rejection.error)
+
+				warn(rejection)
+
 				store:dispatch(Actions.SetSnippetError(errorText))
 			end)
 			:finally(function()
