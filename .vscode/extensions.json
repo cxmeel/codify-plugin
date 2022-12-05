@@ -1,9 +1,7 @@
 {
   "recommendations": [
-    "redhat.vscode-yaml",
     "kampfkarren.selene-vscode",
     "evaera.vscode-rojo",
     "nightrains.robloxlsp",
-    "bungcip.better-toml"
   ]
 }

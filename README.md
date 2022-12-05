@@ -1,116 +1,113 @@
-<!-- Links -->
-[plugin]: https://roblox.com/library/4749111907
-[itch]: https://csqrl.itch.io/codify
-[repo]: https://github.com/csqrl/codify-plugin
-[issues]: https://github.com/csqrl/codify-plugin/issues
-[rojo]: https://rojo.space
-[devforum-thread]: https://devforum.roblox.com/t/473076
-[devforum-dm]: https://devforum.roblox.com/new-message?username=csqrl&title=%5BCodify%5D%20Bug%20Report
-[twitter]: https://twitter.com/csqrI
-[yt-demo]: https://youtu.be/aLFWPKNiBGU
+<!-- References -->
+<!---- Links -->
+[plugin/roblox-store-page]: https://create.roblox.com/marketplace/asset/4749111907
+[plugin/itch-store-page]: https://csqrl.itch.io/codify
 
-<!-- Images -->
-[images/cover]: https://github.com/csqrl/codify-plugin/raw/main/assets/Cover.png
-[images/roblox-badge]: https://gist.github.com/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/robloxAnimated.svg
-[images/itch-badge]: https://gist.github.com/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/itch.svg
-[images/github-badge]: https://gist.github.com/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/githubSource.svg
-[images/screenshots-row]: https://github.com/csqrl/codify-plugin/raw/main/assets/PluginScreenshots.png
-[images/yt-demo]: https://github.com/csqrl/codify-plugin/raw/main/assets/YouTubeEmbed.png
+[plugin/repo]: https://github.com/csqrl/codify-plugin
+[plugin/repo/issues]: https://github.com/csqrl/codify-plugin/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
+[plugin/repo/contributors]: https://github.com/csqrl/codify-plugin/graphs/contributors
 
-<!-- Content -->
+[devforum/plugin-thread]: https://devforum.roblox.com/t/473076
+[devforum/direct]: https://devforum.roblox.com/new-message?username=csqrl&title=%5BCodify%5D%20Bug%20Report
+[csqrl/twitter]: https://twitter.com/csqrI
+[youtube/plugin-demo]: https://youtu.be/aLFWPKNiBGU
+[boatbomber/itch]: https://boatbomber.itch.io
+
+<!---- Images -->
+[images/cover]: assets/Cover.png
+[images/youtube-embed]: assets/YouTubeEmbed.png
+
+[images/roblox-badge]: https://gist.github.com/csqrl/0dbc95191f239b631c3874f4ccf114e2/raw/roblox_dev-animated.svg
+[images/itch-badge]: https://gist.github.com/csqrl/0dbc95191f239b631c3874f4ccf114e2/raw/itch.svg
+[images/itch-badge/icon]: https://gist.github.com/csqrl/0dbc95191f239b631c3874f4ccf114e2/raw/itch-icon.svg
+[images/github-badge/source]: https://gist.github.com/csqrl/0dbc95191f239b631c3874f4ccf114e2/raw/github_source.svg
+[images/github-badge/icon]: https://gist.github.com/csqrl/0dbc95191f239b631c3874f4ccf114e2/raw/github-icon.svg
+
+<!-- Contents -->
 <div align="center">
 
 ![Codify Cover Image][images/cover]
 
-[![Get it on Roblox][images/roblox-badge]][plugin] [![Get it on Itch|48x48][images/itch-badge]][itch]
-
-Codify converts your pre-existing Roblox UI, models and more into code snippets in a flash. Whether you use vanilla Roblox Luau, or a framework like Roact or Fusion, Codify has you covered!
+[![Get it on Roblox][images/roblox-badge]][plugin/roblox-store-page] [![Get it on Itch][images/itch-badge/icon]][plugin/itch-store-page] [![Source on GitHub][images/github-badge/icon]][plugin/itch-store-page]
 
 </div>
 
+Codify converts existing UI, models and more into snippets of code, just like magic! Whether you use [vanilla Roblox Luau](https://luau-lang.org), [TypeScript](https://roblox-ts.com), [Rojo](https://rojo.space) or frameworks like [Roact](https://github.com/Roblox/roact) or [Fusion](https://github.com/Elttob/Fusion), Codify has you covered!
+
 ## :inbox_tray: Installation
 
-Codify is available from the [Roblox Plugin Marketplace][plugin] for 350 Robux, or can be downloaded for **free** via [GitHub][repo] (self-build) or its [Itch.io store page][itch] (optional donation).
+Codify is available to purchase through the [Roblox Creator Marketplace][plugin/roblox-store-page]. It's also **available for free** via its [Itch.io store page][plugin/itch-store-page] (optional donation) or [GitHub][plugin/repo] (self-build).
 
-### Plugin Marketplace
+### Creator Marketplace
 
-The Creator Marketplace is the easiest way to install Codify. You'll get quick and easy access to updates via the Plugin Management window, and you'll be able to use the plugin anywhere you have Roblox Studio installed.
+The Creator Marketplace is the simplest way to install Codify. You'll get quick and easy access to updates via the Plugin Manager, and you'll be able to use the plugin anywhere you have Roblox Studio installed with a single click!
 
-[![Get it on Roblox][images/roblox-badge]][plugin]
+Don't forget to leave the plugin a :thumbsup: if you like it!
 
-Don't forget to leave a :thumbsup: like if you enjoy the plugin!
+[![Get it on Roblox][images/roblox-badge]][plugin/roblox-store-page]
 
 ### Itch.io
 
-Currently, there's no way to automatically install and update plugins purchased through Itch. You'll need to manually download and drop the plugin file into your Studio plugins folder every time there's an update. You'll also have to repeat this process for every device you want to use the plugin on.
+Plugins currently cannot be automatically updated or installed via Itch.io. You'll need to manually update the plugin whenever a new release is available. You'll also have to repeat this process for every device you wish to use Codify on.
 
-[![Get it on Itch][images/itch-badge]][itch]
+Codify can currently be obtained for free via Itch.io. An optional donation is recommended to show your support for creators, but is not required.
+
+[![Get it on Itch][images/itch-badge]][plugin/itch-store-page]
 
 ### Manual Installation
 
-If you don't want to use the Plugin Marketplace or Itch.io, you can clone the plugin source from GitHub. You'll need to compile the plugin binary yourself using a tool like [Rojo][rojo], and you'll also be responsible for keeping the plugin up to date.
+If you don't want to use the Creator Marketplace or Itch.io, you can install Codify manually. You'll be responsible for keeping the plugin up-to-date and will be required to manually build the plugin using Rojo before you can use it.
 
-This might be a great option for you if you want to modify the plugin source code, or if you're concerned about security. However, this method sacrifices convenience of installation and updates.
+This might be the best option for you if you want to modify the plugin source code. However, it sacrifices the convenience of easy updates via the Plugin Manager.
 
-[![Get it on GitHub][images/github-badge]][repo]
+[![Source on GitHub][images/github-badge/source]][plugin/repo]
+
+## :framed_picture: Screenshots
+
+[![See Demo on YouTube][images/youtube-embed]][youtube/plugin-demo]
 
 ## :bug: Found a Bug?
 
-If you think you've found a bug, please report it! Here's all the places you can report bugs:
+If you find a bug, please report it! Here's a list of ways you can report a bug:
 
-* [Reply to the DevForum thread][devforum-thread]
-* [DevForum Direct Message][devforum-dm]
-* [GitHub Issues][issues]
-* [Twitter][twitter]
+- [Reply to the DevForum thread][devforum/plugin-thread]
+- [Direct message via DevForum][devforum/direct]
+- [GitHub Issues][plugin/repo/issues]
+- [Twitter][csqrl/twitter]
 
 ## :shield: Overview of Permissions
 
 ### HTTP Requests
 
-Codify **requires** the ability to make HTTP requests to keep the plugin and Studio in-sync. The table below shows an overview of the domains Codify will make requests to, and why (and if) they're required.
+Codify **requires** the ability to make HTTP requests in order to keep the plugin in sync with the latest version of Roblox Studio. The table below outlines the domains Codify will make requests to, and why (or if) they are required.
 
 | Domain | Required | Reason |
-|--------|----------|--------|
-| `s3.amazonaws.com` | :white_check_mark: | Studio metadata and API dump |
-| `api.github.com` | :x: | List of contributors who helped make Codify possible |
+|:-------|:---------|:-------|
+| `s3.amazonaws.com` | :heavy_check_mark: | Studio metadata and API dump |
 
 ### Script Injection
 
-Script injection is a completely optional permission. You won't be prompted to give access to this until using the **Save to Device** feature. This feature allows you to save your code snippets to your computer.
+Script injection is an optional permission. You'll only be prompted to allow injection when exporting snippets.
 
-This permission is exclusive to the **Save to Device**, and is not required for any other feature. Save to Device is great for exporting snippets longer than the TextBox character limit, or for accessing your snippets outside of Roblox Studio.
+When exporting to device, Codify will create a temporary script which you will then be prompted to save to your device. The temporary script is non-Archivable and will not save when (auto-)saving or publishing your game.
 
-Save to Device will create a temporary ModuleScript in order to export your snippet. The ModuleScript is unarchivable, meaning it won't be saved to your place during publishing/(auto-)saving. The ModuleScript is also deleted immediately after the snippet is exported.
+## :package: Credits
 
-## :framed_picture: Screenshots
+> Special thanks to Zack ([@boatbomber](https://github.com/boatbomber)) for their help with expanding the scope of Codify. Please [check out their Itch.io store][boatbomber/itch] for a full overview of their work and to show your support!
 
-[![See Demo on YouTube][images/yt-demo]][yt-demo]
+### Open Source
 
-![Screenshots][images/screenshots-row]
+Codify wouldn't be possible without the help of the following open source projects:
 
-## :thinking: Plugin Limitations
-
-Codify does not support Instance properties which accept another Instance as its value. This means properties such as `Adornee` or `ObjectValue.Value` are not supported; however, Codify will try its best to link the Parent property to the Instance it's referencing, as long as it's in the tree.
-
-Roblox's TextBoxes are also subject to a character limit. This means you may find large snippets of code are truncated. You can use the **Save to Device** feature to export your code to a ModuleScript, which is subject to a much larger character limit. However, if you're reaching these limits, you may want to consider reviewing your components/models, and seeing how you can split them down further. This will help you with maintainability and keep your codebase clean.
-
-## :package: Open Source Projects
-
-> :mega: Shoutout to @boatbomber for their help with expanding Codify's scope to include more than just Roact. You should [check out their Itch.io store](https://boatbomber.itch.io/) for more of their work, and how you can support them!
-
-Codify is built on top of a few open source projects. Here's a list of the projects Codify uses:
-
-* [highlighter](https://github.com/boatbomber/highlighter) by @boatbomber
-* [studio-plugin](https://github.com/csqrl/studio-plugin) by @csqrl
-* [studio-theme](https://github.com/csqrl/studio-theme) by @csqrl
-* [roblox-lua-promise](https://github.com/evaera/roblox-lua-promise) by @evaera
-* [roact](https://github.com/roblox/roact) by @roblox
-* [roact-hooks](https://github.com/kampfkarren/roact-hooks) by @kampfkarren
-* [roact-router](https://github.com/reselim/roact-router) by @reselim
-* [rodux](https://github.com/roblox/rodux) by @roblox
-* [rodux-hooks](https://github.com/solarhorizon/rodux-hooks) by @solarhorizon
-* [sift](https://github.com/csqrl/sift) by @csqrl
+- [DumpParser](https://github.com/csqrl/dump-parser) by [@csqrl](https://github.com/csqrl)
+- [Highlighter](https://github.com/boatbomber/highlighter) by [@boatbomber](https://github.com/boatbomber)
+- [Packager](https://github.com/csqrl/packager) by [@csqrl](https://github.com/csqrl)
+- [Promise](https://github.com/evaera/roblox-lua-promise) by [@evaera](https://github.com/evaera)
+- [RoactRodux](https://github.com/grilme99/roact-rodux) by [@grilme99](https://github.com/grilme99) ([fork](https://github.com/Roblox/roact-rodux))
+- [RoactCompat](https://github.com/grilme99/CorePackages) by [@grilme99](https://github.com/grilme99) ([port](https://github.com/grilme99/CorePackages#roact17))
+- [Rodux](https://github.com/roblox/rodux) by [@roblox](https://github.com/roblox)
+- [Sift](https://github.com/csqrl/sift) by [@csqrl](https://github.com/csqrl)
 
 ## :warning: Disclaimer
 
-The code snippets produced by Codify are not 100% perfect. You should consider the snippets as a starting point, and not a finished product. You should always review the code snippets before using them in your own projects. This still shouldn't put you off from using Codify, though!
+You should not expect code snippets produced by Codify to be 100% perfect. You should always review the generated snippets before use.
