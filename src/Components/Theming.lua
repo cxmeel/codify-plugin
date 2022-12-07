@@ -53,8 +53,12 @@ local function mergeTheme(theme: ThemeArgument, outerTheme: DefaultTheme?): Defa
 	return outerTheme and Sift.Dictionary.merge(outerTheme, theme) or theme
 end
 
+local function useTheme()
+	return useContext(ThemeContext)
+end
+
 local function ThemeProvider(props: Props)
-	local outerTheme = useContext(ThemeContext)
+	local outerTheme = useTheme()
 
 	local themeContext = useMemo(function()
 		return mergeTheme(props.theme, outerTheme)
@@ -67,10 +71,6 @@ local function ThemeProvider(props: Props)
 	return React.createElement(ThemeContext.Provider, {
 		value = themeContext,
 	}, props[React.Children])
-end
-
-local function useTheme()
-	return useContext(ThemeContext)
 end
 
 return {
