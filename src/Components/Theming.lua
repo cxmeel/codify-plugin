@@ -69,8 +69,14 @@ local function ThemeProvider(props: Props)
 	}, props[React.Children])
 end
 
+local function useTheme()
+	return useContext(ThemeContext)
+end
+
 return {
 	ThemeContext = ThemeContext,
 	ThemeProvider = ThemeProvider,
 	ThemeConsumer = ThemeConsumer,
+
+	useTheme = useTheme,
 }
