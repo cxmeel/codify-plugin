@@ -31,6 +31,10 @@ local ERRORS = {
 	[14] = 'ThemeProvider: "theme" prop is required.',
 }
 
+local function isDictionary(value: any): boolean
+	return typeof(value) == "table" and not Sift.Array.is(value)
+end
+
 local function mergeTheme(theme: ThemeArgument, outerTheme: DefaultTheme?): DefaultTheme
 	if not theme then
 		error(ERRORS[14], 2)
@@ -39,14 +43,14 @@ local function mergeTheme(theme: ThemeArgument, outerTheme: DefaultTheme?): Defa
 	if typeof(theme) == "function" then
 		local mergedTheme = theme(outerTheme)
 
-		if mergedTheme == nil or Sift.Array.is(mergedTheme) or typeof(mergedTheme) ~= "table" then
+		if mergedTheme == nil or not isDictionary(mergedTheme) then
 			error(ERRORS[7], 2)
 		end
 
 		return mergedTheme
 	end
 
-	if Sift.Array.is(theme) or typeof(theme) ~= "table" then
+	if not isDictionary(theme) then
 		error(ERRORS[8], 2)
 	end
 
