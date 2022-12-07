@@ -4,8 +4,8 @@ local React = require(script.Parent.Parent.Packages.React)
 local Studio = settings():GetService("Studio")
 local useEffect, useState = React.useEffect, React.useState
 
-local function useDarkMode()
-	local studioTheme, setStudioTheme = useState(Studio.Theme)
+local function useStudioTheme()
+	local studioTheme: StudioTheme, setStudioTheme = useState(Studio.Theme)
 
 	useEffect(function()
 		local connection = Studio.ThemeChanged:Connect(function()
@@ -20,4 +20,4 @@ local function useDarkMode()
 	return studioTheme
 end
 
-return useDarkMode
+return useStudioTheme
