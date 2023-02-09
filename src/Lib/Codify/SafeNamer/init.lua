@@ -2,6 +2,7 @@
 local Packages = script.Parent.Parent.Parent.Packages
 
 local Sift = require(Packages.Sift)
+local Array, Dictionary = Sift.Array, Sift.Dictionary
 
 --[=[
 	@class SafeNamer
@@ -9,16 +10,32 @@ local Sift = require(Packages.Sift)
 local SafeNamer = {}
 
 --[=[
-	@prop RESERVED_WORDS { [string]: { string } }
+	@type CasingFormat "PASCAL_CASE" | "CAMEL_CASE" | "UPPERCASE" | "LOWERCASE"
 	@within SafeNamer
 
-	Contains a list of reserved words for various languages.
-	These words will be prefixed with the variable prefix when sanitizing
-	to prevent conflicts with the language's reserved words.
+	An enum of casing formats.
 ]=]
-SafeNamer.RESERVED_WORDS = {
-	LUAU = require(script.ReservedWords.Luau),
-	TYPESCRIPT = require(script.ReservedWords.TypeScript),
+export type CasingFormat = "PASCAL_CASE" | "CAMEL_CASE" | "UPPERCASE" | "LOWERCASE"
+
+--[=[
+	@interface FormatCaseOptions
+	@within SafeNamer
+	.case CasingFormat? -- The casing format to use
+	.separator string? -- The separator between words
+
+	Default values:
+	```lua
+	{
+		case = "LOWERCASE",
+		separator = "_",
+		variablePrefix = "var",
+	}
+	```
+]=]
+export type FormatCaseOptions = {
+	case: CasingFormat?,
+	separator: string?,
+	variablePrefix: string?,
 }
 
 --[=[
@@ -28,6 +45,8 @@ SafeNamer.RESERVED_WORDS = {
 	.variablePrefix string? -- The prefix to use when an invalid variable name is generated
 	.separator string? -- The separator to use when replacing invalid characters
 	.unknownName string? -- The name to use when sanitizing an empty string
+
+	Extends [FormatCaseOptions](#FormatCaseOptions).
 
 	Default values:
 	```lua
@@ -39,18 +58,11 @@ SafeNamer.RESERVED_WORDS = {
 	}
 	```
 ]=]
-export type SanitizeOptions = {
+export type SanitizeOptions = FormatCaseOptions & {
 	reservedWords: { string }?,
 	variablePrefix: string?,
 	separator: string?,
 	unknownName: string?,
-}
-
-local DEFAULT_SANITIZE_OPTIONS: SanitizeOptions = {
-	reservedWords = SafeNamer.RESERVED_WORDS.LUAU,
-	variablePrefix = "var",
-	separator = "_",
-	unknownName = "unknown",
 }
 
 --[=[
@@ -72,6 +84,43 @@ export type EscapeOptions = {
 	unicodeEscape: boolean?,
 }
 
+--[=[
+	@prop RESERVED_WORDS { [string]: { string } }
+	@within SafeNamer
+
+	Contains a list of reserved words for various languages.
+	These words will be prefixed with the variable prefix when sanitizing
+	to prevent conflicts with the language's reserved words.
+]=]
+SafeNamer.RESERVED_WORDS = table.freeze({
+	LUAU = require(script.ReservedWords.Luau),
+	TYPESCRIPT = require(script.ReservedWords.TypeScript),
+})
+
+--[=[
+	@prop CASE { [string]: CasingFormat }
+	@within SafeNamer
+
+	An enum of casing formats for ease of use.
+]=]
+SafeNamer.CASE = table.freeze({
+	PASCAL_CASE = "PASCAL_CASE",
+	CAMEL_CASE = "CAMEL_CASE",
+	UPPERCASE = "UPPERCASE",
+	LOWERCASE = "LOWERCASE",
+})
+
+local DEFAULT_FORMAT_CASE_OPTIONS: FormatCaseOptions = {
+	case = "LOWERCASE",
+	separator = "_",
+	variablePrefix = "var",
+}
+
+local DEFAULT_SANITIZE_OPTIONS: SanitizeOptions = Dictionary.merge(DEFAULT_FORMAT_CASE_OPTIONS, {
+	reservedWords = SafeNamer.RESERVED_WORDS.LUAU,
+	unknownName = "unknown",
+})
+
 local DEFAULT_ESCAPE_OPTIONS: EscapeOptions = {
 	singleQuote = false,
 	unicodeEscape = false,
@@ -89,11 +138,65 @@ local ESCAPE_SEQUENCES = {
 	["\0"] = "\\0",
 }
 
+--[[
+	@function trimString
+	@private
+	@param str string -- The string to trim
+	@param char string? -- The character to trim
+	@return string
+]]
 local function trimString(str: string, char: string?): string
 	local removeChar = char or "%s"
 	local trimmed = str:gsub(`^{removeChar}*(.-){removeChar}*$`, "%1")
 
 	return trimmed
+end
+
+--[=[
+	@function FormatCase
+	@within SafeNamer
+
+	@param input string -- The string to format
+	@param options FormatCaseOptions? -- The options to use when formatting
+	@return string
+
+	Formats a string to a specific casing format.
+
+	```lua
+	SafeNamer.FormatCase("hello_world", {
+		case = "PASCAL_CASE",
+	}) -- "Hello_World"
+
+	SafeNamer.FormatCase("hello_world", {
+		case = "CAMEL_CASE",
+	}) -- "hello_World"
+	```
+]=]
+function SafeNamer.FormatCase(input: string, options: FormatCaseOptions?)
+	local opt: FormatCaseOptions = Dictionary.merge(DEFAULT_FORMAT_CASE_OPTIONS, options)
+
+	local words = input:split(opt.separator)
+	local prefix: string?
+
+	if words[1] == opt.variablePrefix then
+		prefix = table.remove(words, 1)
+	end
+
+	local newWords = Array.map(words, function(word: string, index)
+		if opt.case == "UPPERCASE" then
+			return word:upper()
+		elseif opt.case == "LOWERCASE" or (opt.case == "CAMEL_CASE" and index == 1) then
+			return word:lower()
+		elseif opt.case == "PASCAL_CASE" or opt.case == "CAMEL_CASE" then
+			return `{word:sub(1, 1):upper()}{word:sub(2):lower()}`
+		end
+	end)
+
+	if prefix ~= nil then
+		table.insert(newWords, 1, prefix)
+	end
+
+	return table.concat(newWords, opt.separator)
 end
 
 --[=[
@@ -107,7 +210,7 @@ end
 	Sanitizes a string to be a valid variable name.
 ]=]
 function SafeNamer.Sanitize(word: string, options: SanitizeOptions?)
-	local opt = Sift.Dictionary.merge(DEFAULT_SANITIZE_OPTIONS, options)
+	local opt = Dictionary.merge(DEFAULT_SANITIZE_OPTIONS, options)
 	local newWord = trimString(word):gsub("%W", opt.separator)
 
 	if table.find(opt.reservedWords, newWord) then
@@ -124,7 +227,7 @@ function SafeNamer.Sanitize(word: string, options: SanitizeOptions?)
 		newWord = `{opt.variablePrefix}{opt.separator}{opt.unknownName}`
 	end
 
-	return newWord
+	return SafeNamer.FormatCase(newWord, opt)
 end
 
 --[=[
@@ -138,7 +241,7 @@ end
 	Sanitizes a list of strings to be valid variable names.
 ]=]
 function SafeNamer.SanitizeMultiple(words: { string }, options: SanitizeOptions?)
-	local opt = Sift.Dictionary.merge(DEFAULT_SANITIZE_OPTIONS, options)
+	local opt = Dictionary.merge(DEFAULT_SANITIZE_OPTIONS, options)
 	local newWords: { string } = {}
 	local WORD_STACK = {}
 
@@ -193,7 +296,7 @@ end
 	```
 ]=]
 function SafeNamer.EscapeString(input: string, options: EscapeOptions?): string
-	local opt = Sift.Dictionary.merge(DEFAULT_ESCAPE_OPTIONS, options)
+	local opt = Dictionary.merge(DEFAULT_ESCAPE_OPTIONS, options)
 	local quote = opt.singleQuote and "'" or '"'
 
 	local escaped = input:gsub("[%c%p%z]", function(char)

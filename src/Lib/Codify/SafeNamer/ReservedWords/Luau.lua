@@ -90,4 +90,4 @@ return {
 	"table",
 	"task",
 	"utf8",
-}
+} :: { string }
