@@ -1,0 +1,27 @@
+--!strict
+local HttpService = game:GetService("HttpService")
+local Common = require(script.Parent.Parent.Parent.Parent.Common)
+
+export type Color3Format = "EXPLICIT" | "IMPLICIT"
+
+local Formatter: Common.FormatterMap<Color3, Color3Format> = {}
+
+function Formatter.EXPLICIT(value)
+	return HttpService:JSONEncode({
+		Color3 = {
+			value.R,
+			value.G,
+			value.B,
+		},
+	})
+end
+
+function Formatter.IMPLICIT(value)
+	return HttpService:JSONEncode({
+		value.R,
+		value.G,
+		value.B,
+	})
+end
+
+return Formatter
