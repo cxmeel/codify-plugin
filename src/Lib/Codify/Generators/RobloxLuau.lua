@@ -7,7 +7,7 @@ local Generator: T.Generator = {}
 Generator.Name = "None"
 Generator.Language = "Luau"
 Generator.Description = 'Instance.new("Object")'
-Generator.Serializer = Properties.Serializer.Default
+Generator.Formatter = Properties.Serializer.Default
 
 Generator.Settings = {
 	INCLUDE_ATTRIBUTES = {
@@ -33,7 +33,7 @@ function Generator.Generate(package, options, lib)
 		table.insert(document, `local {var} = Instance.new("{node.ClassName}")`)
 
 		for propertyName, property in node.Properties do
-			local prop = Generator.Serializer.FormatProperty(property.Value, {
+			local prop = Generator.Formatter.FormatProperty(property.Value, {
 				Formats = options.Formats,
 			})
 

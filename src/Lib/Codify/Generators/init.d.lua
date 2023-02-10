@@ -1,6 +1,7 @@
 --!strict
 local Packages = script.Parent.Parent.Parent.Parent.Packages
 
+local PropertiesCommon = require(script.Parent.Parent.Properties.Common)
 local DumpParser = require(Packages.DumpParser)
 local Packager = require(Packages.Packager)
 
@@ -8,6 +9,10 @@ export type Generator = {
 	Name: string,
 	Language: string,
 	Description: string,
+
+	Formatter: {
+		[string]: PropertiesCommon.FormatterMap<any, any>,
+	},
 
 	Settings: {
 		[string]: {

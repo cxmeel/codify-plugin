@@ -43,7 +43,11 @@ end
 function Codify:GetDefaultFormatters(generator: GT.Generator)
 	local formatters = {}
 
-	for 
+	for dataType, formatter in generator.Formatter do
+		formatters[dataType] = formatter.DEFAULT
+	end
+
+	return formatters
 end
 
 function Codify:GenerateSnippet(
@@ -51,6 +55,7 @@ function Codify:GenerateSnippet(
 	generatorId: string,
 	options: {
 		Global: { [string]: any },
+		Formats: { [string]: string },
 		Local: { [string]: any },
 	}
 )
@@ -62,7 +67,8 @@ function Codify:GenerateSnippet(
 	--   Step 4.5: Repeat for children
 	--   Step 4.6: Assign Parent property
 	local generator = assert(Generators[generatorId], `Generator "{generatorId}" does not exist`)
-	local generatorDefaultOptions = Dictionary.merge(self:GetGeneratorDefaultOptions(generator), options.Local)
+	local generatorOptions = Dictionary.merge(self:GetGeneratorDefaultOptions(generator), options.Local)
+	local formatters = Dictionary.merge(self:GetDefaultFormatters(generator), options.Formats)
 
 	local package = self.Packager:CreatePackageFlat(rootInstance)
 	local variableNames = {}
@@ -73,7 +79,15 @@ function Codify:GenerateSnippet(
 
 	package = self.Packager:ConvertToPackage(package)
 
-	return generator.Generate(package, variableNames, options)
+	return generator.Generate(package, {
+		Global = options.Global,
+		Formats = formatters,
+		Local = generatorOptions,
+	}, {
+		Dump = self.Dump,
+		Packager = self.Packager,
+		Variable = variableNames,
+	})
 end
 
 return Codify
