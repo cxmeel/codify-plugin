@@ -13,16 +13,10 @@ local function FormatProperty(property: Common.Property, options: any)
 	end
 
 	if type(property.Value) == "userdata" then
-		local value = tostring(property.Value)
-
-		if value:match("[%s,]") then
-			return ("{\n%s\n}"):format(`"{typeof(property.Value)}": [{value}]`)
-		end
-
-		return ("{\n%s\n}"):format(`"{typeof(property.Value)}": {value}`)
+		return
 	end
 
-	return tostring(property.Value)
+	return property.Value
 end
 
 return FormatProperty

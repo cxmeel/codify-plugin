@@ -5,6 +5,7 @@ registry = "https://github.com/upliftgames/wally-index"
 realm = "shared"
 
 [dependencies]
+Base64 = "reselim/base64@2.0.0"
 DumpParser = "csqrl/dump-parser@0.1.1"
 Highlighter = "boatbomber/highlighter@0.7.0"
 Hooks = "kampfkarren/roact-hooks@0.5.0"
