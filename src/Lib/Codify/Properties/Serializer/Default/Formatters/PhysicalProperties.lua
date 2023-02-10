@@ -6,6 +6,8 @@ export type PhysicalPropertiesFormat = "FULL" | "SMART"
 
 local Formatter: Common.FormatterMap<PhysicalProperties, PhysicalPropertiesFormat> = {}
 
+Formatter.DEFAULT = "SMART"
+
 function Formatter.FULL(value)
 	local props = {
 		Common.FormatNumber(value.Density),

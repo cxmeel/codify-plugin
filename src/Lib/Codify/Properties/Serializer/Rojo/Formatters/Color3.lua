@@ -5,6 +5,8 @@ export type Color3Format = "EXPLICIT" | "IMPLICIT"
 
 local Formatter: Common.FormatterMap<Color3, Color3Format> = {}
 
+Formatter.DEFAULT = "IMPLICIT"
+
 function Formatter.EXPLICIT(value)
 	return {
 		Color3 = {

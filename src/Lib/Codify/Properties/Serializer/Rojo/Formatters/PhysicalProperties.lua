@@ -5,6 +5,8 @@ export type PhysicalPropertiesFormat = "EXPLICIT"
 
 local Formatter: Common.FormatterMap<PhysicalProperties, PhysicalPropertiesFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 function Formatter.EXPLICIT(value)
 	return {
 		PhysicalProperties = {

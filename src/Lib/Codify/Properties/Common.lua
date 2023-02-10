@@ -17,6 +17,7 @@ export type Property = {
 }
 
 export type FormatterMap<T, F> = {
+	DEFAULT: F,
 	[F]: (value: T, options: Options) -> string,
 }
 

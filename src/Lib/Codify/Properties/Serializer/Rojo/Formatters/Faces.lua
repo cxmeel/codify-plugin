@@ -5,6 +5,8 @@ export type FacesFormat = "EXPLICIT"
 
 local Formatter: Common.FormatterMap<Faces, FacesFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 function Formatter.EXPLICIT(value)
 	local faces = {}
 

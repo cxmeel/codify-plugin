@@ -8,6 +8,8 @@ export type CFrameFormat = "FULL" | "SMART"
 
 local Formatter: Common.FormatterMap<CFrame, CFrameFormat> = {}
 
+Formatter.DEFAULT = "SMART"
+
 local function isIdentity(value: CFrame)
 	return Array.every({ value:GetComponents() }, function(component)
 		return component == 0

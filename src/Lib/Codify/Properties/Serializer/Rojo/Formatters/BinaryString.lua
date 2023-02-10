@@ -6,6 +6,8 @@ export type StringFormat = "EXPLICIT"
 
 local Formatter: Common.FormatterMap<string, StringFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 function Formatter.EXPLICIT(value)
 	return {
 		BinaryString = Base64.encode(value),

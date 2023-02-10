@@ -8,6 +8,8 @@ export type NumberSequenceFormat = "EXPLICIT"
 
 local Formatter: Common.FormatterMap<NumberSequence, NumberSequenceFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 local function FormatKeypoint(keypoint: NumberSequenceKeypoint)
 	return {
 		time = keypoint.Time,

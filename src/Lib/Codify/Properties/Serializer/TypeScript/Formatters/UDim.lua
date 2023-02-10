@@ -5,6 +5,8 @@ export type UDimFormat = "FULL" | "SMART"
 
 local Formatter: Common.FormatterMap<UDim, UDimFormat> = {}
 
+Formatter.DEFAULT = "SMART"
+
 function Formatter.FULL(value)
 	if value.Scale == 0 and value.Offset == 0 then
 		return "new UDim()"

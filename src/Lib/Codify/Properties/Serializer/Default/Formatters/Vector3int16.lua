@@ -5,6 +5,8 @@ export type Vector3int16Format = "FULL"
 
 local Formatter: Common.FormatterMap<Vector3int16, Vector3int16Format> = {}
 
+Formatter.DEFAULT = "FULL"
+
 function Formatter.FULL(value)
 	if value.X == 0 and value.Y == 0 and value.Z == 0 then
 		return "Vector3int16.new()"

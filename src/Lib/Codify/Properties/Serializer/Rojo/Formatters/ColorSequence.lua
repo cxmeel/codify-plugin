@@ -8,6 +8,8 @@ export type ColorSequenceFormat = "EXPLICIT"
 
 local Formatter: Common.FormatterMap<ColorSequence, ColorSequenceFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 local function FormatKeypoint(keypoint: ColorSequenceKeypoint)
 	return {
 		time = keypoint.Time,

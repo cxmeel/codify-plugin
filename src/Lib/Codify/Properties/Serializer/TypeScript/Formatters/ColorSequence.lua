@@ -9,6 +9,8 @@ export type ColorSequenceFormat = "SMART"
 
 local Formatter: Common.FormatterMap<ColorSequence, ColorSequenceFormat> = {}
 
+Formatter.DEFAULT = "SMART"
+
 local function FormatKeypoint(keypoint: ColorSequenceKeypoint, options)
 	local time = Common.FormatNumber(keypoint.Time)
 	local value = FormatColor3(keypoint.Value, options)

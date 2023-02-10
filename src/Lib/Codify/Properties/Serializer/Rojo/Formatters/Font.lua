@@ -7,6 +7,8 @@ export type FontFormat = "EXPLICIT"
 
 local Formatter: Common.FormatterMap<Font, FontFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 function Formatter.EXPLICIT(value)
 	return {
 		family = value.Family,

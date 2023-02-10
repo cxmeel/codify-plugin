@@ -5,6 +5,8 @@ export type CFrameFormat = "EXPLICIT" | "IMPLICIT"
 
 local Formatter: Common.FormatterMap<CFrame, CFrameFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 function Formatter.EXPLICIT(value)
 	local px, py, pz, xx, yx, zx, xy, yy, zy, xz, yz, zz = value:GetComponents()
 

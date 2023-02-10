@@ -5,6 +5,8 @@ export type AxesFormat = "EXPLICIT"
 
 local Formatter: Common.FormatterMap<Axes, AxesFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 function Formatter.EXPLICIT(value)
 	local axes = {}
 

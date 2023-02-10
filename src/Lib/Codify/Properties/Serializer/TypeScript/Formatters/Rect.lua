@@ -5,6 +5,8 @@ export type RectFormat = "SMART"
 
 local Formatter: Common.FormatterMap<Rect, RectFormat> = {}
 
+Formatter.DEFAULT = "SMART"
+
 function Formatter.SMART(value)
 	if value.Width == 0 and value.Height == 0 then
 		return "new Rect()"

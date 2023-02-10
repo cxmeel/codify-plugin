@@ -7,6 +7,8 @@ type NormalId = Axes | Faces
 
 local Formatter: Common.FormatterMap<NormalId, NormalIdFormat> = {}
 
+Formatter.DEFAULT = "FULL"
+
 function Formatter.FULL(value)
 	local dataType = typeof(value)
 	local axes = {}

@@ -5,6 +5,8 @@ export type BooleanFormat = "EXPLICIT" | "IMPLICIT"
 
 local Formatter: Common.FormatterMap<boolean, BooleanFormat> = {}
 
+Formatter.DEFAULT = "IMPLICIT"
+
 function Formatter.IMPLICIT(value)
 	return value
 end

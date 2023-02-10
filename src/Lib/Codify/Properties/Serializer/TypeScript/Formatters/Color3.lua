@@ -7,6 +7,8 @@ export type Color3Format = "FULL" | "HEX" | "HSV" | "RGB"
 
 local Formatter: Common.FormatterMap<Color3, Color3Format> = {}
 
+Formatter.DEFAULT = "HEX"
+
 function Formatter.FULL(value)
 	if value.R == 0 and value.G == 0 and value.B == 0 then
 		return "new Color3()"

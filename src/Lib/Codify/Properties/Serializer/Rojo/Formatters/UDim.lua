@@ -5,6 +5,8 @@ export type UDimFormat = "EXPLICIT"
 
 local Formatter: Common.FormatterMap<UDim, UDimFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 function Formatter.EXPLICIT(value)
 	return {
 		UDim = {

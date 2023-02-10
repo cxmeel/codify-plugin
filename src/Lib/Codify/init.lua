@@ -4,6 +4,13 @@ local Packages = script.Parent.Parent.Packages
 local DumpParser = require(Packages.DumpParser)
 local Packager = require(Packages.Packager)
 
+local GT = require(script.Generators["init.d"])
+local Generators = require(script.Generators)
+local SafeNamer = require(script.SafeNamer)
+
+local Sift = require(Packages.Sift)
+local Dictionary = Sift.Dictionary
+
 local Codify = {}
 
 Codify.__index = Codify
@@ -11,16 +18,42 @@ Codify.__index = Codify
 function Codify.new(apiDump: any)
 	local self = setmetatable({}, Codify)
 
-	self.dump = DumpParser.new(apiDump)
-	self.packager = Packager.new(self.dump)
+	self.Dump = DumpParser.new(apiDump)
+	self.Packager = Packager.new(self.dump)
 
 	return self
 end
 
-function Codify:GenerateSnippet()
-	-- Step 1: Generate flat package
-	-- Step 2: Generate safe variable names
-	-- Step 3: Convert to tree package
+function Codify:GetGenerators()
+	return Generators
+end
+
+function Codify:GetGeneratorDefaultOptions(generator: GT.Generator)
+	local options = {}
+
+	if generator.Settings ~= nil then
+		for id, setting in generator.Settings do
+			options[id] = setting.Default
+		end
+	end
+
+	return options
+end
+
+function Codify:GetDefaultFormatters(generator: GT.Generator)
+	local formatters = {}
+
+	for 
+end
+
+function Codify:GenerateSnippet(
+	rootInstance: Instance,
+	generatorId: string,
+	options: {
+		Global: { [string]: any },
+		Local: { [string]: any },
+	}
+)
 	-- Step 4: Generate code (pass to generator)
 	--   Step 4.1: Create root Instance
 	--   Step 4.2: Serialise and assign properties
@@ -28,7 +61,19 @@ function Codify:GenerateSnippet()
 	--   Step 4.4: Assign tags (if enabled)
 	--   Step 4.5: Repeat for children
 	--   Step 4.6: Assign Parent property
-	-- Step 5: Return code
+	local generator = assert(Generators[generatorId], `Generator "{generatorId}" does not exist`)
+	local generatorDefaultOptions = Dictionary.merge(self:GetGeneratorDefaultOptions(generator), options.Local)
+
+	local package = self.Packager:CreatePackageFlat(rootInstance)
+	local variableNames = {}
+
+	for ref, node in package.Tree do
+		variableNames[ref] = SafeNamer.Sanitize(node.Name)
+	end
+
+	package = self.Packager:ConvertToPackage(package)
+
+	return generator.Generate(package, variableNames, options)
 end
 
 return Codify

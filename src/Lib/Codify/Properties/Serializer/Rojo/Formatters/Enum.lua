@@ -5,6 +5,8 @@ export type EnumFormat = "EXPLICIT" | "IMPLICIT"
 
 local Formatter: Common.FormatterMap<EnumItem, EnumFormat> = {}
 
+Formatter.DEFAULT = "IMPLICIT"
+
 function Formatter.EXPLICIT(value)
 	return {
 		Enum = value.Value,

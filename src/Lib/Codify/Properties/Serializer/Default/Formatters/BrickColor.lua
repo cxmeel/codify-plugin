@@ -6,6 +6,8 @@ export type BrickColorFormat = "FULL" | "RGB" | "NUMBER" | "COLOR3" | "SMART"
 
 local Formatter: Common.FormatterMap<BrickColor, BrickColorFormat> = {}
 
+Formatter.DEFAULT = "FULL"
+
 function Formatter.FULL(value)
 	return `BrickColor.new("{value.Name}")`
 end

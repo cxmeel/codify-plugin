@@ -6,6 +6,8 @@ export type UDim2Format = "FULL" | "SMART" | "UDIM"
 
 local Formatter: Common.FormatterMap<UDim2, UDim2Format> = {}
 
+Formatter.DEFAULT = "SMART"
+
 function Formatter.FULL(value)
 	local sx, sy = value.X.Scale, value.Y.Scale
 	local ox, oy = value.X.Offset, value.Y.Offset

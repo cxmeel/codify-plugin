@@ -5,6 +5,8 @@ export type Vector2Format = "FULL" | "SMART"
 
 local Formatter: Common.FormatterMap<Vector2, Vector2Format> = {}
 
+Formatter.DEFAULT = "SMART"
+
 function Formatter.FULL(value)
 	if value.X == 0 and value.Y == 0 then
 		return "Vector2.new()"

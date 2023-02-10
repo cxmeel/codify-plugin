@@ -8,6 +8,8 @@ export type NumberSequenceFormat = "SMART"
 
 local Formatter: Common.FormatterMap<NumberSequence, NumberSequenceFormat> = {}
 
+Formatter.DEFAULT = "SMART"
+
 local function FormatKeypoint(keypoint: NumberSequenceKeypoint)
 	local time = Common.FormatNumber(keypoint.Time)
 	local value = Common.FormatNumber(keypoint.Value)

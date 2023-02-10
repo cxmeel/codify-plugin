@@ -5,6 +5,8 @@ export type Vector2int16Format = "EXPLICIT" | "IMPLICIT"
 
 local Formatter: Common.FormatterMap<Vector2int16, Vector2int16Format> = {}
 
+Formatter.DEFAULT = "IMPLICIT"
+
 function Formatter.IMPLICIT(value)
 	return {
 		value.X,

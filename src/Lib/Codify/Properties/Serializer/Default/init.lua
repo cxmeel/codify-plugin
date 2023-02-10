@@ -19,4 +19,7 @@ local function FormatProperty(property: Common.Property, options: any)
 	return tostring(property.Value)
 end
 
-return FormatProperty
+return {
+	Formatters = Formatters,
+	FormatProperty = FormatProperty,
+}

@@ -5,6 +5,8 @@ export type RectFormat = "EXPLICIT"
 
 local Formatter: Common.FormatterMap<Rect, RectFormat> = {}
 
+Formatter.DEFAULT = "EXPLICIT"
+
 function Formatter.EXPLICIT(value)
 	return {
 		Rect = {

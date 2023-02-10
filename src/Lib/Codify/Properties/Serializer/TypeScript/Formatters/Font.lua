@@ -5,6 +5,8 @@ export type FontFormat = "FULL" | "SMART"
 
 local Formatter: Common.FormatterMap<Font, FontFormat> = {}
 
+Formatter.DEFAULT = "SMART"
+
 function Formatter.FULL(value)
 	local isDefaultStyle = value.Style == Enum.FontStyle.Default
 	local isDefaultWeight = value.Weight == Enum.FontWeight.Regular
