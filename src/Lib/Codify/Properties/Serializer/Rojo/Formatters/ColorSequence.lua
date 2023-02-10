@@ -1,6 +1,4 @@
 --!strict
-local HttpService = game:GetService("HttpService")
-
 local Common = require(script.Parent.Parent.Parent.Parent.Common)
 
 local Sift = require(script.Parent.Parent.Parent.Parent.Parent.Sift)
@@ -22,11 +20,11 @@ local function FormatKeypoint(keypoint: ColorSequenceKeypoint)
 end
 
 function Formatter.EXPLICIT(value)
-	return HttpService:JSONEncode({
+	return {
 		ColorSequence = {
 			keypoints = Array.map(value.Keypoints, FormatKeypoint),
 		},
-	})
+	}
 end
 
 return Formatter
