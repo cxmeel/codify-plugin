@@ -24,26 +24,63 @@ Generator.Settings = {
 	},
 }
 
-function Generator.Generate(package, options, lib)
-	local vars = lib.Variable
-	local document = {}
+local function GenerateNode(node, options, lib)
+	local var = lib.Variables[node.Ref]
+	local output = {}
 
-	local function createInstance(node)
-		local var = vars[node.Ref]
-		table.insert(document, `local {var} = Instance.new("{node.ClassName}")`)
+	output[#output + 1] = `local {var} = Instance.new("{node.ClassName}")`
 
-		for propertyName, property in node.Properties do
-			local prop = Generator.Formatter.FormatProperty(property.Value, {
+	for propertyName, property in node.Properties do
+		if property.Type == "Ref" then
+			continue
+		end
+
+		local propertyValue = Generator.Formatter.FormatProperty(property, {
+			Formats = options.Formats,
+		})
+
+		output[#output + 1] = `{var}.{propertyName} = {propertyValue}`
+	end
+
+	if options.INCLUDE_ATTRIBUTES == true then
+		output[#output + 1] = ""
+
+		for attributeName, attribute in node.Attributes do
+			local attributeValue = Generator.Formatter.FormatProperty(attribute, {
 				Formats = options.Formats,
 			})
 
-			table.insert(document, `{var}.{propertyName} = {prop}`)
+			output[#output + 1] = `{var}:SetAttribute("{attributeName}", {attributeValue})`
 		end
 	end
 
-	createInstance(package.Tree)
+	if options.INCLUDE_TAGS == true then
+		output[#output + 1] = ""
 
-	return table.concat(document, "\n")
+		for _, tagName in ipairs(node.Tags) do
+			output[#output + 1] = `CollectionService:AddTag({var}, "{tagName}")`
+		end
+	end
+
+	if node.Children then
+		output[#output + 1] = ""
+
+		for _, child in ipairs(node.Children) do
+			local childRef = child.Ref
+
+			output[#output + 1] = GenerateNode(child, options, lib)
+
+			output[#output + 1] = ""
+			output[#output + 1] = `{childRef}.Parent = {var}`
+		end
+	end
+
+	return table.concat(output, "\n")
+end
+
+function Generator.Generate(package, options, lib)
+	local output = GenerateNode(package.Tree, options, lib)
+	return table.concat(output, "\n")
 end
 
 return Generator
