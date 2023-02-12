@@ -6,11 +6,18 @@
     "duplicate-index": "Error"
   },
   "[lua]": {
-    "editor.defaultFormatter": "JohnnyMorganz.stylua",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": true,
+    "editor.defaultFormatter": "JohnnyMorganz.stylua"
   },
-  "robloxLsp.diagnostics.globals": [
-    "version"
-  ]
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.formatOnSaveMode": "modifications",
+  "robloxLsp.diagnostics.globals": ["version"]
 }
