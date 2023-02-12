@@ -1,7 +1,7 @@
 --!strict
 local Packages = script.Parent.Parent.Parent.Parent.Packages
 
-local PropertiesCommon = require(script.Parent.Parent.Properties.Common)
+local PropertiesCommon = require(script.Parent.Parent.Serializer.Common)
 local DumpParser = require(Packages.DumpParser)
 local Packager = require(Packages.Packager)
 
