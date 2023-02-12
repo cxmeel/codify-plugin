@@ -20,12 +20,4 @@ return {
 	Vector2int16 = require(script.Vector2int16),
 	Vector3 = require(script.Vector3),
 	Vector3int16 = require(script.Vector3int16),
-
-	number = function(value)
-		return Common.FormatNumber(value)
-	end,
-
-	string = function(value)
-		return `"{value}"`
-	end,
 }
