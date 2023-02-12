@@ -9,7 +9,7 @@ local RoactTSX = Generator.new("ROACT_TYPESCRIPT", {
 
 ---@diagnostic disable-next-line: unused-function, unused-local
 local function reformatProperty(property: string): string
-	local newProperty = property:gsub("(%w+).new", "new %1")
+	local newProperty = property:gsub("(%w+)%.new", "new %1")
 	return newProperty
 end
 
