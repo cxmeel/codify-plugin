@@ -65,7 +65,7 @@ function Generator:ReconcileSettings(userSettings: { [string]: any })
 			value = setting.Options[value or setting.Default].Value
 		end
 
-		newSettings[key] = value or setting.Default
+		newSettings[key] = if value ~= nil then value else setting.Default
 	end
 
 	return newSettings
