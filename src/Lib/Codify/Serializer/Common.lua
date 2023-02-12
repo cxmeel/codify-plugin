@@ -98,8 +98,8 @@ end
 	@within SerializerCommon
 
 	@param property string -- The property value to indent
-	@param character string -- The character to use for indentation
-	@param depth number -- The depth to indent to
+	@param character string? -- The character to use for indentation (default: "\t")
+	@param depth number? -- The depth to indent to (default: 0)
 	@return string
 
 	Indents a property value by a given depth. This is used to indent
@@ -110,7 +110,11 @@ end
 	not be indented.
 
 	```lua
-	local property = '{\n"Hello",\n"World",\n}'
+	local property = `{
+		"Hello",
+		"World",
+	}`
+
 	local indented = IndentValue(property, "\t", 1)
 
 	print(indented)
@@ -120,14 +124,23 @@ end
 	-- } 									-- Indented by depth
 	```
 ]]
-local function IndentValue(property: string, character: string, depth: number)
+local function IndentValue(property: string, character: string?, depth: number?)
+	if not property:find("\n") then
+		return property
+	end
+
 	local lines = property:split("\n")
+
+	character = character or "\t"
+	depth = depth or 0
 
 	local baseIndent = character:rep(depth)
 	local indent = character:rep(depth + 1)
 
-	for index = 2, #lines - 1 do
-		lines[index] = `{indent}{lines[index]}`
+	if #lines > 2 then
+		for index = 2, #lines - 1 do
+			lines[index] = `{indent}{lines[index]}`
+		end
 	end
 
 	lines[#lines] = `{baseIndent}{lines[#lines]}`
