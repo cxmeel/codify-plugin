@@ -4,8 +4,8 @@ local Packages = script.Parent.Parent.Packages
 local DumpParser = require(Packages.DumpParser)
 local Packager = require(Packages.Packager)
 
-local GT = require(script.Generators["init.d"])
 local Generators = require(script.Generators)
+local Generator = require(script.Generators.Generator)
 local SafeNamer = require(script.SafeNamer)
 
 local Sift = require(Packages.Sift)
@@ -28,7 +28,7 @@ function Codify:GetGenerators()
 	return Generators
 end
 
-function Codify:GetGeneratorDefaultOptions(generator: GT.Generator)
+function Codify:GetGeneratorDefaultOptions(generator: Generator.Generator)
 	local options = {}
 
 	if generator.Settings ~= nil then
@@ -40,7 +40,7 @@ function Codify:GetGeneratorDefaultOptions(generator: GT.Generator)
 	return options
 end
 
-function Codify:GetDefaultFormatters(generator: GT.Generator)
+function Codify:GetDefaultFormatters(generator: Generator.Generator)
 	local formatters = {}
 
 	for dataType, formatter in generator.Formatter do
