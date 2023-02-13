@@ -29,50 +29,49 @@ local function MakeWrite<T>(t: { T })
 	end
 end
 
-function RobloxLuau:Generate(package, options)
+function RobloxLuau:Generate(package, config)
 	local instances: { [string]: { string } } = {}
 	local document: { string } = {}
+
+	local classNames: { [string]: string } = {}
+	local hoisted: { [string]: true } = {}
 
 	local function formatProperty(property)
 		local formatter = Serializer[property.Type]
 		local propValue = property.Value
 
+		if property.Type == "Enum" then
+			propValue = Enum[propValue.Type][propValue.Value]
+		end
+
 		if formatter then
-			propValue = formatter[options.Format[property.Type]](propValue)
-		elseif typeof(propValue) == "string" then
+			propValue = formatter[config.Format[property.Type]](propValue)
+		elseif property.Type == "string" or property.Type == "Content" then
 			propValue = `"{propValue}"`
-		elseif typeof(propValue) == "number" then
+		elseif property.Type == "number" then
 			propValue = SerCommon.FormatNumber(propValue)
 		else
 			propValue = tostring(propValue)
 		end
 
-		return SerCommon.IndentValue(propValue, options.Global.INDENT_CHAR)
+		return SerCommon.IndentValue(propValue, config.Global.INDENT_CHAR)
 	end
 
 	local function writeNode(node)
-		local var = options.VariableName[node.Ref]
+		local var = config.VariableName[node.Ref]
 
-		if not instances[var] then
-			instances[var] = { Priority = 1 }
-		elseif not instances[var].Priority then
-			instances[var].Priority = 1
-		end
+		instances[var] = instances[var] or {}
+		classNames[var] = node.ClassName
 
 		local write = MakeWrite(instances[var])
 		write(`local {var} = Instance.new("{node.ClassName}")`)
 
 		for propName, prop in node.Properties do
 			if prop.Type == "REF" then
-				local linkedRef = options.VariableName[prop.Value]
+				local linkedRef = config.VariableName[prop.Value]
 
 				if linkedRef ~= nil then
-					if not instances[linkedRef] then
-						instances[linkedRef] = { Priority = 1 }
-					else
-						instances[linkedRef].Priority += 1
-					end
-
+					hoisted[linkedRef] = true
 					write(`{var}.{propName} = {linkedRef}`)
 				end
 
@@ -84,7 +83,7 @@ function RobloxLuau:Generate(package, options)
 
 		write("")
 
-		if options.Local.INCLUDE_ATTRIBUTES == true and node.Attributes then
+		if config.Local.INCLUDE_ATTRIBUTES == true and node.Attributes then
 			for attrName, attr in node.Attributes do
 				write(`{var}:SetAttribute("{attrName}", {formatProperty(attr)})`)
 			end
@@ -92,7 +91,7 @@ function RobloxLuau:Generate(package, options)
 			write("")
 		end
 
-		if options.Local.INCLUDE_TAGS == true and node.Tags then
+		if config.Local.INCLUDE_TAGS == true and node.Tags then
 			for _, tag in node.Tags do
 				write(`CollectionService:AddTag({var}, "{tag}")`)
 			end
@@ -103,7 +102,7 @@ function RobloxLuau:Generate(package, options)
 		if node.Children then
 			for _, child in node.Children do
 				local childVar = writeNode(child)
-				write(`{childVar}.Parent = {var}\n`)
+				instances[childVar][#instances[childVar]] = `{childVar}.Parent = {var}\n`
 			end
 		end
 
@@ -111,14 +110,34 @@ function RobloxLuau:Generate(package, options)
 	end
 
 	local rootVar = writeNode(package.Tree)
-	instances[rootVar].Priority = math.huge
+	hoisted[rootVar] = true
 
-	table.sort(instances, function(a, b)
-		return a.Priority > b.Priority
-	end)
+	document[1] = `local {rootVar} = Instance.new("{classNames[rootVar]}")`
 
-	for _, instance in instances do
-		table.insert(document, table.concat(instance, "\n"))
+	local hoistedCount = 0
+
+	for _ in hoisted do
+		hoistedCount += 1
+	end
+
+	if hoistedCount > 1 then
+		for hoistedVar in hoisted do
+			if hoistedVar ~= rootVar then
+				document[#document + 1] = instances[hoistedVar][1]
+			end
+		end
+
+		document[#document + 1] = ""
+	end
+
+	for instanceVar, instance in instances do
+		for index, line in instance do
+			if index == 1 and hoisted[instanceVar] then
+				continue
+			end
+
+			document[#document + 1] = line
+		end
 	end
 
 	return table.concat(document, "\n")

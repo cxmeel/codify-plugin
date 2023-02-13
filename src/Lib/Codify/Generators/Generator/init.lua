@@ -16,7 +16,7 @@ export type NewGeneratorMetadata = {
 	category: string,
 }
 
-export type GenerateOptions = {
+export type GenerateConfig = {
 	VariableName: { [string]: string },
 	Global: { [string]: any },
 	Format: { [string]: any },
@@ -34,7 +34,7 @@ export type Generator = typeof(Generator) & {
 
 	Settings: { [string]: Setting.Setting },
 
-	Generate: (self: Generator, package: Packager.Package, options: GenerateOptions) -> string,
+	Generate: (self: Generator, package: Packager.Package, config: GenerateConfig) -> string,
 }
 
 function Generator.new(id: string, metadata: NewGeneratorMetadata): Generator

@@ -240,7 +240,7 @@ end
 
 	Sanitizes a list of strings to be valid variable names.
 ]=]
-function SafeNamer.SanitizeMultiple(words: { string }, options: SanitizeOptions?)
+function SafeNamer.SanitizeMultiple(words: { [any]: string }, options: SanitizeOptions?)
 	local opt = Dictionary.merge(DEFAULT_SANITIZE_OPTIONS, options)
 	local newWords: { string } = {}
 	local WORD_STACK = {}

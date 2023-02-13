@@ -4,89 +4,60 @@ local Packages = script.Parent.Parent.Packages
 local DumpParser = require(Packages.DumpParser)
 local Packager = require(Packages.Packager)
 
+local DefaultFormatter = require(script.Serializer.Default)
 local Generators = require(script.Generators)
-local Generator = require(script.Generators.Generator)
 local SafeNamer = require(script.SafeNamer)
 
 local Sift = require(Packages.Sift)
-local Dictionary = Sift.Dictionary
+local Array, Dictionary = Sift.Array, Sift.Dictionary
 
 local Codify = {}
 
+local DEFAULT_FORMATTERS = Dictionary.map(DefaultFormatter, function(formatter)
+	return formatter.DEFAULT
+end)
+
+export type CodifyConfig = {
+	Global: { [string]: any },
+	Format: { [string]: string },
+	Local: { [string]: any },
+}
+
 Codify.__index = Codify
+
+Codify.Dump = nil :: typeof(DumpParser)
+Codify.Packager = nil :: typeof(Packager)
 
 function Codify.new(apiDump: any)
 	local self = setmetatable({}, Codify)
 
-	self.Dump = DumpParser.new(apiDump)
-	self.Packager = Packager.new(self.dump)
+	self.DumpParser = DumpParser.new(apiDump)
+	self.Packager = Packager.new(self.DumpParser)
 
 	return self
-end
-
-function Codify:GetGenerators()
-	return Generators
-end
-
-function Codify:GetGeneratorDefaultOptions(generator: Generator.Generator)
-	local options = {}
-
-	if generator.Settings ~= nil then
-		for id, setting in generator.Settings do
-			options[id] = setting.Default
-		end
-	end
-
-	return options
-end
-
-function Codify:GetDefaultFormatters(generator: Generator.Generator)
-	local formatters = {}
-
-	for dataType, formatter in generator.Formatter do
-		formatters[dataType] = formatter.DEFAULT
-	end
-
-	return formatters
 end
 
 function Codify:GenerateSnippet(
 	rootInstance: Instance,
 	generatorId: string,
-	options: {
-		Global: { [string]: any },
-		Formats: { [string]: string },
-		Local: { [string]: any },
-	}
-)
-	-- Step 4: Generate code (pass to generator)
-	--   Step 4.1: Create root Instance
-	--   Step 4.2: Serialise and assign properties
-	--   Step 4.3: Assign attributes (if enabled)
-	--   Step 4.4: Assign tags (if enabled)
-	--   Step 4.5: Repeat for children
-	--   Step 4.6: Assign Parent property
+	config: CodifyConfig
+): string
 	local generator = assert(Generators[generatorId], `Generator "{generatorId}" does not exist`)
-	local generatorOptions = Dictionary.merge(self:GetGeneratorDefaultOptions(generator), options.Local)
-	local formatters = Dictionary.merge(self:GetDefaultFormatters(generator), options.Formats)
-
 	local package = self.Packager:CreatePackageFlat(rootInstance)
-	local variableNames = {}
+	local variableNames = SafeNamer.SanitizeMultiple(Dictionary.map(package.Tree, function(node)
+		return node.Name
+	end))
 
-	for ref, node in package.Tree do
-		variableNames[ref] = SafeNamer.Sanitize(node.Name)
-	end
+	generator.Packager = self.Packager
+	generator.DumpParser = self.DumpParser
 
 	package = self.Packager:ConvertToPackage(package)
 
-	return generator.Generate(package, {
-		Global = options.Global,
-		Formats = formatters,
-		Local = generatorOptions,
-	}, {
-		Dump = self.Dump,
-		Packager = self.Packager,
-		Variable = variableNames,
+	return generator:Generate(package, {
+		VariableName = variableNames,
+		Global = config.Global or {},
+		Format = Dictionary.merge(DEFAULT_FORMATTERS, config.Format),
+		Local = generator:ReconcileSettings(config.Local or {}),
 	})
 end
 

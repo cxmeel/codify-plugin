@@ -1,6 +1,4 @@
 --!strict
-local Common = require(script.Parent.Parent.Parent.Common)
-
 return {
 	Axes = require(script.NormalId),
 	BrickColor = require(script.BrickColor),

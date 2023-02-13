@@ -23,7 +23,7 @@ end
 
 function Formatter.HEX(value)
 	local hex = value:ToHex()
-	return `Color3.fromHex({hex})`
+	return `Color3.fromHex("#{hex}")`
 end
 
 function Formatter.HSV(value)
