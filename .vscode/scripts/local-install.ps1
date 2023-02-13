@@ -1,4 +1,4 @@
-$PLUGIN_NAME = "codify_dev_6c3fdf81"
+$PLUGIN_NAME = "codify-v3"
 
 aftman install
 Remove-Item -Force "$env:LOCALAPPDATA\Roblox\Plugins\$PLUGIN_NAME.rbxm" -ErrorAction Ignore

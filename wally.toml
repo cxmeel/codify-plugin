@@ -1,21 +1,19 @@
 [package]
 name = "csqrl/codify-plugin"
-description = "Convert Instances to code; just like magic!"
-version = "2.2.5" # /src/Data/Config.lua
-license = "MIT"
-authors = ["csqrl (https://csqrl.dev)", "boatbomber (https://www.boatbomber.com/)"]
-contributors = ["chriscerie"]
+version = "3.0.0"
 registry = "https://github.com/upliftgames/wally-index"
 realm = "shared"
 
 [dependencies]
-Highlighter = "boatbomber/highlighter@0.5.2"
-StudioPlugin = "csqrl/studio-plugin@1.0.1"
-StudioTheme = "csqrl/studio-theme@1.0.2"
-Promise = "evaera/promise@4.0.0"
+Base64 = "reselim/base64@2.0.0"
+DumpParser = "csqrl/dump-parser@0.1.1"
+Highlighter = "boatbomber/highlighter@0.7.0"
 Hooks = "kampfkarren/roact-hooks@0.5.0"
-RoactRouter = "reselim/roact-router@1.1.6"
+Packager = "csqrl/packager@0.1.1"
+Promise = "evaera/promise@4.0.0"
 Roact = "roblox/roact@1.4.4"
-Rodux = "roblox/rodux@3.0.0"
+Rodux = "roblox/rodux@4.0.0-rc.0"
 RoduxHooks = "solarhorizon/rodux-hooks@0.3.0"
-Sift = "csqrl/sift@0.0.3"
+Sift = "csqrl/sift@0.0.5"
+StudioPlugin = "csqrl/studio-plugin@1.1.0"
+StudioTheme = "csqrl/studio-theme@1.0.2"
