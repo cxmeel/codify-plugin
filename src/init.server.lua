@@ -7,6 +7,7 @@ local Rodux = require(script.Packages.Rodux)
 local UserSettingsManager = require(script.Lib.UserSettingsManager)
 local HighlighterManager = require(script.Lib.HighlighterManager)
 local SelectionManager = require(script.Lib.SelectionManager)
+local Properties = require(script.Lib.Properties)
 
 local AppComponent = require(script.Components.App)
 
@@ -26,6 +27,10 @@ end
 
 UserSettingsManager.new(plugin, store)
 HighlighterManager.new(plugin)
+
+-- Fetch the version early so we don't have to synchronize while converting
+-- the instances to code in parallel.
+Properties.FetchVersionWithFallback()
 
 do -- Handle Selection --
 	local selection = SelectionManager.new(plugin, {

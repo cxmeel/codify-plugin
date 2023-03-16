@@ -10,6 +10,7 @@ local Text = require(script.Parent.Text)
 
 local e = Roact.createElement
 
+local MAX_TEXTBOX_CHARS = 16300
 export type TextInputProps = {
 	autoSize: Enum.AutomaticSize?,
 	disabled: boolean?,
@@ -182,7 +183,7 @@ local function TextInput(props: TextInputProps, hooks)
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, height),
 				Font = props.font or styles.font.default,
-				Text = props.text,
+				Text = props.text and string.sub(props.text, 1, MAX_TEXTBOX_CHARS),
 				TextSize = props.textSize or styles.fontSize,
 				TextColor3 = colors.foreground,
 				TextXAlignment = Enum.TextXAlignment.Left,

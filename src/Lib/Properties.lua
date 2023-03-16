@@ -21,8 +21,9 @@ local IGNORED_PROPERTIES = {
 	},
 }
 
+local cachedDump
 function Properties.FetchDumpFromPluginCache()
-	local storedValue = plugin:GetSetting(PLUGIN_CACHE_KEY)
+	local storedValue = cachedDump or plugin:GetSetting(PLUGIN_CACHE_KEY)
 
 	if not storedValue then
 		return Promise.resolve()
@@ -32,6 +33,7 @@ function Properties.FetchDumpFromPluginCache()
 		return Promise.resolve()
 	end
 
+	cachedDump = storedValue
 	return Promise.resolve(storedValue)
 end
 
@@ -95,11 +97,13 @@ function Properties.FetchAPIDump(hash: string)
 			}
 		)
 			:andThen(function(apiDump)
-				plugin:SetSetting(PLUGIN_CACHE_KEY, {
+				local dump = {
 					Version = RobloxVersion,
 					VersionHash = hash,
 					Data = apiDump,
-				})
+				}
+				plugin:SetSetting(PLUGIN_CACHE_KEY, dump)
+				cachedDump = dump
 
 				return apiDump
 			end)
@@ -203,7 +207,6 @@ function Properties.GetChangedProperties(instance: Instance)
 		end
 
 		newInstance:Destroy()
-
 		return changedProps
 	end)
 end
