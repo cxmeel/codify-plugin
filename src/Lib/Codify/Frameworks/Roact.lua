@@ -1,16 +1,11 @@
 local Serialize = require(script.Parent.Parent.Serialize)
 local Script = require(script.Parent.Parent.Script)
 local Properties = require(script.Parent.Parent.Parent.Properties)
-
-local getSafeVarName = require(script.Parent.Parent.GetSafeName)
+local SafeNamer = require(script.Parent.Parent.SafeNamer)
 
 local function RoactifyInstance(instance: Instance, options)
 	local createMethod = options.CreateMethod or "Roact.createElement"
 	local snippet = Script.new()
-
-	if options.ParallelLuau then
-		task.synchronize()
-	end
 
 	local success, changedProps = Properties.GetChangedProperties(instance):await()
 	local children = instance:GetChildren()
@@ -19,9 +14,7 @@ local function RoactifyInstance(instance: Instance, options)
 		error("Failed to get changed properties: " .. tostring(changedProps), 2)
 	end
 
-	if options.ParallelLuau then
-		task.desynchronize()
-	end
+	task.desynchronize()
 
 	local function tab()
 		return string.rep(options.TabCharacter, options.Indent)
@@ -37,7 +30,8 @@ local function RoactifyInstance(instance: Instance, options)
 		end
 
 		if options.NamingScheme == "All" or (options.NamingScheme == "Changed" and nameChanged) then
-			local name = getSafeVarName(instance)
+			local name = SafeNamer.Sanitize(instance.Name)
+
 			if options.LevelIdentifiers[name] ~= nil then
 				options.LevelIdentifiers[name] += 1
 				name ..= tostring(options.LevelIdentifiers[name])

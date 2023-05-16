@@ -8,6 +8,8 @@ local Highlighter = require(Packages.Highlighter)
 local Layout = require(script.Parent.Layout)
 local Text = require(script.Parent.Text)
 
+local MAX_TEXTBOX_CHARS = 16300
+
 local e = Roact.createElement
 
 export type TextInputProps = {
@@ -46,6 +48,7 @@ local function TextInput(props: TextInputProps, hooks)
 	local captionHeight, setCaptionHeight = hooks.useState(0)
 
 	local inputRef = hooks.useValue(Roact.createRef())
+	local text = props.text and tostring(props.text)
 
 	local colors = hooks.useMemo(function()
 		local modifiers = { background = nil, foreground = nil, border = nil, placeholder = nil, caption = nil }
@@ -182,7 +185,7 @@ local function TextInput(props: TextInputProps, hooks)
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, height),
 				Font = props.font or styles.font.default,
-				Text = props.text,
+				Text = text and #text > MAX_TEXTBOX_CHARS and `{text:sub(1, MAX_TEXTBOX_CHARS - 3)}...` or text,
 				TextSize = props.textSize or styles.fontSize,
 				TextColor3 = colors.foreground,
 				TextXAlignment = Enum.TextXAlignment.Left,

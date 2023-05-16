@@ -40,7 +40,7 @@ local function App(props: AppProps, hooks)
 			widgetToggle = e(StudioPlugin.ToolbarButton, {
 				id = "widgetToggle",
 				tooltip = "Show or hide the Codify widget",
-				icon = Config.icons.stable,
+				icon = Config.icon,
 				label = "Codify" .. buttonSuffix,
 				active = widgetVisible,
 				onActivated = function()

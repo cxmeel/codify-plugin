@@ -7,6 +7,7 @@ local Promise = require(PluginRoot.Packages.Promise)
 local Sift = require(PluginRoot.Packages.Sift)
 
 local PLUGIN_CACHE_KEY = "API_DUMP_CACHE"
+local PLUGIN_CACHED_DATA = nil
 
 local Properties = {}
 
@@ -22,15 +23,13 @@ local IGNORED_PROPERTIES = {
 }
 
 function Properties.FetchDumpFromPluginCache()
-	local storedValue = plugin:GetSetting(PLUGIN_CACHE_KEY)
+	local storedValue = PLUGIN_CACHED_DATA or plugin:GetSetting(PLUGIN_CACHE_KEY)
 
-	if not storedValue then
+	if not storedValue or storedValue.Version ~= RobloxVersion then
 		return Promise.resolve()
 	end
 
-	if storedValue.Version ~= RobloxVersion then
-		return Promise.resolve()
-	end
+	PLUGIN_CACHED_DATA = storedValue
 
 	return Promise.resolve(storedValue)
 end
@@ -95,11 +94,14 @@ function Properties.FetchAPIDump(hash: string)
 			}
 		)
 			:andThen(function(apiDump)
-				plugin:SetSetting(PLUGIN_CACHE_KEY, {
+				local dumpCache = {
 					Version = RobloxVersion,
 					VersionHash = hash,
 					Data = apiDump,
-				})
+				}
+
+				plugin:SetSetting(PLUGIN_CACHE_KEY, dumpCache)
+				PLUGIN_CACHED_DATA = dumpCache
 
 				return apiDump
 			end)
@@ -191,20 +193,57 @@ function Properties.GetPropertyList(class: string)
 	end)
 end
 
+local INSTANCE_DEFAULTS = {}
+
+function Properties.GetClassDefaultProperties(className: string, properties: { string })
+	local classEntry = INSTANCE_DEFAULTS[className]
+
+	if not classEntry then
+		INSTANCE_DEFAULTS[className] = {}
+		return Properties.GetClassDefaultProperties(className, properties)
+	end
+
+	local defaultValues = {}
+	local missingValues = {}
+
+	for _, property in properties do
+		if classEntry[property] ~= nil then
+			defaultValues[property] = classEntry[property]
+		else
+			table.insert(missingValues, property)
+		end
+	end
+
+	if #missingValues == 0 then
+		return Promise.resolve(defaultValues)
+	end
+
+	task.synchronize()
+	local newInstance = Instance.new(className)
+
+	for _, property in ipairs(missingValues) do
+		defaultValues[property] = newInstance[property]
+	end
+
+	newInstance:Destroy()
+	task.desynchronize()
+
+	return Promise.resolve(defaultValues)
+end
+
 function Properties.GetChangedProperties(instance: Instance)
 	return Properties.GetPropertyList(instance.ClassName):andThen(function(properties)
-		local newInstance = Instance.new(instance.ClassName)
-		local changedProps = {}
+		return Properties.GetClassDefaultProperties(instance.ClassName, properties):andThen(function(defaultProps)
+			local changedProps = {}
 
-		for _, property in ipairs(properties) do
-			if newInstance[property] ~= instance[property] then
-				table.insert(changedProps, property)
+			for _, property in ipairs(properties) do
+				if defaultProps[property] ~= instance[property] then
+					table.insert(changedProps, property)
+				end
 			end
-		end
 
-		newInstance:Destroy()
-
-		return changedProps
+			return changedProps
+		end)
 	end)
 end
 

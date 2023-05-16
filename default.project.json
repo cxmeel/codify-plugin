@@ -1,9 +1,12 @@
 {
   "name": "CodifyPlugin",
   "tree": {
-    "$path": "src",
-    "Packages": {
-      "$path": "Packages"
+    "$className": "Actor",
+    "Loader": {
+      "$path": "src",
+      "Packages": {
+        "$path": "Packages"
+      }
     }
   }
 }
