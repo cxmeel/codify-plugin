@@ -30,7 +30,7 @@ Codify converts your pre-existing Roblox UI, models and more into code snippets 
 
 ## :inbox_tray: Installation
 
-Codify is available from the [Roblox Plugin Marketplace][plugin] for 350 Robux, or can be downloaded for **free** via [GitHub][repo] (self-build) or its [Itch.io store page][itch] (optional donation).
+Codify is available for purchase from the [Roblox Plugin Marketplace][plugin], or can be downloaded **for free** via [GitHub][repo] (self-build) or its [Itch.io store page][itch] (optional donation).
 
 ### Plugin Marketplace
 
