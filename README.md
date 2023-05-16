@@ -72,7 +72,6 @@ Codify **requires** the ability to make HTTP requests to keep the plugin and Stu
 | Domain | Required | Reason |
 |--------|----------|--------|
 | `s3.amazonaws.com` | :white_check_mark: | Studio metadata and API dump |
-| `api.github.com` | :x: | List of contributors who helped make Codify possible |
 
 ### Script Injection
 
