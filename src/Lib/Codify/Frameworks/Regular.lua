@@ -1,17 +1,13 @@
 local Properties = require(script.Parent.Parent.Parent.Properties)
-local GetSafeName = require(script.Parent.Parent.GetSafeName)
 local Serialise = require(script.Parent.Parent.Serialize)
 local Script = require(script.Parent.Parent.Script)
+local SafeNamer = require(script.Parent.Parent.SafeNamer)
 
 local concat = table.concat
 local fmt = string.format
 
 local function Regularify(instance: Instance, options)
 	local output = Script.new()
-
-	if options.ParallelLuau then
-		task.synchronize()
-	end
 
 	local success, changedProps = Properties.GetChangedProperties(instance):await()
 	local children = instance:GetChildren()
@@ -20,15 +16,13 @@ local function Regularify(instance: Instance, options)
 		error("Failed to get changed properties: " .. tostring(changedProps), 2)
 	end
 
-	if options.ParallelLuau then
-		task.desynchronize()
-	end
+	task.desynchronize()
 
 	if not options._instanceNames then
 		options._instanceNames = {}
 	end
 
-	local name = GetSafeName(instance)
+	local name = SafeNamer.Sanitize(instance.Name)
 
 	if options._instanceNames[name] == nil then
 		options._instanceNames[name] = 0

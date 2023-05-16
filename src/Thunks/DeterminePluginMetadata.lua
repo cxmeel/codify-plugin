@@ -23,19 +23,7 @@ local function DeterminePluginMetadata(plugin: Plugin)
 			end
 		end
 
-		if pluginId == Config.pluginId.canary then
-			return store:dispatch(Actions.SetPluginMetadata({
-				build = "CANARY",
-			}))
-		end
-
-		if pluginId == Config.pluginId.preview then
-			return store:dispatch(Actions.SetPluginMetadata({
-				build = "PREVIEW",
-			}))
-		end
-
-		if pluginId == Config.pluginId.stable then
+		if pluginId == Config.pluginId then
 			return store:dispatch(Actions.SetPluginMetadata({
 				build = "STABLE",
 			}))

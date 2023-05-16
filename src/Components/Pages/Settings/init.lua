@@ -13,7 +13,6 @@ local CreateMethod = require(script.CreateMethod)
 local ChildrenKey = require(script.ChildrenKey)
 local Inputs = require(script.Inputs)
 local About = require(script.About)
-local ParallelLuauToggle = require(script.ParallelLuauToggle)
 
 local e = Roact.createElement
 
@@ -102,19 +101,15 @@ local function Page(_, hooks)
 			}),
 		}),
 
-		experimental = e(Layout.Forms.Section, {
-			heading = "Experimental",
-			hint = "These features may be highly unstable and may cause issues. Use at your own risk.",
-			collapsible = true,
-			collapsed = true,
-			divider = true,
-			order = 60,
-			icon = "Fire",
-		}, {
-			parallelLuau = e(ParallelLuauToggle, {
-				order = 10,
-			}),
-		}),
+		-- experimental = e(Layout.Forms.Section, {
+		-- 	heading = "Experimental",
+		-- 	hint = "These features may be highly unstable and may cause issues. Use at your own risk.",
+		-- 	collapsible = true,
+		-- 	collapsed = true,
+		-- 	divider = true,
+		-- 	order = 60,
+		-- 	icon = "Fire",
+		-- }, {}),
 
 		about = e(About, {
 			order = 70,
