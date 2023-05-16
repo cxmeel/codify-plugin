@@ -1,5 +1,5 @@
 <!-- Links -->
-[plugin]: https://roblox.com/library/4749111907
+[plugin]: https://create.roblox.com/marketplace/asset/4749111907
 [itch]: https://csqrl.itch.io/codify
 [repo]: https://github.com/csqrl/codify-plugin
 [issues]: https://github.com/csqrl/codify-plugin/issues
