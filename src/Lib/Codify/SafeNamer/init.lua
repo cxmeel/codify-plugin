@@ -96,7 +96,6 @@ export type EscapeOptions = {
 ]=]
 SafeNamer.RESERVED_WORDS = table.freeze({
 	LUAU = require(script.ReservedWords.Luau),
-	TYPESCRIPT = require(script.ReservedWords.TypeScript),
 })
 
 --[=[
@@ -177,7 +176,7 @@ end
 ]=]
 function SafeNamer.FormatCase(input: string, options: FormatCaseOptions?)
 	local opt: FormatCaseOptions = Dictionary.merge(DEFAULT_FORMAT_CASE_OPTIONS, options)
-	local separator = opt.separator ~= "" and opt.separator or " "
+	local separator = opt.separator ~= "" and opt.separator or "\0"
 	local newSeparator = opt.separator ~= "" and opt.separator or ""
 
 	local words = input:split(separator)
@@ -195,6 +194,8 @@ function SafeNamer.FormatCase(input: string, options: FormatCaseOptions?)
 		elseif opt.case == "PASCAL_CASE" or opt.case == "CAMEL_CASE" then
 			return `{word:sub(1, 1):upper()}{word:sub(2):lower()}`
 		end
+
+		return nil
 	end)
 
 	if prefix ~= nil then
@@ -216,7 +217,7 @@ end
 ]=]
 function SafeNamer.Sanitize(word: string, options: SanitizeOptions?)
 	local opt = Dictionary.merge(DEFAULT_SANITIZE_OPTIONS, options)
-	local separator = opt.separator ~= "" and opt.separator or " "
+	local separator = opt.separator ~= "" and opt.separator or "\0"
 
 	local newWord = trimString(word):gsub("'", ""):gsub("%W", separator)
 

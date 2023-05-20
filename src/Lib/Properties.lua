@@ -44,13 +44,13 @@ function Properties.FetchLatestVersionHash()
 end
 
 function Properties.FetchVersionHash(version: string?)
-	version = if version then version else RobloxVersion
-
-	local deployVersion = version:gsub("%.", ", ")
+	local newVersion = version or RobloxVersion
+	local deployVersion = newVersion:gsub("%.", ", ")
 
 	return HttpPromise.RequestAsync("https://s3.amazonaws.com/setup.roblox.com/DeployHistory.txt", {
 		cache = -1,
-	}):andThen(function(history)
+		timeout = 30,
+	}):andThen(function(history: string)
 		local deployments = history:split("\n")
 
 		for lineNumber = #deployments, 1, -1 do
@@ -91,6 +91,7 @@ function Properties.FetchAPIDump(hash: string)
 			"https://s3.amazonaws.com/setup.roblox.com/version-" .. hash .. "-API-Dump.json",
 			{
 				cache = -1,
+				timeout = 60,
 			}
 		)
 			:andThen(function(apiDump)
@@ -237,7 +238,7 @@ function Properties.GetChangedProperties(instance: Instance)
 			local changedProps = {}
 
 			for _, property in ipairs(properties) do
-				if defaultProps[property] ~= instance[property] then
+				if defaultProps[property] ~= (instance :: never)[property] then
 					table.insert(changedProps, property)
 				end
 			end
