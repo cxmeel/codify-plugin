@@ -4,8 +4,8 @@ local Enums = require(Plugin.Data.Enums)
 local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
-	heading = "Naming Scheme",
-	hint = "Configure how child Instance names are generated.",
+	heading = "Child Indexing",
+	hint = "Configure how child Instance indices are generated.",
 
 	settingsKey = "namingScheme",
 

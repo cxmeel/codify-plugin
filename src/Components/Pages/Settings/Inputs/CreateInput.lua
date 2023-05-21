@@ -25,7 +25,7 @@ export type CreateInputOptions = {
 	enumMap: {
 		[string]: {
 			label: string,
-			hint: string,
+			hint: string?,
 		},
 	},
 }

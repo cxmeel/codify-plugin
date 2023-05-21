@@ -1,5 +1,6 @@
 return {
 	BrickColorFormat = require(script.BrickColorFormat),
+	CaseFormat = require(script.CaseFormat),
 	Color3Format = require(script.Color3Format),
 	EnumFormat = require(script.EnumFormat),
 	Framework = require(script.Framework),

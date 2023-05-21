@@ -3,6 +3,9 @@ local Plugin = script.Parent.Parent.Parent
 local StudioTheme = require(Plugin.Packages.StudioTheme)
 local Roact = require(Plugin.Packages.Roact)
 local Hooks = require(Plugin.Packages.Hooks)
+local RoduxHooks = require(Plugin.Packages.RoduxHooks)
+
+local Enums = require(Plugin.Data.Enums)
 
 local FrameworkSelect = require(Plugin.Components.FrameworkSelect)
 local Layout = require(Plugin.Components.Layout)
@@ -18,6 +21,11 @@ local e = Roact.createElement
 
 local function Page(_, hooks)
 	local _, styles = StudioTheme.useTheme(hooks)
+
+	local userSettings = RoduxHooks.useSelector(hooks, function(state)
+		return state.userSettings
+	end)
+	local framework = userSettings.framework
 
 	return e(Layout.ScrollColumn, {
 		paddingTop = styles.spacing,
@@ -52,17 +60,10 @@ local function Page(_, hooks)
 			divider = true,
 			order = 40,
 		}, {
-			createMethod = e(CreateMethod, {
-				order = 10,
-			}),
-
-			childrenKey = e(ChildrenKey, {
-				order = 20,
-			}),
-
-			namingScheme = e(Inputs.NamingScheme, {
-				order = 30,
-			}),
+			createMethod = e(CreateMethod, { order = 10 }),
+			childrenKey = e(ChildrenKey, { order = 20 }),
+			namingScheme = e(Inputs.ChildIndexing, { order = 30 }),
+			caseFormat = framework ~= Enums.Framework.Fusion and e(Inputs.CaseFormat, { order = 40 }),
 		}),
 
 		datatypes = e(Layout.Forms.Section, {

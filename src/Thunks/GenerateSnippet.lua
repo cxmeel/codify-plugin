@@ -5,8 +5,16 @@ local Promise = require(Plugin.Packages.Promise)
 local Codify = require(Plugin.Lib.Codify)
 local String = require(Plugin.Lib.String)
 local Actions = require(Plugin.Actions)
+local Enums = require(Plugin.Data.Enums)
 
 local CodifyAsync = Promise.promisify(Codify)
+
+local CASE_MAP = {
+	[Enums.CaseFormat.PASCALCASE] = "PASCAL_CASE",
+	[Enums.CaseFormat.CAMELCASE] = "CAMEL_CASE",
+	[Enums.CaseFormat.LOWERCASE] = "LOWERCASE",
+	[Enums.CaseFormat.UPPERCASE] = "UPPERCASE",
+}
 
 local function GenerateSnippet()
 	return function(store)
@@ -35,11 +43,7 @@ local function GenerateSnippet()
 				ChildrenKey = state.userSettings["childrenKey" .. state.userSettings.framework],
 				TabCharacter = tabCharacter,
 				FontFormat = state.userSettings.fontFormat,
-				ParallelLuau = if task ~= nil
-						and task.synchronize ~= nil
-						and task.desynchronize ~= nil
-					then state.userSettings.parallelLuauGeneration
-					else false,
+				CaseFormat = CASE_MAP[state.userSettings.caseFormat or 4],
 			})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({

@@ -186,6 +186,21 @@ function SafeNamer.FormatCase(input: string, options: FormatCaseOptions?)
 		prefix = table.remove(words, 1)
 	end
 
+	-- split the words array further at any uppercase characters followed by at least one lowercase character
+	if opt.case == "CAMEL_CASE" or opt.case == "PASCAL_CASE" then
+		words = Array.reduce(words, function(acc, word)
+			if word:match("%u%l+") then
+				for splitWord in word:gmatch("%u%l*") do
+					table.insert(acc, splitWord)
+				end
+			else
+				table.insert(acc, word)
+			end
+
+			return acc
+		end, {})
+	end
+
 	local newWords = Array.map(words, function(word: string, index)
 		if opt.case == "UPPERCASE" then
 			return word:upper()
