@@ -17,6 +17,8 @@ local DEFAULT_SETTINGS = {
 	indentationUsesTabs = false,
 	indentationLength = 2,
 	fontFormat = Enums.FontFormat.Full,
+	caseFormat = Enums.CaseFormat.CAMELCASE,
+	httpTimeout = 30,
 }
 
 return function(state, action)

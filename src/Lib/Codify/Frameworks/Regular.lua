@@ -22,7 +22,9 @@ local function Regularify(instance: Instance, options)
 		options._instanceNames = {}
 	end
 
-	local name = SafeNamer.Sanitize(instance.Name)
+	local name = SafeNamer.Sanitize(instance.Name, {
+		case = options.CaseFormat,
+	})
 
 	if options._instanceNames[name] == nil then
 		options._instanceNames[name] = 0

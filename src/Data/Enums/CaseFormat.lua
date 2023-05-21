@@ -1,0 +1,6 @@
+return {
+	UPPERCASE = 1,
+	LOWERCASE = 2,
+	PASCALCASE = 3,
+	CAMELCASE = 4,
+}

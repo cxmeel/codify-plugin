@@ -32,6 +32,8 @@ local function DeterminePluginMetadata(plugin: Plugin)
 		store:dispatch(Actions.SetPluginMetadata({
 			build = "FORK",
 		}))
+
+		return
 	end
 end
 

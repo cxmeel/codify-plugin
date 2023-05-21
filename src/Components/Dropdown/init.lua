@@ -41,8 +41,8 @@ local function Dropdown(props: DropdownProps, hooks)
 
 	local optionButtons = hooks.useMemo(function()
 		table.sort(props.options, function(a, b)
-			local labelA = a.label or tostring(a.value)
-			local labelB = b.label or tostring(b.value)
+			local labelA = (`{a.label or a.value}`):lower()
+			local labelB = (`{b.label or b.value}`):lower()
 
 			return labelA < labelB
 		end)

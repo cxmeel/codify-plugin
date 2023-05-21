@@ -96,7 +96,6 @@ export type EscapeOptions = {
 ]=]
 SafeNamer.RESERVED_WORDS = table.freeze({
 	LUAU = require(script.ReservedWords.Luau),
-	TYPESCRIPT = require(script.ReservedWords.TypeScript),
 })
 
 --[=[
@@ -177,7 +176,7 @@ end
 ]=]
 function SafeNamer.FormatCase(input: string, options: FormatCaseOptions?)
 	local opt: FormatCaseOptions = Dictionary.merge(DEFAULT_FORMAT_CASE_OPTIONS, options)
-	local separator = opt.separator ~= "" and opt.separator or " "
+	local separator = opt.separator ~= "" and opt.separator or "\0"
 	local newSeparator = opt.separator ~= "" and opt.separator or ""
 
 	local words = input:split(separator)
@@ -185,6 +184,21 @@ function SafeNamer.FormatCase(input: string, options: FormatCaseOptions?)
 
 	if words[1] == opt.variablePrefix then
 		prefix = table.remove(words, 1)
+	end
+
+	-- split the words array further at any uppercase characters followed by at least one lowercase character
+	if opt.case == "CAMEL_CASE" or opt.case == "PASCAL_CASE" then
+		words = Array.reduce(words, function(acc, word)
+			if word:match("%u[%l%d]*") then
+				for splitWord in word:gmatch("%u[%l%d]*") do
+					table.insert(acc, splitWord)
+				end
+			else
+				table.insert(acc, word)
+			end
+
+			return acc
+		end, {})
 	end
 
 	local newWords = Array.map(words, function(word: string, index)
@@ -195,6 +209,8 @@ function SafeNamer.FormatCase(input: string, options: FormatCaseOptions?)
 		elseif opt.case == "PASCAL_CASE" or opt.case == "CAMEL_CASE" then
 			return `{word:sub(1, 1):upper()}{word:sub(2):lower()}`
 		end
+
+		return nil
 	end)
 
 	if prefix ~= nil then
@@ -216,7 +232,7 @@ end
 ]=]
 function SafeNamer.Sanitize(word: string, options: SanitizeOptions?)
 	local opt = Dictionary.merge(DEFAULT_SANITIZE_OPTIONS, options)
-	local separator = opt.separator ~= "" and opt.separator or " "
+	local separator = opt.separator ~= "" and opt.separator or "\0"
 
 	local newWord = trimString(word):gsub("'", ""):gsub("%W", separator)
 

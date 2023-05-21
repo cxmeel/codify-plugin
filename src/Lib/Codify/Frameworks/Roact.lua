@@ -30,7 +30,9 @@ local function RoactifyInstance(instance: Instance, options)
 		end
 
 		if options.NamingScheme == "All" or (options.NamingScheme == "Changed" and nameChanged) then
-			local name = SafeNamer.Sanitize(instance.Name)
+			local name = SafeNamer.Sanitize(instance.Name, {
+				case = options.CaseFormat,
+			})
 
 			if options.LevelIdentifiers[name] ~= nil then
 				options.LevelIdentifiers[name] += 1
