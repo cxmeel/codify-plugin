@@ -4,15 +4,16 @@ local Enums = require(Plugin.Data.Enums)
 local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
-	heading = "Child Indexing",
-	hint = "Configure how child Instance indices are generated.",
+	heading = "Child Instance Keys",
+	anchor = "format-namingscheme",
+	hint = "Determines how to assign child Instance names/keys.",
 
 	settingsKey = "namingScheme",
 
 	enumMap = {
 		[Enums.NamingScheme.All] = {
 			label = "All",
-			hint = "frame, textButton",
+			hint = "frame, myButton",
 		},
 
 		[Enums.NamingScheme.Changed] = {

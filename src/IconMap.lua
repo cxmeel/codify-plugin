@@ -95,6 +95,13 @@ return {
 		x = 4,
 		y = 84,
 	},
+	FrameworkJSX = {
+		assetId = "rbxassetid://11459333521",
+		w = 16,
+		h = 16,
+		x = 24,
+		y = 84,
+	},
 	FrameworkTypescript = {
 		assetId = "rbxassetid://11459333521",
 		w = 16,

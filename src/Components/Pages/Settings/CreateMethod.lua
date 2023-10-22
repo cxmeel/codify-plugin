@@ -19,10 +19,11 @@ export type CreateMethodProps = {
 
 local DISABLED_FRAMEWORKS = {
 	Enums.Framework.Regular,
+	Enums.Framework.Jsx,
 }
 
 local DEFAULT_METHODS = {
-	[Enums.Framework.Roact] = "Roact.createElement",
+	[Enums.Framework.Roact] = "React.createElement",
 	[Enums.Framework.Fusion] = "New",
 }
 
@@ -43,7 +44,7 @@ local function CreateMethod(props: CreateMethodProps, hooks)
 
 	return e(Layout.Forms.Section, {
 		heading = "Create Method",
-		hint = "If you've assigned the creator method to a variable, you can specify this here.",
+		hint = "Override the create method's name if, for example, you have assigned a variable or are using Roact.",
 		formItem = true,
 		order = props.order,
 	}, {

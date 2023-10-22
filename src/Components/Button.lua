@@ -101,7 +101,12 @@ local function Button(props: ButtonProps, hooks)
 
 		[Roact.Event.InputBegan] = onInputBegan,
 		[Roact.Event.InputEnded] = onInputEnded,
-		[Roact.Event.Activated] = props.onActivated,
+		[Roact.Event.Activated] = function()
+			if props.disabled then
+				return
+			end
+			props.onActivated()
+		end,
 	}, {
 		corners = e(Layout.Corner),
 		padding = e(Layout.Padding, { 1 }),

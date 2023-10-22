@@ -5,6 +5,7 @@ local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
 	heading = "PhysicalProperties Format",
+	anchor = "format-physicalproperties",
 	hint = "Configure how custom PhysicalProperties are displayed in code snippets.",
 
 	settingsKey = "physicalPropertiesFormat",

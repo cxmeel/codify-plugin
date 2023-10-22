@@ -5,6 +5,7 @@ local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
 	heading = "Case Format",
+	anchor = "format-case",
 	hint = "Configure the case format used when generating variable names.",
 
 	settingsKey = "caseFormat",

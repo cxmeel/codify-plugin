@@ -23,15 +23,23 @@ local FRAMEWORK_ENUM_MAP = {
 		label = "Regular",
 		hint = 'Instance.new("Frame")',
 	},
+
 	[Enums.Framework.Fusion] = {
 		icon = "FrameworkFusion",
 		label = "Fusion",
-		hint = 'New "Frame" { ... }',
+		hint = 'New "Frame" {...}',
 	},
+
 	[Enums.Framework.Roact] = {
 		icon = "FrameworkRoact",
-		label = "Roact",
-		hint = 'Roact.createElement("Frame", { ... }, { ... })',
+		label = "React",
+		hint = 'React.createElement("Frame", {...}, {...})',
+	},
+
+	[Enums.Framework.Jsx] = {
+		icon = "FrameworkJSX",
+		label = "TypeScript JSX",
+		hint = "<frame {...}>...</frame>",
 	},
 }
 
@@ -54,6 +62,23 @@ local function FrameworkSelect(props: FrameworkSelectProps, hooks)
 	local framework = userSettings.framework
 	local details = FRAMEWORK_ENUM_MAP[framework] or {}
 
+	local enableJsxGeneration = userSettings.enableJsxGeneration
+
+	local dropdownOptions = hooks.useMemo(function()
+		local options = table.clone(DROPDOWN_OPTIONS)
+
+		if not enableJsxGeneration then
+			for index, value in options do
+				if value.value == Enums.Framework.Jsx then
+					table.remove(options, index)
+					break
+				end
+			end
+		end
+
+		return options
+	end, { enableJsxGeneration })
+
 	return e(Layout.Forms.Section, {
 		heading = "Framework",
 		hint = "Select the framework to be used by the plugin when generating code snippets.",
@@ -64,7 +89,7 @@ local function FrameworkSelect(props: FrameworkSelectProps, hooks)
 			label = details.label,
 			hint = details.hint,
 			value = framework,
-			options = DROPDOWN_OPTIONS,
+			options = dropdownOptions,
 
 			onChanged = function(value)
 				dispatch(Actions.SetSetting({

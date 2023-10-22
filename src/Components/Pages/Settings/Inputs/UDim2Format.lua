@@ -5,6 +5,7 @@ local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
 	heading = "UDim2 Format",
+	anchor = "format-udim2",
 	hint = "Configure how UDim2 values are displayed in code snippets.",
 
 	settingsKey = "udim2Format",

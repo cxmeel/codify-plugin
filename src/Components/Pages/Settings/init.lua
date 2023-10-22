@@ -17,6 +17,9 @@ local ChildrenKey = require(script.ChildrenKey)
 local Inputs = require(script.Inputs)
 local About = require(script.About)
 
+local EnableJsxGeneration = require(script.EnableJsxGeneration)
+local JsxSelfClosingTags = require(script.JsxSelfClosingTags)
+
 local e = Roact.createElement
 
 local function Page(_, hooks)
@@ -100,17 +103,25 @@ local function Page(_, hooks)
 			physicalPropertiesFormat = e(Inputs.PhysicalPropertiesFormat, {
 				order = 70,
 			}),
+
+			jsxSelfClosing = e(JsxSelfClosingTags, {
+				order = 80,
+			}),
 		}),
 
-		-- experimental = e(Layout.Forms.Section, {
-		-- 	heading = "Experimental",
-		-- 	hint = "These features may be highly unstable and may cause issues. Use at your own risk.",
-		-- 	collapsible = true,
-		-- 	collapsed = true,
-		-- 	divider = true,
-		-- 	order = 60,
-		-- 	icon = "Fire",
-		-- }, {}),
+		experimental = e(Layout.Forms.Section, {
+			heading = "Experimental",
+			hint = "These features may be highly unstable and may cause issues. Use at your own risk.",
+			collapsible = true,
+			--collapsed = true,
+			divider = true,
+			order = 60,
+			icon = "Fire",
+		}, {
+			enableJsxGeneration = e(EnableJsxGeneration, {
+				order = 10,
+			}),
+		}),
 
 		about = e(About, {
 			order = 70,
