@@ -4,7 +4,7 @@ description = "Convert Instances to code; just like magic!"
 version = "2.4.1" # /src/Data/Config.lua
 license = "MIT"
 authors = ["csqrl (https://csqrl.dev)", "boatbomber (https://www.boatbomber.com/)"]
-contributors = ["chriscerie"]
+contributors = ["chriscerie", "aloroid", "pepeeltoro41"]
 registry = "https://github.com/upliftgames/wally-index"
 realm = "shared"
 
