@@ -1,73 +1,97 @@
-<!-- Links -->
-[plugin]: https://create.roblox.com/marketplace/asset/4749111907
-[itch]: https://csqrl.itch.io/codify
-[repo]: https://github.com/csqrl/codify-plugin
-[issues]: https://github.com/csqrl/codify-plugin/issues
-[rojo]: https://rojo.space
-[devforum-thread]: https://devforum.roblox.com/t/473076
-[devforum-dm]: https://devforum.roblox.com/new-message?username=csqrl&title=%5BCodify%5D%20Bug%20Report
-[twitter]: https://twitter.com/csqrI
-[yt-demo]: https://youtu.be/aLFWPKNiBGU
+<!-- Link References -->
+[marketplace-page]: https://create.roblox.com/marketplace/asset/4749111907/Codify
+[itch-page]: https://cxmeel.itch.io/codify
+[github-page]: https://github.com/cxmeel/codify-plugin
 
-<!-- Images -->
-[images/cover]: https://github.com/csqrl/codify-plugin/raw/main/assets/Cover.png
-[images/roblox-badge]: https://gist.github.com/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/robloxAnimated.svg
-[images/itch-badge]: https://gist.github.com/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/itch.svg
-[images/github-badge]: https://gist.github.com/csqrl/56c5f18b229ca1e61feb6eb5fb149f43/raw/githubSource.svg
-[images/screenshots-row]: https://github.com/csqrl/codify-plugin/raw/main/assets/PluginScreenshots.png
-[images/yt-demo]: https://github.com/csqrl/codify-plugin/raw/main/assets/YouTubeEmbed.png
+<!-- Image References -->
+[image-banner]: https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/c/4/3/e/c43e3785a823d131a2d1cca146385ed56ce9df2a.png
+[button-roblox]: https://gist.githubusercontent.com/cxmeel/0dbc95191f239b631c3874f4ccf114e2/raw/roblox_dev-animated.svg
+[button-itch]: https://gist.githubusercontent.com/cxmeel/0dbc95191f239b631c3874f4ccf114e2/raw/itch.svg
+[button-github]: https://gist.githubusercontent.com/cxmeel/0dbc95191f239b631c3874f4ccf114e2/raw/github_source.svg
+[button-itch-icon]: https://gist.githubusercontent.com/cxmeel/0dbc95191f239b631c3874f4ccf114e2/raw/itch-icon.svg
 
 <!-- Content -->
+
+> **:information_source: Important information:**\
+> This repo is for **Codify v2**, which is no longer being maintained. **Codify3** is in development and will supersede this version.
+>
+> [**Learn more &rarr;**](docs/Deprecation.md)
+
 <div align="center">
 
-![Codify Cover Image][images/cover]
+[![Banner image][image-banner]][marketplace-page]
 
-[![Get it on Roblox][images/roblox-badge]][plugin] [![Get it on Itch|48x48][images/itch-badge]][itch]
+[![Purchase on Roblox][button-roblox]][marketplace-page] [![Purchase on Itch.io][button-itch-icon]][itch-page]
 
-Codify converts your pre-existing Roblox UI, models and more into code snippets in a flash. Whether you use vanilla Roblox Luau, or a framework like Roact or Fusion, Codify has you covered!
+Codify v2 converts Roblox Instances into code snippets in a flash. Whether you use vanilla **Roblox Luau**, [**TypeScript JSX**](https://roblox-ts.com/docs/guides/roact-jsx), or a framework like [**React**](https://github.com/jsdotlua/react-lua#readme) or [**Fusion**](https://github.com/dphfox/Fusion#readme), Codify's got you covered!
 
 </div>
 
 ## :inbox_tray: Installation
 
-Codify is available for purchase from the [Roblox Plugin Marketplace][plugin], or can be downloaded **for free** via [GitHub][repo] (self-build) or its [Itch.io store page][itch] (optional donation).
+Codify v2 is available on the Roblox Plugin Marketplace, Itch, and GitHub. You can find the links below:
 
-### Plugin Marketplace
+### Creator Marketplace
 
-The Creator Marketplace is the easiest way to install Codify. You'll get quick and easy access to updates via the Plugin Management window, and you'll be able to use the plugin anywhere you have Roblox Studio installed.
+The Creator Marketplace is the easiest way to install Codify v2. You'll get access to automatic updats, and you'll be able to use the plugin anywhere you have Roblox Studio installed.
 
-[![Get it on Roblox][images/roblox-badge]][plugin]
+[![Get it on Roblox][button-roblox]][marketplace-page]
 
 Don't forget to leave a :thumbsup: like if you enjoy the plugin!
 
-### Itch.io
+### Itch
 
 Currently, there's no way to automatically install and update plugins purchased through Itch. You'll need to manually download and drop the plugin file into your Studio plugins folder every time there's an update. You'll also have to repeat this process for every device you want to use the plugin on.
 
-[![Get it on Itch][images/itch-badge]][itch]
+[![Get it on Itch.io][button-itch]][itch-page]
 
 ### Manual Installation
 
-If you don't want to use the Plugin Marketplace or Itch.io, you can clone the plugin source from GitHub. You'll need to compile the plugin binary yourself using a tool like [Rojo][rojo], and you'll also be responsible for keeping the plugin up to date.
+This is not recommended for most users, but you can clone this repository and build the plugin yourself. You'll need to know how to compile model binaries using [Rojo](https://github.com/rojo-rbx/rojo), and how to manually install local plugins in Roblox Studio.
 
-This might be a great option for you if you want to modify the plugin source code, or if you're concerned about security. However, this method sacrifices convenience of installation and updates.
+[![Get it on GitHub][button-github]][github-page]
 
-[![Get it on GitHub][images/github-badge]][repo]
+## :framed_picture: Gallery
 
-## :bug: Found a Bug?
+<table>
+    <tr>
+        <td colspan="4">
+            <a title="Watch demo on YouTube" href="https://youtu.be/aLFWPKNiBGU" rel="noreferrer noopener">
+                <img alt="Screenshot of YouTube video" src="https://img.youtube.com/vi/aLFWPKNiBGU/maxresdefault.jpg" width="100%" />
+                <br />
+                <span>Watch demo on YouTube &rarr;</span>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a title="Show screenshot" rel="noreferrer noopener" href="https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/d/e/5/a/de5a89938136c1096ee1c69535617668f43a106b.png">
+                <img alt="Screenshot showing Luau generation (no framework)" src="https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/d/e/5/a/de5a89938136c1096ee1c69535617668f43a106b.png" />
+            </a>
+        </td>
+        <td>
+            <a href="https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/9/d/7/b/9d7bea922719029cf18f418c6a4265cca24f394e.png" title="Show screenshot" rel="noreferrer noopener">
+                <img alt="Screenshot showing React generation" src="https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/9/d/7/b/9d7bea922719029cf18f418c6a4265cca24f394e.png" />
+            </a>
+        </td>
+        <td>
+            <a href="https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/8/a/a/2/8aa2ffcf83e546b8ac875124b6ef4550d7bb477c.png" title="Show screenshot" rel="noreferrer noopener">
+                <img alt="Screenshot showing Fusion generation" src="https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/8/a/a/2/8aa2ffcf83e546b8ac875124b6ef4550d7bb477c.png" />
+            </a>
+        </td>
+        <td>
+            <a href="https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/1/b/7/c/1b7c6d77d9dee4227abdab440ccc1264542086c8.png" title="Show screenshot" rel="noreferrer noopener">
+                <img alt="Screenshot showing TypeScript JSX generation" src="https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/1/b/7/c/1b7c6d77d9dee4227abdab440ccc1264542086c8.png" />
+            </a>
+        </td>
+    </tr>
+</table>
 
-If you think you've found a bug, please report it! Here's all the places you can report bugs:
-
-* [Reply to the DevForum thread][devforum-thread]
-* [DevForum Direct Message][devforum-dm]
-* [GitHub Issues][issues]
-* [Twitter][twitter]
-
-## :shield: Overview of Permissions
+## :shield: Permissions
 
 ### HTTP Requests
 
-Codify **requires** the ability to make HTTP requests to keep the plugin and Studio in-sync. The table below shows an overview of the domains Codify will make requests to, and why (and if) they're required.
+Codify **requires** the ability to make HTTP requests to fetch metadata about the Instances you're converting.
 
 | Domain | Required | Reason |
 |--------|----------|--------|
@@ -76,39 +100,6 @@ Codify **requires** the ability to make HTTP requests to keep the plugin and Stu
 ### Script Injection
 
 Script injection is a completely optional permission. You won't be prompted to give access to this until using the **Save to Device** feature. This feature allows you to save your code snippets to your computer.
-
-This permission is exclusive to the **Save to Device**, and is not required for any other feature. Save to Device is great for exporting snippets longer than the TextBox character limit, or for accessing your snippets outside of Roblox Studio.
-
-Save to Device will create a temporary ModuleScript in order to export your snippet. The ModuleScript is unarchivable, meaning it won't be saved to your place during publishing/(auto-)saving. The ModuleScript is also deleted immediately after the snippet is exported.
-
-## :framed_picture: Screenshots
-
-[![See Demo on YouTube][images/yt-demo]][yt-demo]
-
-![Screenshots][images/screenshots-row]
-
-## :thinking: Plugin Limitations
-
-Codify does not support Instance properties which accept another Instance as its value. This means properties such as `Adornee` or `ObjectValue.Value` are not supported; however, Codify will try its best to link the Parent property to the Instance it's referencing, as long as it's in the tree.
-
-Roblox's TextBoxes are also subject to a character limit. This means you may find large snippets of code are truncated. You can use the **Save to Device** feature to export your code to a ModuleScript, which is subject to a much larger character limit. However, if you're reaching these limits, you may want to consider reviewing your components/models, and seeing how you can split them down further. This will help you with maintainability and keep your codebase clean.
-
-## :package: Open Source Projects
-
-> :mega: Shoutout to @boatbomber for their help with expanding Codify's scope to include more than just Roact. You should [check out their Itch.io store](https://boatbomber.itch.io/) for more of their work, and how you can support them!
-
-Codify is built on top of a few open source projects. Here's a list of the projects Codify uses:
-
-* [highlighter](https://github.com/boatbomber/highlighter) by @boatbomber
-* [studio-plugin](https://github.com/csqrl/studio-plugin) by @csqrl
-* [studio-theme](https://github.com/csqrl/studio-theme) by @csqrl
-* [roblox-lua-promise](https://github.com/evaera/roblox-lua-promise) by @evaera
-* [roact](https://github.com/roblox/roact) by @roblox
-* [roact-hooks](https://github.com/kampfkarren/roact-hooks) by @kampfkarren
-* [roact-router](https://github.com/reselim/roact-router) by @reselim
-* [rodux](https://github.com/roblox/rodux) by @roblox
-* [rodux-hooks](https://github.com/solarhorizon/rodux-hooks) by @solarhorizon
-* [sift](https://github.com/csqrl/sift) by @csqrl
 
 ## :warning: Disclaimer
 

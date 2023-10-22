@@ -1,7 +1,7 @@
 [package]
 name = "csqrl/codify-plugin"
 description = "Convert Instances to code; just like magic!"
-version = "2.4.0" # /src/Data/Config.lua
+version = "2.4.1" # /src/Data/Config.lua
 license = "MIT"
 authors = ["csqrl (https://csqrl.dev)", "boatbomber (https://www.boatbomber.com/)"]
 contributors = ["chriscerie"]

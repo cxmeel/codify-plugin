@@ -5,6 +5,7 @@ local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
 	heading = "BrickColor Format",
+	anchor = "format-brickcolor",
 	hint = "Configure how BrickColor values are displayed in code snippets.",
 
 	settingsKey = "brickColorFormat",

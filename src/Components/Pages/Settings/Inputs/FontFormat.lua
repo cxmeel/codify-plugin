@@ -5,6 +5,7 @@ local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
 	heading = "Font Format",
+	anchor = "format-fontface",
 	hint = "Configure how FontFace values are displayed in code snippets.",
 
 	settingsKey = "fontFormat",

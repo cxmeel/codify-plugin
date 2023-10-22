@@ -5,6 +5,7 @@ local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
 	heading = "NumberRange Format",
+	anchor = "format-numberrange",
 	hint = "Configure how NumberRange values are displayed in code snippets.",
 
 	settingsKey = "numberRangeFormat",

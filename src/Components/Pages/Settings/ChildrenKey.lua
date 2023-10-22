@@ -20,6 +20,7 @@ export type ChildrenKeyProps = {
 local DISABLED_FRAMEWORKS = {
 	Enums.Framework.Roact,
 	Enums.Framework.Regular,
+	Enums.Framework.Jsx,
 }
 
 local DEFAULT_METHODS = {

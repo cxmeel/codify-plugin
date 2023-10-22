@@ -6,7 +6,7 @@ local Hooks = require(Packages.Hooks)
 
 local e = Roact.createElement
 
-export type CornerProps = ({ number? } | { radius: number? })
+export type CornerProps = { number? } | { radius: number? }
 
 local function Corner(props: CornerProps, hooks)
 	local _, styles = StudioTheme.useTheme(hooks)

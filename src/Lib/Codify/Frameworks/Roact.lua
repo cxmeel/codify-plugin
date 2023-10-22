@@ -4,7 +4,7 @@ local Properties = require(script.Parent.Parent.Parent.Properties)
 local SafeNamer = require(script.Parent.Parent.SafeNamer)
 
 local function RoactifyInstance(instance: Instance, options)
-	local createMethod = options.CreateMethod or "Roact.createElement"
+	local createMethod = options.CreateMethod or "React.createElement"
 	local snippet = Script.new()
 
 	local success, changedProps = Properties.GetChangedProperties(instance):await()
@@ -13,7 +13,6 @@ local function RoactifyInstance(instance: Instance, options)
 	if not success then
 		error("Failed to get changed properties: " .. tostring(changedProps), 2)
 	end
-
 	task.desynchronize()
 
 	local function tab()
@@ -83,7 +82,6 @@ local function RoactifyInstance(instance: Instance, options)
 		options.Indent -= 1
 		snippet:CreateLine():Push(tab(), "}")
 	end
-
 	snippet:Line():Push(")")
 
 	return snippet:Concat()
@@ -92,7 +90,7 @@ end
 return {
 	Generator = RoactifyInstance,
 	Sample = table.concat({
-		'return Roact.createElement("Lorem", {',
+		'return React.createElement("Lorem", {',
 		'  ipsum = "dolor"',
 		'  sit = "amet"',
 		'  consectetur = "adipiscing"',

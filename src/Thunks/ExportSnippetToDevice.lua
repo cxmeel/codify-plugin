@@ -28,19 +28,23 @@ local function ExportSnippetToDevice(plugin: Plugin)
 			Source = state.snippet.content,
 			Archivable = false,
 			Parent = ServerStorage,
-		})
-			:andThen(function(module: ModuleScript)
-				local activeSelection = Selection:Get()
+		}):andThen(function(module: ModuleScript)
+			local isJsx = state.userSettings.framework == "Jsx"
+			local activeSelection = Selection:Get()
 
-				Selection:Set({ module })
+			Selection:Set({ module })
+
+			if isJsx then
+				plugin:PromptSaveSelection(`.{state.snippet.name}.ts`)
+			else
 				plugin:PromptSaveSelection(state.snippet.name)
+			end
 
-				Selection:Set(activeSelection)
-				module:Destroy()
-			end)
-			:catch(function() -- fail silently
-				return false
-			end)
+			Selection:Set(activeSelection)
+			module:Destroy()
+		end):catch(function() -- fail silently
+			return false
+		end)
 	end
 end
 

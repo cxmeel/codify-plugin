@@ -70,7 +70,7 @@ local function Page(_, hooks)
 		}),
 
 		settingsHint = e(Text, {
-			text = "Output formatting can be configured in the Settings tab.",
+			text = "Limited output formatting can be configured in the Settings tab. Code formatting is encouraged post-generation.",
 			textColor = theme:GetColor(Enum.StudioStyleGuideColor.DimmedText),
 			order = 15,
 		}),
@@ -181,17 +181,27 @@ local function Page(_, hooks)
 				font = styles.font.semibold,
 				order = 10,
 			}),
+			actionButtons = e(Layout.Frame, {
+				autoSize = Enum.AutomaticSize.Y,
+				size = UDim2.fromScale(1, 0),
+				order = 10,
+			}, {
+				layout = e(Layout.ListLayout, {
+					direction = Enum.FillDirection.Horizontal,
+					alignX = Enum.HorizontalAlignment.Right,
+					gap = 6,
+				}),
+				downloadButton = e(Button, {
+					primary = true,
+					disabled = snippet.content == nil,
+					order = 20,
+					label = "Save to Device",
+					icon = "Download",
 
-			downloadButton = e(Button, {
-				primary = true,
-				disabled = snippet.content == nil,
-				order = 20,
-				label = "Save to Device",
-				icon = "Download",
-
-				onActivated = function()
-					dispatch(Thunks.ExportSnippetToDevice(plugin))
-				end,
+					onActivated = function()
+						dispatch(Thunks.ExportSnippetToDevice(plugin))
+					end,
+				}),
 			}),
 		}),
 	})

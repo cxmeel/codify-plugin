@@ -5,6 +5,7 @@ local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
 	heading = "Enum Format",
+	anchor = "format-enums",
 	hint = "Configure how Enum values are displayed in code snippets.",
 
 	settingsKey = "enumFormat",

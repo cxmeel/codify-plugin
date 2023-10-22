@@ -5,6 +5,7 @@ local CreateInput = require(script.Parent.CreateInput)
 
 return CreateInput({
 	heading = "Color3 Format",
+	anchor = "format-color3",
 	hint = "Configure how Color3 values are displayed in code snippets.",
 
 	settingsKey = "color3Format",

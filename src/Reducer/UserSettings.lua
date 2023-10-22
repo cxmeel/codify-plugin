@@ -19,6 +19,9 @@ local DEFAULT_SETTINGS = {
 	fontFormat = Enums.FontFormat.Full,
 	caseFormat = Enums.CaseFormat.CAMELCASE,
 	httpTimeout = 30,
+
+	enableJsxGeneration = false,
+	jsxSelfClosingTags = true,
 }
 
 return function(state, action)

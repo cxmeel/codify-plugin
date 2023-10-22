@@ -10,6 +10,7 @@ type CodifyOptions = {
 	UDim2Format: string?,
 	EnumFormat: string?,
 	NamingScheme: string?,
+	JsxTags: string?,
 	NumberRangeFormat: string?,
 	PhysicalPropertiesFormat: string?,
 	TabCharacter: string?,
@@ -59,7 +60,7 @@ end
 local FORMAT_MAP
 FORMAT_MAP = {
 	Color3Format = {
-		Full = function(value: Color3)
+		Full = function(value: Color3, Jsx: boolean?)
 			local red = clamp(value.R, 0, 1)
 			local green = clamp(value.G, 0, 1)
 			local blue = clamp(value.B, 0, 1)
@@ -69,10 +70,11 @@ FORMAT_MAP = {
 			blue = FormatNumber(blue)
 
 			if red == 0 and green == 0 and blue == 0 then
-				return "Color3.new()"
+				return if Jsx then "new Color3()" else "Color3.new()"
 			end
 
-			return fmt("Color3.new(%s, %s, %s)", red, green, blue)
+			local strFormat = if Jsx then "new Color3(%s, %s, %s)" else "Color3.new(%s, %s, %s)"
+			return fmt(strFormat, red, green, blue)
 		end,
 
 		Hex = function(value: Color3)
@@ -104,23 +106,24 @@ FORMAT_MAP = {
 	},
 
 	UDim2Format = {
-		Full = function(value: UDim2)
+		Full = function(value: UDim2, Jsx: boolean)
 			local x = value.X.Scale
 			local y = value.Y.Scale
 			local ox = value.X.Offset
 			local oy = value.Y.Offset
 
 			if x == 0 and y == 0 and ox == 0 and oy == 0 then
-				return "UDim2.new()"
+				return if Jsx then "new UDim2" else "UDim2.new()"
 			end
 
 			local xs = FormatNumber(x)
 			local ys = FormatNumber(y)
+			local strFormat = if Jsx then "new UDim2(%s, %d, %s, %d)" else "UDim2.new(%s, %d, %s, %d)"
 
-			return fmt("UDim2.new(%s, %d, %s, %d)", xs, ox, ys, oy)
+			return fmt(strFormat, xs, ox, ys, oy)
 		end,
 
-		Smart = function(value: UDim2)
+		Smart = function(value: UDim2, Jsx: boolean)
 			local x = value.X.Scale
 			local y = value.Y.Scale
 			local ox = value.X.Offset
@@ -130,28 +133,30 @@ FORMAT_MAP = {
 			local ys = FormatNumber(y)
 
 			if x == 0 and y == 0 and ox == 0 and oy == 0 then
-				return "UDim2.new()"
+				return if Jsx then "new UDim2" else "UDim2.new()"
 			elseif x == 0 and y == 0 then
 				return fmt("UDim2.fromOffset(%.0f, %.0f)", ox, oy)
 			elseif ox == 0 and oy == 0 then
 				return fmt("UDim2.fromScale(%s, %s)", xs, ys)
 			end
 
-			return FORMAT_MAP.UDim2Format.Full(value)
+			return FORMAT_MAP.UDim2Format.Full(value, Jsx)
 		end,
 	},
 
 	NumberRangeFormat = {
-		Full = function(value: NumberRange)
-			return fmt("NumberRange.new(%s, %s)", FormatNumber(value.Min), FormatNumber(value.Max))
+		Full = function(value: NumberRange, Jsx: boolean)
+			local strFormat = if Jsx then "new NumberRange(%s, %s)" else "NumberRange.new(%s, %s)"
+			return fmt(strFormat, FormatNumber(value.Min), FormatNumber(value.Max))
 		end,
 
-		Smart = function(value: NumberRange)
+		Smart = function(value: NumberRange, Jsx: boolean)
 			if value.Max == value.Min then
-				return fmt("NumberRange.new(%s)", FormatNumber(value.Min))
+				local strFormat = if Jsx then "new NumberRange(%s)" else "NumberRange.new(%s)"
+				return fmt(strFormat, FormatNumber(value.Min))
 			end
 
-			return fmt("NumberRange.new(%s, %s)", FormatNumber(value.Min), FormatNumber(value.Max))
+			return FORMAT_MAP.NumberRangeFormat.Full(value, Jsx)
 		end,
 	},
 
@@ -168,7 +173,7 @@ FORMAT_MAP = {
 	},
 
 	NormalIdConstructor = {
-		Full = function(value: Axes | Faces, className: string)
+		Full = function(value: Axes | Faces, className: string, Jsx: boolean?)
 			local axes = {}
 
 			for _, normalId in ipairs(Enum.NormalId:GetEnumItems()) do
@@ -176,47 +181,46 @@ FORMAT_MAP = {
 					table.insert(axes, FORMAT_MAP.EnumFormat.Full(normalId))
 				end
 			end
-
-			return fmt("%s.new(%s)", className, table.concat(axes, ", "))
+			local strFormat = if Jsx then "new %s(%s)" else "%s.new(%s)"
+			return fmt(strFormat, className, table.concat(axes, ", "))
 		end,
 	},
 
 	BrickColorFormat = {
-		Name = function(value: BrickColor)
-			return fmt("BrickColor.new(%q)", tostring(value))
+		Name = function(value: BrickColor, Jsx: boolean)
+			local strFormat = if Jsx then "new BrickColor(%q)" else "BrickColor.new(%q)"
+			return fmt(strFormat, tostring(value))
 		end,
 
-		RGB = function(value: BrickColor)
-			return fmt(
-				"BrickColor.new(%s, %s, %s)",
-				FormatNumber(value.r),
-				FormatNumber(value.g),
-				FormatNumber(value.b)
-			)
+		RGB = function(value: BrickColor, Jsx: boolean)
+			local strFormat = if Jsx then "new BrickColor(%s, %s, %s)" else "BrickColor.new(%s, %s, %s)"
+			return fmt(strFormat, FormatNumber(value.r), FormatNumber(value.g), FormatNumber(value.b))
 		end,
 
-		Number = function(value: BrickColor)
-			return fmt("BrickColor.new(%d)", value.Number)
+		Number = function(value: BrickColor, Jsx: boolean)
+			local strFormat = if Jsx then "new BrickColor(%d)" else "BrickColor.new(%d)"
+			return fmt(strFormat, value.Number)
 		end,
 
-		Color3 = function(value: BrickColor, options: CodifyInstanceOptions?)
+		Color3 = function(value: BrickColor, options: CodifyInstanceOptions?, Jsx: boolean?)
+			local strFormat = if Jsx then "new BrickColor(%s)" else "BrickColor.new(%s)"
 			local FormatColor3 = FORMAT_MAP.Color3Format[options and options.Color3Format or "Smart"]
-			return fmt("BrickColor3.new(%s)", FormatColor3(value.Color))
+			return fmt(strFormat, FormatColor3(value.Color, Jsx))
 		end,
 
-		Smart = function(value: BrickColor)
+		Smart = function(value: BrickColor, Jsx: boolean?)
 			for methodName, color in pairs(SHORT_BRICKCOLORS) do
 				if value == color then
 					return fmt("BrickColor.%s()", methodName)
 				end
 			end
 
-			return FORMAT_MAP.BrickColorFormat.Name(value)
+			return FORMAT_MAP.BrickColorFormat.Name(value, Jsx)
 		end,
 	},
 
 	PhysicalPropertiesFormat = {
-		Full = function(value: PhysicalProperties)
+		Full = function(value: PhysicalProperties, Jsx: boolean?)
 			local props = {
 				FormatNumber(value.Density),
 				FormatNumber(value.Friction),
@@ -224,56 +228,60 @@ FORMAT_MAP = {
 				FormatNumber(value.FrictionWeight),
 				FormatNumber(value.ElasticityWeight),
 			}
-
-			return fmt("PhysicalProperties.new(%s)", table.concat(props, ", "))
+			local strFormat = if Jsx then "new PhysicalProperties(%s)" else "PhysicalProperties.new(%s)"
+			return fmt(strFormat, table.concat(props, ", "))
 		end,
 
-		Smart = function(value: PhysicalProperties)
+		Smart = function(value: PhysicalProperties, Jsx: boolean)
 			local propsString = tostring(value)
-
+			local strFormat = if Jsx then "new PhysicalProperties(%s)" else "PhysicalProperties.new(%s)"
 			for material, materialPropsString in pairs(MATERIAL_PHYISCAL_PROPS) do
 				if propsString == materialPropsString then
-					return fmt("PhysicalProperties.new(%s)", FORMAT_MAP.EnumFormat.Full(material))
+					return fmt(strFormat, FORMAT_MAP.EnumFormat.Full(material))
 				end
 			end
 
-			return FORMAT_MAP.PhysicalPropertiesFormat.Full(value)
+			return FORMAT_MAP.PhysicalPropertiesFormat.Full(value, Jsx)
 		end,
 	},
 
 	UDimFormat = {
-		Full = function(value: UDim)
-			return fmt("UDim.new(%s, %s)", FormatNumber(value.Scale), FormatNumber(value.Offset))
+		Full = function(value: UDim, Jsx: boolean)
+			local strFormat = if Jsx then "new UDim(%s, %s)" else "UDim.new(%s, %s)"
+			return fmt(strFormat, FormatNumber(value.Scale), FormatNumber(value.Offset))
 		end,
 	},
 
 	CFrameFormat = {
-		Full = function(value: CFrame)
-			return fmt("CFrame.new(%s)", tostring(value))
+		Full = function(value: CFrame, Jsx)
+			local strFormat = if Jsx then "new CFrame(%s)" else "CFrame.new(%s)"
+			return fmt(strFormat, tostring(value))
 		end,
 	},
 
 	VectorFormat = {
-		Full = function(value: Vector2 | Vector3 | Vector2int16 | Vector3int16)
+		Full = function(value: Vector2 | Vector3 | Vector2int16 | Vector3int16, Jsx: boolean)
 			local elements = tostring(value):split(", ")
 
 			for index, element in ipairs(elements) do
 				elements[index] = FormatNumber(tonumber(element))
 			end
 
-			return fmt("%s.new(%s)", typeof(value), table.concat(elements, ", "))
+			local strFormat = if Jsx then "new %s(%s)" else "%s.new(%s)"
+			return fmt(strFormat, typeof(value), table.concat(elements, ", "))
 		end,
 	},
 
 	FontFormat = {
-		Full = function(instance: GuiTextObject, options: CodifyInstanceOptions): string
+		Full = function(instance: GuiTextObject, options: CodifyInstanceOptions, Jsx: boolean): string
 			local value = instance.FontFace
 
 			local isDefaultStyle = value.Style == Enum.FontStyle.Normal
 			local isDefaultWeight = value.Weight == Enum.FontWeight.Regular
+			local strFormat = if Jsx then "new Font(%q)" else "Font.new(%q)"
 
 			if isDefaultStyle and isDefaultWeight then
-				return fmt("Font.new(%q)", value.Family)
+				return fmt(strFormat, value.Family)
 			end
 
 			local baseIndent = rep(options.TabCharacter, options.Indent)
@@ -284,9 +292,11 @@ FORMAT_MAP = {
 				fmt("Enum.FontWeight.%s", value.Weight.Name),
 				fmt("Enum.FontStyle.%s", value.Style.Name),
 			}
-
+			local strAdvFormat = if Jsx
+				then "new Font(\n%s%s,\n%s%s,\n%s%s\n%s)"
+				else "Font.new(\n%s%s,\n%s%s,\n%s%s\n%s)"
 			return fmt(
-				"Font.new(\n%s%s,\n%s%s,\n%s%s\n%s)",
+				strAdvFormat,
 				propIndent,
 				fontProps[1],
 				propIndent,
@@ -297,9 +307,9 @@ FORMAT_MAP = {
 			)
 		end,
 
-		Smart = function(instance: GuiTextObject, options: CodifyInstanceOptions): string
+		Smart = function(instance: GuiTextObject, options: CodifyInstanceOptions, Jsx: boolean): string
 			if instance.Font == Enum.Font.Unknown then
-				return FORMAT_MAP.FontFormat.Full(instance, options)
+				return FORMAT_MAP.FontFormat.Full(instance, options, Jsx)
 			end
 
 			return fmt("Font.fromEnum(Enum.Font.%s)", instance.Font.Name)
@@ -307,7 +317,7 @@ FORMAT_MAP = {
 	},
 }
 
-local function SerialiseColorSequence(sequence: ColorSequence, options: CodifyInstanceOptions)
+local function SerialiseColorSequence(sequence: ColorSequence, options: CodifyInstanceOptions, Jsx: boolean)
 	local result = {}
 
 	local baseIndent = rep(options.TabCharacter, options.Indent)
@@ -319,16 +329,16 @@ local function SerialiseColorSequence(sequence: ColorSequence, options: CodifyIn
 
 		local valueString = FORMAT_MAP.Color3Format[options.Color3Format](value)
 		local timeString = FormatNumber(time)
-
-		table.insert(result, fmt("%sColorSequenceKeypoint.new(%s, %s)", propIndent, timeString, valueString))
+		local strFormat = if Jsx then "%snew ColorSequenceKeypoint(%s, %s)" else "%sColorSequenceKeypoint.new(%s, %s)"
+		table.insert(result, fmt(strFormat, propIndent, timeString, valueString))
 	end
 
 	local resultString = table.concat(result, ",\n")
-
-	return fmt("ColorSequence.new({\n%s,\n%s})", resultString, baseIndent)
+	local strFormat = if Jsx then "new ColorSequence({\n%s,\n%s})" else "ColorSequence.new({\n%s,\n%s})"
+	return fmt(strFormat, resultString, baseIndent)
 end
 
-local function SerialiseNumberSequence(sequence: NumberSequence, options: CodifyInstanceOptions)
+local function SerialiseNumberSequence(sequence: NumberSequence, options: CodifyInstanceOptions, Jsx: boolean)
 	local result = {}
 
 	local baseIndent = rep(options.TabCharacter, options.Indent)
@@ -343,69 +353,73 @@ local function SerialiseNumberSequence(sequence: NumberSequence, options: Codify
 		local timeString = FormatNumber(time)
 
 		if envelope == 0 then
-			table.insert(result, fmt("%sNumberSequenceKeypoint.new(%s, %s)", propIndent, timeString, valueString))
+			local strFormat = if Jsx
+				then "%snew NumberSequenceKeypoint(%s, %s)"
+				else "%sNumberSequenceKeypoint.new(%s, %s)"
+			table.insert(result, fmt(strFormat, propIndent, timeString, valueString))
 		else
 			local envelopeString = FormatNumber(envelope)
-
-			table.insert(
-				result,
-				fmt("%sNumberSequenceKeypoint.new(%s, %s, %s)", propIndent, timeString, valueString, envelopeString)
-			)
+			local strFormat = if Jsx
+				then "%snew NumberSequenceKeypoint(%s, %s, %s)"
+				else "%sNumberSequenceKeypoint.new(%s, %s, %s)"
+			table.insert(result, fmt(strFormat, propIndent, timeString, valueString, envelopeString))
 		end
 	end
 
 	local resultString = table.concat(result, ",\n")
-
-	return fmt("NumberSequence.new({\n%s,\n%s})", resultString, baseIndent)
+	local strFormat = if Jsx then "new NumberSequence({\n%s,\n%s})" else "NumberSequence.new({\n%s,\n%s})"
+	return fmt(strFormat, resultString, baseIndent)
 end
 
-local function SerialiseProperty(instance: Instance, property: string, options: CodifyInstanceOptions)
+local function SerialiseProperty(instance: Instance, property: string, options: CodifyInstanceOptions, Jsx: boolean?)
 	local value = (instance :: any)[property]
 	local valueTypeOf = typeof(value)
 	local valueType = type(value)
 
 	if valueTypeOf == "Color3" then
-		return FORMAT_MAP.Color3Format[options.Color3Format or "Hex"](value)
+		return FORMAT_MAP.Color3Format[options.Color3Format or "Hex"](value, Jsx)
 	elseif valueTypeOf == "BrickColor" then
-		return FORMAT_MAP.BrickColorFormat[options.BrickColorFormat or "Smart"](value)
+		return FORMAT_MAP.BrickColorFormat[options.BrickColorFormat or "Smart"](value, Jsx)
 	elseif valueTypeOf == "UDim" then
-		return FORMAT_MAP.UDimFormat.Full(value)
+		return FORMAT_MAP.UDimFormat.Full(value, Jsx)
 	elseif valueTypeOf == "UDim2" then
-		return FORMAT_MAP.UDim2Format[options.UDim2Format or "Smart"](value)
+		return FORMAT_MAP.UDim2Format[options.UDim2Format or "Smart"](value, Jsx)
 	elseif valueTypeOf == "NumberRange" then
-		return FORMAT_MAP.NumberRangeFormat[options.NumberRangeFormat or "Smart"](value)
+		return FORMAT_MAP.NumberRangeFormat[options.NumberRangeFormat or "Smart"](value, Jsx)
 	elseif valueTypeOf == "EnumItem" then
-		return FORMAT_MAP.EnumFormat[options.EnumFormat or "Full"](value)
+		return FORMAT_MAP.EnumFormat[options.EnumFormat or "Full"](value, Jsx)
 	elseif valueTypeOf == "Axes" then
-		return FORMAT_MAP.NormalIdConstructor.Full(value, "Axes")
+		return FORMAT_MAP.NormalIdConstructor.Full(value, "Axes", Jsx)
 	elseif valueTypeOf == "Faces" then
-		return FORMAT_MAP.NormalIdConstructor.Full(value, "Faces")
+		return FORMAT_MAP.NormalIdConstructor.Full(value, "Faces", Jsx)
 	elseif valueTypeOf == "PhysicalProperties" then
-		return FORMAT_MAP.PhysicalPropertiesFormat[options.PhysicalPropertiesFormat or "Smart"](value)
+		return FORMAT_MAP.PhysicalPropertiesFormat[options.PhysicalPropertiesFormat or "Smart"](value, Jsx)
 	elseif valueTypeOf == "CFrame" then
-		return FORMAT_MAP.CFrameFormat.Full(value)
+		return FORMAT_MAP.CFrameFormat.Full(value, Jsx)
 	elseif valueTypeOf == "ColorSequence" then
-		return SerialiseColorSequence(value, options)
+		return SerialiseColorSequence(value, options, Jsx)
 	elseif valueTypeOf == "NumberSequence" then
-		return SerialiseNumberSequence(value, options)
+		return SerialiseNumberSequence(value, options, Jsx)
 	elseif valueTypeOf == "Font" then
-		return FORMAT_MAP.FontFormat[options.FontFormat or "Full"](instance, options)
+		return FORMAT_MAP.FontFormat[options.FontFormat or "Full"](instance, options, Jsx)
 	elseif valueTypeOf == "Instance" then
 		return nil
 	elseif valueType == "vector" or valueTypeOf:match("Vector%d") then
-		return FORMAT_MAP.VectorFormat.Full(value)
+		return FORMAT_MAP.VectorFormat.Full(value, Jsx)
 	elseif valueTypeOf == "number" then
 		return FormatNumber(value)
 	elseif valueTypeOf == "string" then
 		local isMultiline = value:match("\n")
 
 		if isMultiline then
-			return fmt("[[%s]]", value:gsub("]]", "]\\]"))
+			return if Jsx then fmt("`%s`", value:gsub("`", "\\`")) else fmt("[[%s]]", value:gsub("]]", "]\\]"))
 		end
 
 		return fmt("%q", value)
 	elseif valueType == "userdata" then
-		return fmt("%s.new(%s)", valueTypeOf, tostring(value))
+		local stfFormat = if Jsx then "new %s(%s)" else "%s.new(%s)"
+
+		return fmt(stfFormat, valueTypeOf, tostring(value))
 	end
 
 	return tostring(value)

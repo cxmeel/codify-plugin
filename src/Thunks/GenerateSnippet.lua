@@ -44,6 +44,7 @@ local function GenerateSnippet()
 				TabCharacter = tabCharacter,
 				FontFormat = state.userSettings.fontFormat,
 				CaseFormat = CASE_MAP[state.userSettings.caseFormat or 4],
+				JsxSelfClosingTags = state.userSettings.jsxSelfClosingTags,
 			})
 			:andThen(function(snippet)
 				store:dispatch(Actions.SetSnippetContent({
